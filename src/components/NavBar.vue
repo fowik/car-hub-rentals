@@ -2,13 +2,13 @@
     
     <nav class="navbar">
         <div class="logo">
-            <a href="/"><h1>Car<span class="orange-box">Hub</span></h1></a>
+            <router-link to="/"><h1>Car<span class="orange-box">Hub</span></h1></router-link>
         </div>
         <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="#">Cars</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="#">Login</a></li>
+            <li><router-link to="/">Home</router-link></li>
+            <li><router-link to="#">Cars</router-link></li>
+            <li><router-link to="/about">About Us</router-link></li>
+            <li><router-link to="#">Login</router-link></li>
         </ul>
     </nav>
 
