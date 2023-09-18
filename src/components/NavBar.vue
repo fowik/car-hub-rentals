@@ -5,9 +5,9 @@
             <a href="/"><h1>Car<span class="orange-box">Hub</span></h1></a>
         </div>
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="#">Cars</a></li>
-            <li><a href="#">About Us</a></li>
+            <li><a href="/about">About Us</a></li>
             <li><a href="#">Login</a></li>
         </ul>
     </nav>
