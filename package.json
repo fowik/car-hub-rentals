@@ -1,15 +1,15 @@
 {
-  "name": "Carhub",
+  "name": "car-hub-rentals",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "start": "nodemon src/router/server.js"
   },
   "dependencies": {
-    "core-js": "^3.8.3",
     "express": "^4.18.2",
-    "mysql2": "^3.6.1",
+    "mysql": "^2.18.1",
     "vue": "^3.2.13",
     "vue-router": "^4.2.4"
   },
