@@ -1,7 +1,7 @@
 <template>
-
-    <section>
-        About
-    </section>
     
+    <section>
+        NotFound!
+    </section>
+
 </template>
