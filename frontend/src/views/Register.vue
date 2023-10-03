@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
     data() {
         return {
@@ -32,7 +30,7 @@ export default {
         };
     },
     methods: {
-        registerUser() {
+        async registerUser() {
             // Validate password and confirm password
             if (this.password != this.confirmPassword) {
                 alert("Password and Confirm Password do not match.");
@@ -46,20 +44,20 @@ export default {
                 password: this.password
             };
 
-            // Assume you have an API endpoint for user registration
-            // Make an HTTP request (for example, using Axios) to your server
-            axios.post('/api/regUser', userData)
-                .then(response => {
-                    // Handle the response (e.g., show a success message)
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    // Handle errors (e.g., show an error message)
-                    console.error(error);
-                });
-
-            // For demonstration purposes, log the user data
-            console.log("User registration data:", userData);
+            await fetch('http://localhost:3000/api/users/register', {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "cors", // no-cors, *cors, same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: "follow", // manual, *follow, error
+                referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(userData), // body data type must match "Content-Type" header
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
         }
     }
 };

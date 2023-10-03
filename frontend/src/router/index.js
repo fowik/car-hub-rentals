@@ -4,7 +4,6 @@ import About from '../views/About.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
-import regUser from '/src/backend/api/regUser.js'
 
 const routes = [
     {
@@ -32,11 +31,6 @@ const routes = [
         name: 'NotFound',
         component: NotFound
     },
-    {
-        path: '/api/regUser',
-        name: 'regUser',
-        component: regUser
-    }
 ]
 
 const router = createRouter({ 

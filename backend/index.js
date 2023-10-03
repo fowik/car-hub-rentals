@@ -1,49 +1,27 @@
-const express = require('express')
-const Sequelize = require("sequelize");
+import { PrismaClient, Prisma } from '@prisma/client'
+import express from 'express';
+import cors from 'cors';
 
+const prisma = new PrismaClient()
 const app = express()
 const port = 3000
 
-const sequelize = new Sequelize(
-    'car_hub_rentals',
-    'root',
-    '',
-    {
-        host: 'localhost',
-        dialect: 'mysql'
-    }
-);
+app.use(cors());
+app.use(express.json());
 
-const User = sequelize.define('User', {
-    // Model attributes are defined here
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false
+app.post('/api/users/register', async (req, res) => {
+  const user = await prisma.users.create({
+    data: {
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      full_name: req.body.full_name,
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    password_hash: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
-  }, {
-    // Other model options go here
-  });
-
-sequelize.authenticate().then(() => {
-    console.log('Connection has been established successfully.');
- }).catch((error) => {
-    console.error('Unable to connect to the database: ', error);
- });
-
-app.get('/api/users/register', (req, res) => {
-
-
-
-    res.send('Hello World!')
+  })
+  console.log(user);
+  res.send(user)
 })
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
