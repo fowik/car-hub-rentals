@@ -8,6 +8,8 @@
     "start": "nodemon src/router/server.js"
   },
   "dependencies": {
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
     "vue": "^3.2.13",
     "vue-router": "^4.2.4",
     "vue-service": "^1.0.3"

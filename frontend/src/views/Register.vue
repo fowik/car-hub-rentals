@@ -6,6 +6,9 @@
                 <!-- Registration Form -->
                 <h2>Registration</h2>
                 <form @submit.prevent="registerUser">
+                    <!-- <div class="input-errors" v-for="(error, index) in $v.form.$eachError" :key="index">
+                        <div class="error-msg">{{ error.$message }}</div>
+                    </div> -->
                     <input type="text" v-model="username" placeholder="Enter your username" required>
                     <input type="text" v-model="email" placeholder="Enter your e-mail" required>
                     <input type="password" v-model="password" placeholder="Type a password" required>
@@ -20,20 +23,44 @@
 </template>
 
 <script>
+import withVuelidate from '@vuelidate/core';
+import { required, email, minLength, sameAs } from '@vuelidate/validators'
+
 export default {
+    setup() {
+        return { v$: withVuelidate() }
+    },
     data() {
         return {
             username: '', 
             email: '',
             password: '',
             confirmPassword: '',
+            isRegistering: false,   
         };
+    },
+    validations() {
+        return {
+            form: {
+                username: { required },
+                email: { required, email },
+                password: { required, min: minLength(6) },
+                confirmPassword: { required }
+            }
+        }
     },
     methods: {
         async registerUser() {
+            if (this.isRegistering){
+                return;
+            }
+
+            this.isRegistering = true;
+
             // Validate password and confirm password
             if (this.password != this.confirmPassword) {
-                alert("Password and Confirm Password do not match.");
+                console.error("Password and Confirm Password do not match.");
+                this.isRegistering = false;
                 return;
             }
 
@@ -68,8 +95,11 @@ export default {
                 }
             } catch (error) {
                 console.error('Error during registration:', error);
+            } finally {
+                // Reset the flag after registration attempt (success or failure)
+                this.isRegistering = false;
             }
-
+             
         }
     }
 };
