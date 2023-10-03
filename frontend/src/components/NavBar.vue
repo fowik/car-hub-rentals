@@ -9,7 +9,7 @@
             <li><router-link to="#">Cars</router-link></li>
             <li><router-link to="#">Pricing</router-link></li>
             <li><router-link :to="{ name: 'About' }">About</router-link></li>
-            <li><router-link :to="{ name: 'Login' }">Login</router-link></li>
+            <li><router-link :to="{ name: 'Register' }">Sign Up</router-link></li>
         </ul>
     </nav>
 
