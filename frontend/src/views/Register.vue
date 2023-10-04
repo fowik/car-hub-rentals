@@ -9,11 +9,25 @@
                     <!-- <div class="input-errors" v-for="(error, index) in $v.form.$eachError" :key="index">
                         <div class="error-msg">{{ error.$message }}</div>
                     </div> -->
-                    <input type="text" v-model="username" placeholder="Enter your username" required>
-                    <input type="text" v-model="email" placeholder="Enter your e-mail" required>
-                    <input type="password" v-model="password" placeholder="Type a password" required>
-                    <input type="password" v-model="confirmPassword" placeholder="Confirm a password" required>
-                    <button type="submit">Register</button>
+                    <input type="text" v-model="state.username" placeholder="Enter your username">
+                    <span v-if="v$.username.$error">
+                        {{ v$.username.$errors[0].$message }}
+                    </span>
+                    <input type="text" v-model="state.email" placeholder="Enter your e-mail">
+                    <span v-if="v$.email.$error">
+                        {{ v$.email.$errors[0].$message }}
+                    </span>
+                    <input type="password" v-model="state.password.password" placeholder="Type a password">
+                    <span v-if="v$.password.password.$error">
+                        {{ v$.password.password.$errors[0].$message }}
+                    </span>
+                    <input type="password" v-model="state.password.confirm" placeholder="Confirm a password">
+                    <span v-if="v$.password.confirm.$error">
+                        {{ v$.password.confirm.$errors[0].$message }}
+                    </span>
+                    <div>
+                        <button @click="valForm">Register</button>
+                    </div>
                     <p>Alerady have an account? <router-link :to="{ name: 'Login' }">Login now</router-link></p>
                 </form>
             </div>
@@ -23,52 +37,58 @@
 </template>
 
 <script>
-import withVuelidate from '@vuelidate/core';
+import withVuelidate from '@vuelidate/core'
 import { required, email, minLength, sameAs } from '@vuelidate/validators'
+import { reactive, computed } from 'vue'
 
 export default {
     setup() {
-        return { v$: withVuelidate() }
-    },
-    data() {
-        return {
+        const state = reactive({
             username: '', 
             email: '',
-            password: '',
-            confirmPassword: '',
-            isRegistering: false,   
-        };
-    },
-    validations() {
-        return {
-            form: {
-                username: { required },
+            password: {
+                password: '',
+                confirm: '',
+            },
+        })
+
+        const rules = computed(() => {
+            return {
+                username: { required, minLength: minLength(3) },
                 email: { required, email },
-                password: { required, min: minLength(6) },
-                confirmPassword: { required }
+                password: { 
+                    password: { required, minLength: minLength(8) },
+                    confirm: { required, sameAs: sameAs(state.password.password) }
+                },
             }
+        })
+
+        const v$ = withVuelidate(rules, state)
+
+        return {
+            state,
+            v$,
         }
     },
     methods: {
+        valForm() {
+            // Validate all fields
+            this.v$.$validate();
+        },
+        
         async registerUser() {
-            if (this.isRegistering){
-                return;
-            }
-
-            this.isRegistering = true;
-
-            // Validate password and confirm password
-            if (this.password != this.confirmPassword) {
-                console.error("Password and Confirm Password do not match.");
-                this.isRegistering = false;
+            this.valForm();
+            if (this.v$.username.$error || this.v$.email.$error || this.v$.password.password.$error || this.v$.password.confirm.$error) {
+                // If there are validation errors, do not proceed with registration
+                console.log('Form has validation errors');
                 return;
             }
 
             // Send registration data to your server (make an API call here)
             const userData = {
-                username: this.username,
-                email: this.email,
-                password: this.password
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password.password,
             };
 
             try {
@@ -97,7 +117,6 @@ export default {
                 console.error('Error during registration:', error);
             } finally {
                 // Reset the flag after registration attempt (success or failure)
-                this.isRegistering = false;
             }
              
         }
