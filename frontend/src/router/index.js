@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
 import Profile from '../views/Profile.vue'
 import Logout from '../views/Logout.vue'
+import ChangePassword from '../views/ChangePassword.vue'
 
 const routes = [
     {
@@ -37,6 +38,11 @@ const routes = [
         path: '/profile/logout',
         name: 'Logout',
         component: Logout
+    },
+    {
+        path: '/profile/change-password',
+        name: 'ChangePassword',
+        component: ChangePassword
     },
     {
         path: '/:catchAll(.*)',

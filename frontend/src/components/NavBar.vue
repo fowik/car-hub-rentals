@@ -35,7 +35,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .navbar {
     display: flex;
@@ -64,10 +63,11 @@ export default {
     margin: 0;
     padding: 0;
     display: flex;
+    flex-direction: column;
 }
 
 .nav-links li {
-    margin-right: 20px;
+    margin-bottom: 10px;
 }
 
 .nav-links a {
@@ -78,5 +78,17 @@ export default {
 
 .nav-links a:hover {
     text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+    .nav-links {
+        flex-direction: row;
+    }
+
+    .nav-links li {
+        margin-bottom: 0;
+        margin-right: 20px;
+    }
 }
 </style>

@@ -18,32 +18,24 @@
         <div class="main-bar">
             <div class="main-bar-content">
                 <div class="menu">
-                    <h2>Profile</h2>
+                    <h2>Password</h2>
                     <p>Last updated: 2023/02/15 15:18:14</p>
                 </div>
                 <div class="content-to-save">
                     <div class="input-row">
                         <div class="input-group">
-                            <label>Full name</label>
-                            <input type="text" placeholder="Enter your full name">
-                        </div>
-                        <div class="input-group">
-                            <label>Username</label>
-                            <input type="text" placeholder="Enter your username" :value="username">
+                            <label>New password</label>
+                            <input type="text" placeholder="Enter your new password">
                         </div>
                     </div>
                     <div class="input-row">
                         <div class="input-group">
-                            <label>Email</label>
-                            <input type="text" placeholder="Enter your email" :value="email">
-                        </div>
-                        <div class="input-group">
-                            <label>Smth else</label>
-                            <input type="text" placeholder="Enter your Smth else">
+                            <label for="confirm-new-pass">Confirm new password</label>
+                            <input type="text" id="confirm-new-pass" placeholder="Confirm your new password" :value="username">
                         </div>
                     </div>
                     <div class="save-btn">
-                        <button>Save</button>
+                        <button>Change password</button>
                     </div>
                 </div>
             </div>
@@ -222,7 +214,8 @@ section {
 
 .main-bar-content .content-to-save label
 {
-    width: 30%;
+    width: 100%;
+    text-align: left;
     font-weight: 500;
     font-size: small;
     margin-top: 10px;
