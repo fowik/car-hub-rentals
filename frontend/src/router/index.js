@@ -5,6 +5,7 @@ import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
 import Profile from '../views/Profile.vue'
+import Logout from '../views/Logout.vue'
 
 const routes = [
     {
@@ -31,6 +32,11 @@ const routes = [
         path: '/profile',
         name: 'Profile',
         component: Profile
+    },
+    {
+        path: '/profile/logout',
+        name: 'Logout',
+        component: Logout
     },
     {
         path: '/:catchAll(.*)',

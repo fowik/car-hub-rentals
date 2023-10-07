@@ -9,11 +9,32 @@
             <li><router-link to="#">Cars</router-link></li>
             <li><router-link to="#">Pricing</router-link></li>
             <li><router-link :to="{ name: 'About' }">About</router-link></li>
-            <li><router-link :to="{ name: 'Register' }">Sign Up</router-link></li>
+            <li v-if="isLoggedIn"><router-link to="/profile">Profile</router-link></li>
+            <li v-if="!isLoggedIn"><router-link :to="{ name: 'Register' }">Sign Up</router-link></li>
         </ul>
     </nav>
 
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            isLoggedIn: false,
+        };
+    },
+    created() {
+        // Check if there's user data in sessionStorage
+        const user = JSON.parse(sessionStorage.getItem('user'));
+
+        // If user data exists, set isLoggedIn to true
+        if (user && user.username) {
+            this.isLoggedIn = true;
+        }
+    },
+};
+</script>
+
 
 <style scoped>
 .navbar {
