@@ -27,24 +27,34 @@ export default {
     },
     methods: {
         async loginUser() {
-            // Send login data to your server (make an API call here)
-            const userData = {
-                username: this.username,
-                password: this.password
-            };
-            await fetch('http://localhost:3000/api/users/login', {
-                method: "POST", // *GET, POST, PUT, DELETE, etc.
-                mode: "cors", // no-cors, *cors, same-origin
-                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: "same-origin", // include, *same-origin, omit
+        const userData = {
+            username: this.username,
+            email: this.username,
+            password: this.password,
+        };
+        try {
+            const response = await fetch('http://localhost:3000/api/users/login', {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                redirect: "follow", // manual, *follow, error
-                referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                body: JSON.stringify(userData), // body data type must match "Content-Type" header
+                body: JSON.stringify(userData),
             });
-            return response.json(); // parses JSON response into native JavaScript objects
+
+            if (response.ok) {
+                const user = await response.json();
+                // Handle successful login, e.g., store user data in Vuex store or localStorage
+                console.log("Login successful:", user);
+                sessionStorage.setItem('user', JSON.stringify(user));
+                this.$router.push({ path: '/profile' });
+            } else {
+                // Handle failed login (e.g., wrong credentials)
+                console.error("Login failed");
+            }
+        } catch (error) {
+            // Handle network errors or other issues
+            console.error("Error during login:", error);
+        }
         }
     }
 };

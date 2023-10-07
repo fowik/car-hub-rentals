@@ -27,20 +27,32 @@ app.post('/api/users/register', async (req, res) => {
 })
 
 app.post('/api/users/login', async (req, res) => {
-  const user = await prisma.users.findFirst({
-    where: {
-      username: req.body.username,
-      email: req.body.email,
-    },  
-  })
+  const { username, email, password } = req.body;
 
-  if (user && user.password === req.body.password) {
-    // User found and password matches, store user data in localStorage
-    localStorage.setItem('user', JSON.stringify(user));
-    redirect('/user');
-  } else {
-    // User not found or password doesn't match, handle the error
-    console.log("User not found or password incorrect");
+  try {
+      const user = await prisma.users.findFirst({
+          where: {
+            OR: [
+              {
+                  username: username,
+              },
+              {
+                  email: email,
+              }
+            ]
+          }
+      });
+
+      if (user && user.password === password) {
+          // Passwords match, send a success response
+          res.status(200).json(user);
+      } else {
+          // User not found or password doesn't match, send an error response
+          res.status(401).json({ error: "Invalid credentials" });
+      }
+  } catch (error) {
+      // Handle database errors or other issues
+      console.error("Error during login:", error);
+      res.status(500).json({ error: "Internal server error" });
   }
-  
-})
+});

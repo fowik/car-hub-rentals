@@ -28,7 +28,7 @@
                     <div>
                         <button @click="valForm">Register</button>
                     </div>
-                    <p>Alerady have an account? <router-link :to="{ name: 'Login' }">Login now</router-link></p>
+                    <p>Already have an account? <router-link :to="{ name: 'Login' }">Login now</router-link></p>
                 </form>
             </div>
         </div>
