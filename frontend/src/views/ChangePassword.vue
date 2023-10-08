@@ -79,6 +79,7 @@ section {
     min-height: 60vh;
 }
 
+/* Sidebar Styles */
 .side-bar-left {
     display: flex;
     flex-direction: column;
@@ -95,24 +96,9 @@ section {
         min-height: auto;
         margin-bottom: 20px;
     }
-
-    .main-bar {
-        width: 100%;
-        min-height: auto;
-    }
-
-    .input-group {
-        width: 100%;
-    }
-    
-    .save-btn button {
-        width: 100%;
-        margin: 10px 0;
-    }
 }
 
-.side-bar-username
-{
+.side-bar-username {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -121,31 +107,27 @@ section {
     border-bottom: 3px solid #343434;
 }
 
-.side-bar-username img
-{
+.side-bar-username img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     margin-top: 20px;
-    /* transform: scale(2); */
 }
 
-.side-bar-links
-{
+.side-bar-links {
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    justify-content: flex-start;
 }
 
 .side-bar-links a.router-link-active {
     border-left: 5px solid #ffa31a;
     color: #ffa31a;
-    width: 100%-5px !important;
-    background-color: #f4920080 ;
+    width: calc(100% - 20px) !important;
+    background-color: #f4920080;
 }
 
-.side-bar-links a
-{
+.side-bar-links a {
     display: flex;
     padding-left: 15px;
     padding-bottom: 15px;
@@ -154,16 +136,15 @@ section {
     font-weight: 600;
 }
 
-.side-bar-links a:hover
-{
+.side-bar-links a:hover {
     border-left: 5px solid #ffa31a;
     color: #ffa31a;
-    width: 100%-5px !important;
-    background-color: #f4920080 ;
+    width: calc(100% - 20px) !important;
+    background-color: #f4920080;
 }
 
-.main-bar
-{
+/* Main Bar Styles */
+.main-bar {
     display: flex;
     flex-direction: column;
     width: 40%;
@@ -182,38 +163,32 @@ section {
     margin-right: 45px;
 }
 
-.main-bar-content .menu
-{
+.main-bar-content .menu {
     display: flex;
     flex-direction: row;
     width: 100%;
 }
 
-.main-bar-content .menu h2
-{
+.main-bar-content .menu h2 {
     padding-left: 15px;
     border-left: 5px solid #ffa31a;
     color: #ffa31a;
 }
 
-.main-bar-content .menu p
-{
-    right: 0px;
-    margin: auto 0px auto auto;
+.main-bar-content .menu p {
+    margin: auto 0 auto auto;
     color: #666666;
     font-weight: 600;
     font-size: small;
 }
 
-.main-bar-content .content-to-save
-{
+.main-bar-content .content-to-save {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
 }
 
-.main-bar-content .content-to-save label
-{
+.main-bar-content .content-to-save label {
     width: 100%;
     text-align: left;
     font-weight: 500;
@@ -221,9 +196,7 @@ section {
     margin-top: 10px;
 }
 
-.main-bar-content .content-to-save input
-{
-    /* width: calc(100%); */
+.main-bar-content .content-to-save input {
     background: none;
     padding: 10px;
     margin: 10px 0;
@@ -232,7 +205,7 @@ section {
     outline: none;
     border: 2px solid #666666;
     color: #ffffff;
-
+    width: 80%;
 }
 
 .input-row {
@@ -262,7 +235,7 @@ section {
 
 .save-btn button {
     display: flex;
-    margin: auto 0px auto auto;
+    margin: auto 0 auto auto;
     background-color: #ffa31a;
     color: #fff;
     border: none;
@@ -276,4 +249,5 @@ section {
 .save-btn button:hover {
     background-color: #f49200;
 }
+
 </style>

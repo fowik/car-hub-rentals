@@ -91,7 +91,6 @@ export default {
     text-decoration: underline;
 }
 
-/* Responsive Styles */
 @media (min-width: 768px) {
     .nav-links {
         flex-direction: row;
