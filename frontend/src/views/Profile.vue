@@ -72,7 +72,7 @@ export default {
         }
         else {
             // Handle the case when the user is not logged in or user data is not available in sessionStorage
-            console.error("User data not found in sessionStorage");
+            this.$router.push({ path: '/login' });
         }
     },
 };
@@ -222,7 +222,8 @@ section {
 
 .main-bar-content .content-to-save label
 {
-    width: 30%;
+    width: 100%;
+    text-align: left;
     font-weight: 500;
     font-size: small;
     margin-top: 10px;
