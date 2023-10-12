@@ -5,7 +5,9 @@
         <ul>
           <li>
             <a href="#">
-              <span class="icon"><ion-icon name="car-outline"></ion-icon></span>
+              <span class="icon"
+                ><ion-icon name="car-sport-outline"></ion-icon
+              ></span>
               <span class="title">Carhub</span>
             </a>
           </li>

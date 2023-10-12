@@ -1,117 +1,115 @@
 <template>
-    
-        <div id="notfound">
-            <div class="notfound">
-                <div class="notfound-404">
-                    <h3>Oops! Page not found</h3>
-                    <h1><span>4</span><span>0</span><span>4</span></h1>
-                </div>
-                <h2>we are sorry, but the page you requested was not found</h2>
-                <h2><router-link :to="{ name: 'Home' }">go back home</router-link></h2>
-            </div>
-        </div>
-
+  <div id="notfound">
+    <div class="notfound">
+      <div class="notfound-404">
+        <h3>Oops! Page not found</h3>
+        <h1><span>4</span><span>0</span><span>4</span></h1>
+      </div>
+      <h2>we are sorry, but the page you requested was not found</h2>
+      <h2><router-link :to="{ name: 'Home' }">go back home</router-link></h2>
+    </div>
+  </div>
 </template>
 
-<style scoped> 
+<style scoped>
 * {
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 #notfound {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 #notfound .notfound {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .notfound {
-    max-width: 520px;
-    width: 100%;
-    line-height: 1.4;
-    text-align: center;
+  max-width: 520px;
+  width: 100%;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .notfound .notfound-404 {
-    position: relative;
-    height: 240px;
+  position: relative;
+  height: 240px;
 }
 
 .notfound .notfound-404 h1 {
-    font-family: 'Montserrat', sans-serif;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-    font-size: 252px;
-    font-weight: 900;
-    margin: 0px;
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: -40px;
-    margin-left: -20px;
+  font-family: "Montserrat", sans-serif;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 252px;
+  font-weight: 900;
+  margin: 0px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: -40px;
+  margin-left: -20px;
 }
 
-.notfound .notfound-404 h1>span {
-    text-shadow: -8px 0px 0px #1b1b1b;
+.notfound .notfound-404 h1 > span {
+  text-shadow: -8px 0px 0px #1b1b1b;
 }
 
 .notfound .notfound-404 h3 {
-    font-family: 'Cabin', sans-serif;
-    position: relative;
-    font-size: 16px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #ffffff;
-    margin: 0px;
-    letter-spacing: 3px;
-    padding-left: 6px;
+  font-family: "Cabin", sans-serif;
+  position: relative;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0px;
+  letter-spacing: 3px;
+  padding-left: 6px;
 }
 
 .notfound h2 {
-    font-family: 'Cabin', sans-serif;
-    font-size: 20px;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: #ffffff;
-    margin-top: 0px;
-    margin-bottom: 25px;
+  font-family: "Cabin", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-top: 0px;
+  margin-bottom: 25px;
 }
 
 .notfound h2 a {
-    font-family: 'Cabin', sans-serif;
-    font-size: 20px;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: #ffffff;
-    margin-top: 0px;
-    margin-bottom: 25px;
+  font-family: "Cabin", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-top: 0px;
+  margin-bottom: 25px;
 }
 .notfound h2 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 @media only screen and (max-width: 767px) {
-    .notfound .notfound-404 {
-        height: 200px;
-    }
-    .notfound .notfound-404 h1 {
-        font-size: 200px;
-    }
+  .notfound .notfound-404 {
+    height: 200px;
+  }
+  .notfound .notfound-404 h1 {
+    font-size: 200px;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -127,5 +125,4 @@ body {
     font-size: 16px;
   }
 }
-
 </style>

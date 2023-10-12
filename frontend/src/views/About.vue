@@ -1,7 +1,3 @@
 <template>
-
-    <section>
-        About
-    </section>
-    
+  <section>About</section>
 </template>
