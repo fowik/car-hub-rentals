@@ -8,35 +8,43 @@
           <!-- <div class="input-errors" v-for="(error, index) in $v.form.$eachError" :key="index">
                         <div class="error-msg">{{ error.$message }}</div>
                     </div> -->
-          <input
-            type="text"
-            v-model="state.username"
-            placeholder="Enter your username"
-          />
+          <div>
+            <input
+              type="text"
+              v-model="state.username"
+              placeholder="Enter your username"
+            />
+          </div>
           <span v-if="v$.username.$error">
             {{ v$.username.$errors[0].$message }}
           </span>
-          <input
-            type="text"
-            v-model="state.email"
-            placeholder="Enter your e-mail"
-          />
+          <div>
+            <input
+              type="text"
+              v-model="state.email"
+              placeholder="Enter your e-mail"
+            />
+          </div>
           <span v-if="v$.email.$error">
             {{ v$.email.$errors[0].$message }}
           </span>
-          <input
-            type="password"
-            v-model="state.password.password"
-            placeholder="Type a password"
-          />
+          <div>
+            <input
+              type="password"
+              v-model="state.password.password"
+              placeholder="Type a password"
+            />
+          </div>
           <span v-if="v$.password.password.$error">
             {{ v$.password.password.$errors[0].$message }}
           </span>
-          <input
-            type="password"
-            v-model="state.password.confirm"
-            placeholder="Confirm a password"
-          />
+          <div>
+            <input
+              type="password"
+              v-model="state.password.confirm"
+              placeholder="Confirm a password"
+            />
+          </div>
           <span v-if="v$.password.confirm.$error">
             {{ v$.password.confirm.$errors[0].$message }}
           </span>
@@ -151,13 +159,14 @@ export default {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
+  min-width: 400px;
+  text-align: center;
   margin: 0 auto;
 }
 
 .registration-form input[type="text"],
 .registration-form input[type="password"] {
-  width: 100%;
+  width: 90%;
   padding: 10px;
   margin: 10px -10px 10px -10px;
   border: none;
