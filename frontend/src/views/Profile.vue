@@ -9,16 +9,34 @@
         <h3>{{ username }}</h3>
       </div>
       <div class="side-bar-links">
-        <router-link to="/profile">Profile</router-link>
-        <router-link to="/profile/change-password">Password</router-link>
-        <router-link to="/profile/history">History</router-link>
+        <router-link to="/profile"
+          ><span class="icon"><ion-icon name="person-outline"></ion-icon></span
+          >Profile</router-link
+        >
+        <router-link to="/profile/change-password"
+          ><span class="icon"
+            ><ion-icon name="lock-open-outline"></ion-icon></span
+          >Password</router-link
+        >
+        <router-link to="/profile/history"
+          ><span class="icon"
+            ><ion-icon name="bookmarks-outline"></ion-icon></span
+          >History</router-link
+        >
         <router-link to="/profile/age-verification"
+          ><span class="icon"
+            ><ion-icon name="ellipsis-vertical-outline"></ion-icon></span
           >Age Verification</router-link
         >
         <router-link to="/profile/email-verification"
+          ><span class="icon"><ion-icon name="archive-outline"></ion-icon></span
           >Email Verification</router-link
         >
-        <router-link to="/profile/logout">Logout</router-link>
+        <router-link to="/profile/logout"
+          ><span class="icon">
+            <ion-icon name="log-out-outline"></ion-icon> </span
+          >Logout</router-link
+        >
       </div>
     </div>
     <div class="main-bar">
@@ -175,6 +193,20 @@ section {
   color: #ffa31a;
   width: 100%-5px !important;
   background-color: #f4920080;
+}
+
+.side-bar-links a .icon {
+  position: relative;
+  min-width: 60px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-size: 18px;
+  margin-left: -12px;
+}
+
+.side-bar-links a .icon ion-icon {
+  font-size: 1.2em;
 }
 
 .main-bar {
