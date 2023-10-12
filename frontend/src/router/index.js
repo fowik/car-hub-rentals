@@ -7,6 +7,7 @@ import NotFound from '../views/NotFound.vue'
 import Profile from '../views/Profile.vue'
 import Logout from '../views/Logout.vue'
 import ChangePassword from '../views/ChangePassword.vue'
+import ControlPanel from '../views/ControlPanel.vue'
 
 const routes = [
     {
@@ -43,6 +44,11 @@ const routes = [
         path: '/profile/change-password',
         name: 'ChangePassword',
         component: ChangePassword
+    },
+    {
+        path: '/control-panel',
+        name: 'ControlPanel',
+        component: ControlPanel
     },
     {
         path: '/:catchAll(.*)',

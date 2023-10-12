@@ -1,52 +1,38 @@
+:root {
+  --black: #1b1b1b;
+  --black-light: #292929;
+  --white: #fff;
+  --orange: #ffa31a;
+  --orange-light: #ffcc99;
+  --orange-dark: #8e5500;
+  --gray: #ccc;
+}
+
 body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #1b1b1b;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #1b1b1b;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 a {
-    text-decoration: none;
-    color: #ffa31a;
+  text-decoration: none;
+  color: #ffa31a;
 }
 
 #app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-  
+
 section {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh;
+  flex-grow: 1;
+  min-height: 60vh;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
-
-    section {
-        min-height: 40vh;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        font-size: 12px;
-    }
-
-    section {
-        min-height: 30vh;
-    }
-}
