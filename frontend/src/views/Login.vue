@@ -58,7 +58,7 @@ export default {
           const user = await response.json();
           // Handle successful login, e.g., store user data in Vuex store or localStorage
           console.log("Login successful:", user);
-          sessionStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("user", JSON.stringify(user));
           this.$router.push({ path: "/profile" });
         } else {
           // Handle failed login (e.g., wrong credentials)

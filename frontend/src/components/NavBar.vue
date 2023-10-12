@@ -5,7 +5,12 @@
         ><h1>Car<span class="orange-box">hub</span></h1></router-link
       >
     </div>
-    <ul class="nav-links">
+    <div class="burger" @click="toggleNavbar">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <ul class="nav-links" :class="{ active: isNavbarActive }">
       <li><router-link to="/">Home</router-link></li>
       <li><router-link to="#">Cars</router-link></li>
       <li><router-link to="#">Pricing</router-link></li>
@@ -23,12 +28,18 @@ export default {
   data() {
     return {
       isLoggedIn: false,
+      isNavbarActive: false,
     };
+  },
+  mounted() {
+    console.log("Component mounted");
+    this.checkUserSession();
+    window.addEventListener("resize", this.checkWindowWidth);
   },
   methods: {
     checkUserSession() {
       console.log("Checking user session...");
-      const user = JSON.parse(sessionStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("user"));
       console.log("User data from sessionStorage:", user);
       if (user && user.username) {
         this.isLoggedIn = true;
@@ -37,10 +48,14 @@ export default {
       }
       console.log("isLoggedIn:", this.isLoggedIn);
     },
-  },
-  created() {
-    console.log("Component mounted");
-    this.checkUserSession();
+    checkWindowWidth() {
+      if (window.innerWidth < 786) {
+        this.isNavbarActive = false; // Close the navbar when window is resized to less than 786px
+      }
+    },
+    toggleNavbar() {
+      this.isNavbarActive = !this.isNavbarActive;
+    },
   },
 };
 </script>
@@ -71,13 +86,10 @@ export default {
 .nav-links {
   list-style-type: none;
   margin: 0;
-  padding: 0;
   display: flex;
-  flex-direction: column;
-}
-
-.nav-links li {
-  margin-bottom: 10px;
+  flex-direction: row;
+  gap: 20px;
+  padding-right: 20px;
 }
 
 .nav-links a {
@@ -90,14 +102,40 @@ export default {
   text-decoration: underline;
 }
 
-@media (min-width: 768px) {
-  .nav-links {
-    flex-direction: row;
+.burger {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  display: none;
+}
+
+.bar {
+  background-color: #ffffff;
+  height: 3px;
+  width: 25px;
+  margin: 3px 0;
+  transition: 0.4s;
+}
+
+@media (max-width: 786px) {
+  .burger {
+    display: block;
   }
 
-  .nav-links li {
-    margin-bottom: 0;
-    margin-right: 20px;
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    background-color: #292929;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .nav-links.active {
+    display: flex;
   }
 }
 </style>

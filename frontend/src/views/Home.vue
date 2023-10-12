@@ -162,4 +162,12 @@ body {
   transition: 274ms;
   color: var(--orange);
 }
+
+@media (max-width: 768px) {
+  .home {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+}
+
 </style>

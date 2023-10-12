@@ -1,26 +1,6 @@
 <template>
   <section>
-    <div class="side-bar-left">
-      <div class="side-bar-username">
-        <img
-          src="https://marketplace.canva.com/EAFXS8-cvyQ/1/0/400w/canva-brown-and-light-brown%2C-circle-framed-instagram-profile-picture-SsX0UeCGP8g.jpg"
-          alt="profile_picture"
-        />
-        <h3>{{ username }}</h3>
-      </div>
-      <div class="side-bar-links">
-        <router-link to="/profile">Profile</router-link>
-        <router-link to="/profile/change-password">Password</router-link>
-        <router-link to="/profile/history">History</router-link>
-        <router-link to="/profile/age-verification"
-          >Age Verification</router-link
-        >
-        <router-link to="/profile/email-verification"
-          >Email Verification</router-link
-        >
-        <router-link to="/profile/logout">Logout</router-link>
-      </div>
-    </div>
+    <ProfileSidebar />
     <div class="main-bar">
       <div class="main-bar-content">
         <div class="menu">
@@ -55,6 +35,7 @@
 
 <script>
 import router from "@/router";
+import ProfileSidebar from "@/components/ProfileSidebar.vue";
 
 export default {
   data() {
@@ -63,17 +44,8 @@ export default {
       email: "",
     };
   },
-  mounted() {
-    // Retrieve the user object from sessionStorage
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    // Check if the user object is present and has a username property
-    if (user && user.username) {
-      this.username = user.username;
-      this.email = user.email;
-    } else {
-      // Handle the case when the user is not logged in or user data is not available in sessionStorage
-      console.error("User data not found in sessionStorage");
-    }
+  components: {
+    ProfileSidebar,
   },
 };
 </script>

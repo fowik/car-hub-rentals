@@ -12,8 +12,8 @@ export default {
   },
   methods: {
     logout() {
-      // Clear user data from sessionStorage
-      sessionStorage.removeItem("user"); // Remove the user data from localStorage
+      // Clear user data from localStorage
+      localStorage.removeItem("user"); // Remove the user data from localStorage
       // Update the isLoggedIn property to indicate that the user is not logged in
       this.isLoggedIn = false;
       // Redirect the user to the home page or any other desired route
