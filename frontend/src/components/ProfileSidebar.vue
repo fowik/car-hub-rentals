@@ -110,6 +110,7 @@ export default {
   height: 100px;
   border-radius: 50%;
   margin-top: 20px;
+  margin-bottom: 10px;
   /* transform: scale(2); */
 }
 

@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import router from "@/router";
 import ProfileSidebar from "@/components/ProfileSidebar.vue";
 
 export default {
@@ -57,70 +56,6 @@ section {
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-}
-
-/* Sidebar Styles */
-.side-bar-left {
-  display: flex;
-  flex-direction: column;
-  min-height: 51vh;
-  width: 15%;
-  background-color: #292929;
-  color: #ffffff;
-  border-radius: 15px;
-}
-
-@media (max-width: 768px) {
-  .side-bar-left {
-    width: 100%;
-    min-height: auto;
-    margin-bottom: 20px;
-  }
-}
-
-.side-bar-username {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 30%;
-  border-bottom: 3px solid #343434;
-}
-
-.side-bar-username img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-top: 20px;
-}
-
-.side-bar-links {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.side-bar-links a.router-link-active {
-  border-left: 5px solid #ffa31a;
-  color: #ffa31a;
-  width: calc(100% - 20px) !important;
-  background-color: #f4920080;
-}
-
-.side-bar-links a {
-  display: flex;
-  padding-left: 15px;
-  padding-bottom: 15px;
-  padding-top: 15px;
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.side-bar-links a:hover {
-  border-left: 5px solid #ffa31a;
-  color: #ffa31a;
-  width: calc(100% - 20px) !important;
-  background-color: #f4920080;
 }
 
 /* Main Bar Styles */
