@@ -159,7 +159,7 @@ export default {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  min-width: 400px;
+  max-width: 400px;
   text-align: center;
   margin: 0 auto;
 }

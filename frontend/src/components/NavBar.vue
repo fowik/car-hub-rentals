@@ -1,25 +1,27 @@
 <template>
   <nav class="navbar">
-    <div class="logo">
-      <router-link to="/"
-        ><h1>Car<span class="orange-box">hub</span></h1></router-link
-      >
+    <div class="nav-bar-container">
+      <div class="logo">
+        <router-link to="/"
+          ><h1>Car<span class="orange-box">hub</span></h1></router-link
+        >
+      </div>
+      <div class="burger" @click="toggleNavbar">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <ul class="nav-links" :class="{ active: isNavbarActive }">
+        <li><router-link to="/">Home</router-link></li>
+        <li><router-link to="#">Cars</router-link></li>
+        <li><router-link to="#">Pricing</router-link></li>
+        <li><router-link :to="{ name: 'About' }">About</router-link></li>
+        <li>
+          <router-link v-if="isLoggedIn" to="/profile">Profile</router-link>
+          <router-link v-else :to="{ name: 'Register' }">Sign Up</router-link>
+        </li>
+      </ul>
     </div>
-    <div class="burger" @click="toggleNavbar">
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-    </div>
-    <ul class="nav-links" :class="{ active: isNavbarActive }">
-      <li><router-link to="/">Home</router-link></li>
-      <li><router-link to="#">Cars</router-link></li>
-      <li><router-link to="#">Pricing</router-link></li>
-      <li><router-link :to="{ name: 'About' }">About</router-link></li>
-      <li>
-        <router-link v-if="isLoggedIn" to="/profile">Profile</router-link>
-        <router-link v-else :to="{ name: 'Register' }">Sign Up</router-link>
-      </li>
-    </ul>
   </nav>
 </template>
 
@@ -61,9 +63,17 @@ export default {
 </script>
 
 <style scoped>
+.nav-bar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: #292929;
   padding: 20px;
