@@ -70,6 +70,7 @@ export default {
 
         if (response.status === 200) {
           // Handle successful login
+          const user = await response.json();
           localStorage.setItem("user", JSON.stringify(user));
           this.$router.push({ path: "/profile" });
         } else if (response.status === 401) {
