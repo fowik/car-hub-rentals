@@ -95,12 +95,25 @@ export default {
       v$,
     };
   },
+  watch: {
+    "state.username"(newVal, oldVal) {
+      this.state.error = "";
+    },
+    "state.email"(newVal, oldVal) {
+      this.state.error = "";
+    },
+    "state.password.password"(newVal, oldVal) {
+      this.state.error = "";
+    },
+    "state.password.confirm"(newVal, oldVal) {
+      this.state.error = "";
+    },
+  },
   methods: {
     valForm() {
       // Validate all fields
       this.v$.$validate();
     },
-
     async registerUser() {
       this.valForm();
       if (
@@ -110,7 +123,7 @@ export default {
         this.v$.password.confirm.$error
       ) {
         // If there are validation errors, do not proceed with registration
-        console.log("Form has validation errors");
+        // console.log("Form has validation errors");
         return;
       }
 

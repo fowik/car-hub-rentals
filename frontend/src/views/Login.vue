@@ -44,6 +44,14 @@ export default {
       },
     };
   },
+  watch: {
+    username() {
+      this.state.error = "";
+    },
+    password() {
+      this.state.error = "";
+    },
+  },
   methods: {
     async loginUser() {
       const userData = {
