@@ -78,7 +78,8 @@ app.post("/api/users/login", async (req, res) => {
       res.status(200).json(user);
     } else {
       // User not found or password doesn't match, send an error response
-      res.status(401).json({ error: "Invalid credentials" });
+      const error = "Login failed: invalid credentials";
+      res.status(401).json(error);
     }
   } catch (error) {
     // Handle database errors or other issues

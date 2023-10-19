@@ -4,6 +4,9 @@
       <div class="login-form">
         <!-- Login Form -->
         <h2>Login</h2>
+        <p ref="errorMessage" v-if="state.error" class="error-message">
+          {{ state.error }}
+        </p>
         <form @submit.prevent="loginUser">
           <input
             type="text"
@@ -36,6 +39,9 @@ export default {
     return {
       username: "",
       password: "",
+      state: {
+        error: "",
+      },
     };
   },
   methods: {
@@ -54,12 +60,16 @@ export default {
           body: JSON.stringify(userData),
         });
 
-        if (response.ok) {
-          const user = await response.json();
-          // Handle successful login, e.g., store user data in Vuex store or localStorage
-          console.log("Login successful:", user);
+        if (response.status === 200) {
+          // Handle successful login
           localStorage.setItem("user", JSON.stringify(user));
           this.$router.push({ path: "/profile" });
+        } else if (response.status === 401) {
+          const errorData = await response.json();
+          this.state.error = errorData; // Update the error message in the state
+          this.$nextTick(() => {
+            // Ensure reactivity update after setting the error message
+          });
         } else {
           // Handle failed login (e.g., wrong credentials)
           console.error("Login failed");
@@ -83,12 +93,17 @@ export default {
   margin: 0 auto;
   text-align: center;
 }
+.login-form h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
 
 .login-form input[type="text"],
 .login-form input[type="password"] {
   width: 90%;
   padding: 10px;
-  margin: 10px -10px 10px -10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border: none;
   border-radius: 5px;
   justify-content: center;
@@ -104,8 +119,8 @@ export default {
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .login-form button:hover {
@@ -119,5 +134,15 @@ export default {
 
 .login-form a:hover {
   text-decoration: underline;
+}
+
+.error-message {
+  color: #ff0000;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #88080838;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 </style>
