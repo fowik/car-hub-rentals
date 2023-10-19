@@ -86,128 +86,24 @@
                 </td>
               </tr>
               <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
+                <td>Ford GT</td>
+                <td>$1500</td>
                 <td>Paid</td>
                 <td>
                   <span class="status return">Return</span>
                 </td>
               </tr>
               <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
+                <td>Shelby Cobra</td>
+                <td>$1100</td>
                 <td>Due</td>
                 <td>
                   <span class="status inprogress">In Progress</span>
                 </td>
               </tr>
               <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
+                <td>Chevrolet Camaro</td>
+                <td>$1300</td>
                 <td>Due</td>
                 <td>
                   <span class="status pending">Pending</span>
@@ -222,58 +118,68 @@
             <h2>Recent Customers</h2>
           </div>
           <table>
-            <div class="table-container">
-              <tbody>
-                <tr>
-                  <td width="60px">
-                    <div class="imgBx"><img src="#   " /></div>
-                  </td>
-                  <td>
-                    <h4>John<br /><span>Italy</span></h4>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="60px">
-                    <div class="imgBx"><img src="#   " /></div>
-                  </td>
-                  <td>
-                    <h4>John<br /><span>Italy</span></h4>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="60px">
-                    <div class="imgBx"><img src="#   " /></div>
-                  </td>
-                  <td>
-                    <h4>John<br /><span>Italy</span></h4>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="60px">
-                    <div class="imgBx"><img src="#   " /></div>
-                  </td>
-                  <td>
-                    <h4>John<br /><span>Italy</span></h4>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="60px">
-                    <div class="imgBx"><img src="#   " /></div>
-                  </td>
-                  <td>
-                    <h4>John<br /><span>Italy</span></h4>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="60px">
-                    <div class="imgBx"><img src="#   " /></div>
-                  </td>
-                  <td>
-                    <h4>John<br /><span>Italy</span></h4>
-                  </td>
-                </tr>
-              </tbody>
-            </div>
+            <tbody class="table-container">
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="customer1.jpg" alt="Customer 1" />
+                  </div>
+                </td>
+                <td>
+                  <h4>Michael<br /><span>United States</span></h4>
+                </td>
+              </tr>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="customer2.jpg" alt="Customer 2" />
+                  </div>
+                </td>
+                <td>
+                  <h4>Linda<br /><span>Canada</span></h4>
+                </td>
+              </tr>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="customer3.jpg" alt="Customer 3" />
+                  </div>
+                </td>
+                <td>
+                  <h4>Alex<br /><span>Australia</span></h4>
+                </td>
+              </tr>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="customer4.jpg" alt="Customer 4" />
+                  </div>
+                </td>
+                <td>
+                  <h4>Emily<br /><span>United Kingdom</span></h4>
+                </td>
+              </tr>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="customer5.jpg" alt="Customer 5" />
+                  </div>
+                </td>
+                <td>
+                  <h4>David<br /><span>Germany</span></h4>
+                </td>
+              </tr>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="customer6.jpg" alt="Customer 6" />
+                  </div>
+                </td>
+                <td>
+                  <h4>Sophia<br /><span>France</span></h4>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -284,12 +190,17 @@
 <script>
 import ContorlPanelNavigation from "@/components/ControlPanelNavigation.vue";
 
+let js = require("@/assets/js/js.js");
+
 export default {
   data() {
     return {
       username: "",
       email: "",
     };
+  },
+  moddules: {
+    js,
   },
   components: {
     ContorlPanelNavigation,
@@ -390,21 +301,23 @@ export default {
   max-height: 300px;
 }
 
-.details .table-container {
-  position: relative;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
 .table-container {
   max-height: 300px; /* Set the maximum height for the tbody */
   overflow-y: auto; /* Add vertical scrollbar when content overflows */
   display: block; /* Enable block-level container behavior for tbody */
 }
 
+.table-container thead,
+tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
 .details .table-container::-webkit-scrollbar {
   width: 7px;
-  background: var(--black-light);
+  background: var(--black);
+  border-radius: 10px;
 }
 
 .details .table-container::-webkit-scrollbar-thumb {

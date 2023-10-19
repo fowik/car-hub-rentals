@@ -17,16 +17,43 @@ app.listen(port, () => {
 });
 
 app.post("/api/users/register", async (req, res) => {
-  const user = await prisma.users.create({
-    data: {
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-      full_name: req.body.full_name,
+  const { username, email, password, confirmPassword } = req.body;
+
+  // Check if a user with the same email or username already exists
+  const existingUser = await prisma.users.findFirst({
+    where: {
+      OR: [
+        {
+          email: email,
+        },
+        {
+          username: username,
+        },
+      ],
     },
   });
-  console.log(user);
-  res.send(user);
+
+  if (existingUser) {
+    // If a user with the same email or username already exists, return a 409 status code
+    const error =
+      "Registration failed: user with this username or email already exists";
+    return res.status(409).json(error);
+  } else {
+    // Create a new user if no existing user found
+    const newUser = await prisma.users.create({
+      data: {
+        username: username,
+        email: email,
+        password: password,
+        // Assuming there is a field named full_name in your user schema
+        full_name: req.body.full_name,
+      },
+    });
+
+    console.log("Created new user:", newUser);
+    // Return the created user with a 201 status code
+    return res.status(201).json(newUser);
+  }
 });
 
 app.post("/api/users/login", async (req, res) => {

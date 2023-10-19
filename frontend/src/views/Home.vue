@@ -54,20 +54,6 @@ section {
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  text-decoration: none;
-  list-style: none;
-  text-transform: capitalize;
-}
-
-body {
-  scroll-padding-top: 2em;
-  scroll-behavior: smooth;
-}
-
 .home {
   width: 90%;
   min-height: 50vh;

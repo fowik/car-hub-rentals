@@ -4,10 +4,10 @@
       <div class="registration-form">
         <!-- Registration Form -->
         <h2>Registration</h2>
+        <p ref="errorMessage" v-if="state.error" class="error-message">
+          {{ state.error }}
+        </p>
         <form @submit.prevent="registerUser">
-          <!-- <div class="input-errors" v-for="(error, index) in $v.form.$eachError" :key="index">
-                        <div class="error-msg">{{ error.$message }}</div>
-                    </div> -->
           <div>
             <input
               type="text"
@@ -49,7 +49,7 @@
             {{ v$.password.confirm.$errors[0].$message }}
           </span>
           <div>
-            <button @click="valForm">Register</button>
+            <button @click="validateForm">Register</button>
           </div>
           <p>
             Already have an account?
@@ -123,37 +123,37 @@ export default {
 
       try {
         const res = await fetch("http://localhost:3000/api/users/register", {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, *cors, same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          redirect: "follow", // manual, *follow, error
-          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-          body: JSON.stringify(userData), // body data type must match "Content-Type" header
+          body: JSON.stringify(userData),
         });
 
-        if (res.ok) {
+        if (res.status === 201) {
           // Registration successful, redirect to login page
           this.$router.push({ path: "/login" });
-          return res.json(); // parses JSON response into native JavaScript objects
+          return res.json();
+        } else if (res.status === 409) {
+          // Registration failed due to existing user, show error message
+          const errorData = await res.json();
+          this.state.error = errorData; // Update the error message in the state
+          this.$nextTick(() => {
+            // Ensure reactivity update after setting the error message
+          });
         } else {
-          // Handle registration error, show error message to the user
+          // Handle other registration errors, show a generic error message to the user
           console.error("Registration failed");
         }
       } catch (error) {
         console.error("Error during registration:", error);
-      } finally {
-        // Reset the flag after registration attempt (success or failure)
       }
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .registration-form {
   background-color: #292929;
   padding: 20px;
@@ -164,15 +164,36 @@ export default {
   margin: 0 auto;
 }
 
+.registration-form h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
 .registration-form input[type="text"],
 .registration-form input[type="password"] {
   width: 90%;
   padding: 10px;
-  margin: 10px -10px 10px -10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border: none;
   border-radius: 5px;
   justify-content: center;
   outline: none;
+}
+
+span {
+  color: red;
+  font-size: 12px;
+}
+
+.error-message {
+  color: #ff0000;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #88080838;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 .registration-form button {
@@ -184,8 +205,8 @@ export default {
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .registration-form button:hover {

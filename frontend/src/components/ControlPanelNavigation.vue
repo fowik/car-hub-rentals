@@ -67,8 +67,6 @@
   </div>
 </template>
 
-<script defer src="@/assets/js/js.js"></script>
-
 <style>
 .container {
   position: relative;
