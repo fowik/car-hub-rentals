@@ -19,27 +19,11 @@ app.listen(port, () => {
 app.post("/api/users/register", async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
 
-  // Check if a user with the same email or username already exists
-  const existingUser = await prisma.users.findFirst({
-    where: {
-      OR: [
-        {
-          email: email,
-        },
-        {
-          username: username,
-        },
-      ],
-    },
-  });
+  // Check if there are any existing users in the database
+  const existingUsers = await prisma.users.findMany();
 
-  if (existingUser) {
-    // If a user with the same email or username already exists, return a 409 status code
-    const error =
-      "Registration failed: user with this username or email already exists";
-    return res.status(409).json(error);
-  } else {
-    // Create a new user if no existing user found
+  if (existingUsers.length === 0) {
+    // If there are no existing users, create the first user as an admin
     const newUser = await prisma.users.create({
       data: {
         username: username,
@@ -47,12 +31,50 @@ app.post("/api/users/register", async (req, res) => {
         password: password,
         // Assuming there is a field named full_name in your user schema
         full_name: req.body.full_name,
+        // Set the isAdmin field to true for the first user
+        isAdmin: true,
       },
     });
 
-    console.log("Created new user:", newUser);
-    // Return the created user with a 201 status code
+    console.log("Created new admin user:", newUser);
+    // Return the created admin user with a 201 status code
     return res.status(201).json(newUser);
+  } else {
+    // Check if a user with the same email or username already exists
+    const existingUser = await prisma.users.findFirst({
+      where: {
+        OR: [
+          {
+            email: email,
+          },
+          {
+            username: username,
+          },
+        ],
+      },
+    });
+
+    if (existingUser) {
+      // If a user with the same email or username already exists, return a 409 status code
+      const error =
+        "Registration failed: user with this username or email already exists";
+      return res.status(409).json(error);
+    } else {
+      // Create a new non-admin user if no existing user found
+      const newUser = await prisma.users.create({
+        data: {
+          username: username,
+          email: email,
+          password: password,
+          // Assuming there is a field named full_name in your user schema
+          full_name: req.body.full_name,
+        },
+      });
+
+      console.log("Created new user:", newUser);
+      // Return the created user with a 201 status code
+      return res.status(201).json(newUser);
+    }
   }
 });
 

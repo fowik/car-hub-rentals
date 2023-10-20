@@ -109,6 +109,38 @@
                   <span class="status pending">Pending</span>
                 </td>
               </tr>
+              <tr>
+                <td>Mustang</td>
+                <td>$1200</td>
+                <td>Paid</td>
+                <td>
+                  <span class="status delivered">Delivered</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Ford GT</td>
+                <td>$1500</td>
+                <td>Paid</td>
+                <td>
+                  <span class="status return">Return</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Shelby Cobra</td>
+                <td>$1100</td>
+                <td>Due</td>
+                <td>
+                  <span class="status inprogress">In Progress</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Chevrolet Camaro</td>
+                <td>$1300</td>
+                <td>Due</td>
+                <td>
+                  <span class="status pending">Pending</span>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -190,8 +222,6 @@
 <script>
 import ContorlPanelNavigation from "@/components/ControlPanelNavigation.vue";
 
-let js = require("@/assets/js/js.js");
-
 export default {
   data() {
     return {
@@ -199,11 +229,32 @@ export default {
       email: "",
     };
   },
-  moddules: {
-    js,
-  },
   components: {
     ContorlPanelNavigation,
+  },
+  mounted() {
+    document.addEventListener("DOMContentLoaded", function () {
+      // MenuToggle
+      let toggle = document.querySelector(".toggle");
+      let navigation = document.querySelector(".navigation");
+      let main = document.querySelector(".main");
+
+      toggle.onclick = function () {
+        toggle.classList.toggle("active");
+        navigation.classList.toggle("active");
+        main.classList.toggle("active");
+      };
+
+      // Select all list items with class "navigation"
+      let list = document.querySelectorAll(".navigation li");
+
+      function activeLink() {
+        list.forEach((item) => item.classList.remove("hovered"));
+        this.classList.add("hovered");
+      }
+
+      list.forEach((item) => item.addEventListener("mouseover", activeLink));
+    });
   },
 };
 </script>

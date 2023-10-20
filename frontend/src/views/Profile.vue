@@ -49,7 +49,6 @@
 import router from "@/router";
 import ProfileSidebar from "@/components/ProfileSidebar.vue";
 
-
 export default {
   data() {
     return {
@@ -76,7 +75,7 @@ section {
   display: flex;
   flex-direction: column;
   width: 40%;
-  min-height: 41vh;
+  min-height: 34vh;
   background-color: #292929;
   color: #ffffff;
   border-radius: 15px;
@@ -164,7 +163,7 @@ section {
 
 .save-btn button {
   display: flex;
-  margin: auto 0px auto auto;
+  margin: auto 0px 30px auto;
   background-color: #ffa31a;
   color: #fff;
   border: none;

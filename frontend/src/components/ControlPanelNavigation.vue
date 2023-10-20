@@ -115,6 +115,38 @@
   background: var(--orange-dark);
 }
 
+.navigation ul li a.router-link-active {
+  color: var(--orange);
+}
+
+.navigation ul li a.router-link-active::before,
+.navigation ul li a.router-link-active::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px var(--orange-dark);
+  pointer-events: none;
+}
+
+.navigation ul li a.router-link-active::after,
+.navigation ul li a.router-link-active::after {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px var(--orange-dark);
+  pointer-events: none;
+}
+
 .navigation ul li:nth-child(1) {
   margin-bottom: 40px;
   pointer-events: none;
@@ -131,9 +163,6 @@
 
 .navigation ul li:hover a,
 .navigation ul li.hovered a {
-  color: var(--orange);
-}
-.navigation ul li a.router-link-active {
   color: var(--orange);
 }
 

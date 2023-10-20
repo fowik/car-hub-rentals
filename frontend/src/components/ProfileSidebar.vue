@@ -105,6 +105,10 @@ export default {
   border-bottom: 3px solid #343434;
 }
 
+.side-bar-username h3 {
+  margin-bottom: 10px;
+}
+
 .side-bar-username img {
   width: 100px;
   height: 100px;

@@ -163,6 +163,14 @@ export default {
       }
     },
   },
+  mounted() {
+    // Retrieve the user object from localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    // Check if the user object is present and has a username property
+    if (user) {
+      this.$router.push({ path: "/profile" });
+    }
+  },
 };
 </script>
 
