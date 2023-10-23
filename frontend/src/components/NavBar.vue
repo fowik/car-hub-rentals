@@ -13,9 +13,13 @@
       </div>
       <ul class="nav-links" :class="{ active: isNavbarActive }">
         <li><router-link to="/">Home</router-link></li>
-        <li><router-link to="#">Cars</router-link></li>
+        <li @click="scrollToCars">
+          <router-link :to="{ path: '/' }">Cars</router-link>
+        </li>
         <li><router-link to="#">Pricing</router-link></li>
-        <li><router-link :to="{ name: 'About' }">About</router-link></li>
+        <li @click="scrollToAbout">
+          <router-link :to="{ path: '/' }">About</router-link>
+        </li>
         <li>
           <router-link v-if="isLoggedIn" to="/profile">Profile</router-link>
           <router-link v-else :to="{ name: 'Register' }">Sign Up</router-link>
@@ -39,6 +43,24 @@ export default {
     window.addEventListener("resize", this.checkWindowWidth);
   },
   methods: {
+    scrollToCars() {
+      const targetElement = document.getElementById("cars"); // Assuming "cars" is the ID of the target element
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    },
+    scrollToAbout() {
+      const targetElement = document.getElementById("about"); // Assuming "about" is the class of the target element
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    },
     checkUserSession() {
       console.log("Checking user session...");
       const user = JSON.parse(localStorage.getItem("user"));

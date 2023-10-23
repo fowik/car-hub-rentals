@@ -63,14 +63,6 @@ export default {
 </script>
 
 <style scoped>
-section {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-}
-
 .main-bar {
   display: flex;
   flex-direction: column;
@@ -80,6 +72,7 @@ section {
   color: #ffffff;
   border-radius: 15px;
   margin-left: 3%;
+  margin-top: -106px;
 }
 
 .main-bar-content {

@@ -67,7 +67,7 @@ export default {
 .side-bar-left {
   display: flex;
   flex-direction: column;
-  min-height: 51vh;
+  max-height: 56vh;
   width: 15%;
   background-color: #292929;
   color: #ffffff;
@@ -145,6 +145,11 @@ export default {
   color: #ffa31a;
   width: 100%-5px !important;
   background-color: #f4920080;
+}
+
+.side-bar-links a:hover:last-child {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 .side-bar-links a .icon {

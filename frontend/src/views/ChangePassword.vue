@@ -63,11 +63,13 @@ section {
   display: flex;
   flex-direction: column;
   width: 40%;
-  min-height: 41vh;
+  min-height: 34vh;
   background-color: #292929;
   color: #ffffff;
   border-radius: 15px;
   margin-left: 3%;
+  margin-top: -120px;
+
 }
 
 .main-bar-content {
