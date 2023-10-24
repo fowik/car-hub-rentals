@@ -38,7 +38,6 @@ export default {
     };
   },
   mounted() {
-    console.log("Component mounted");
     this.checkUserSession();
     window.addEventListener("resize", this.checkWindowWidth);
   },
@@ -62,9 +61,7 @@ export default {
       }
     },
     checkUserSession() {
-      console.log("Checking user session...");
       const user = JSON.parse(localStorage.getItem("user"));
-      console.log("User data from sessionStorage:", user);
       if (user && user.username) {
         this.isLoggedIn = true;
       } else {

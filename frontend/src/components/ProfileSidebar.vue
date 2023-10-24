@@ -29,7 +29,7 @@
         ><span class="icon"><ion-icon name="archive-outline"></ion-icon></span
         >Email Verification</router-link
       >
-      <router-link to="/profile/logout"
+      <router-link to="/profile/logout" @click="ReloadPage"
         ><span class="icon"> <ion-icon name="log-out-outline"></ion-icon> </span
         >Logout</router-link
       >
@@ -38,27 +38,20 @@
 </template>
 
 <script>
-import router from "@/router";
-import ProfileSidebar from "@/components/ProfileSidebar.vue";
-
 export default {
-  data() {
-    return {
-      username: "",
-      email: "",
-    };
+  created() {
+    this.CheckUserSession();
   },
-  mounted() {
-    // Retrieve the user object from localStorage
-    const user = JSON.parse(localStorage.getItem("user"));
-    // Check if the user object is present and has a username property
-    if (user && user.username) {
-      this.username = user.username;
-      this.email = user.email;
-    } else {
-      // Handle the case when the user is not logged in or user data is not available in localStorage
-      this.$router.push({ path: "/login" });
-    }
+  methods: {
+    CheckUserSession() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user && user.username) {
+        this.username = user.username;
+        this.email = user.email;
+      } else {
+        this.$router.push({ path: "/login" });
+      }
+    },
   },
 };
 </script>

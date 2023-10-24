@@ -8,6 +8,8 @@ import Profile from "../views/Profile.vue";
 import Logout from "../views/Logout.vue";
 import ChangePassword from "../views/ChangePassword.vue";
 import ControlPanel from "../views/ControlPanel.vue";
+import ControlPanelUsers from "../views/ControlPanelUsers.vue";
+import ControlPanelCars from "../views/ControlPanelCars.vue";
 
 const routes = [
   {
@@ -54,6 +56,16 @@ const routes = [
     path: "/:catchAll(.*)",
     name: "NotFound",
     component: NotFound,
+  },
+  {
+    path: "/control-panel/users",
+    name: "ControlPanelUsers",
+    component: ControlPanelUsers,
+  },
+  {
+    path: "/control-panel/cars/",
+    name: "ControlPanelCars",
+    component: ControlPanelCars,
   },
 ];
 

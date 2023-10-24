@@ -395,7 +395,6 @@ tr {
 
 .details .recentRents table tbody tr:hover {
   background: var(--orange-dark);
-  color: var(--orange);
 }
 
 .details .recentRents table tr td {
@@ -483,7 +482,6 @@ tr {
 
 .recentCustomers table tr:hover {
   background: var(--orange-dark);
-  color: var(--orange);
 }
 
 .recentCustomers table tr td {
@@ -498,10 +496,6 @@ tr {
 .recentCustomers table tr td h4 span {
   font-size: 14px;
   color: #8c8c8c;
-}
-
-.recentCustomers table tr:hover td h4 span {
-  color: var(--orange);
 }
 
 @media (max-width: 991px) {

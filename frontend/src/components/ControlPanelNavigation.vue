@@ -17,12 +17,20 @@
           </router-link>
         </li>
         <li>
-          <a href="#">
+          <router-link to="/control-panel/users">
             <span class="icon"
               ><ion-icon name="people-outline"></ion-icon
             ></span>
             <span class="title">Customers</span>
-          </a>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/control-panel/cars">
+            <span class="icon"
+              ><ion-icon name="car-sport-outline"></ion-icon
+            ></span>
+            <span class="title">Cars</span>
+          </router-link>
         </li>
         <li>
           <a href="#">
@@ -66,6 +74,28 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+  mounted() {
+    // Retrieve the user object from localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    // Check if the user object is present and has a username property
+    if (user) {
+      if (user.isAdmin === true) {
+      } else {
+        this.$router.push({ path: "/profile" });
+      }
+    } else {
+      // Handle the case when the user is not logged in or user data is not available in localStorage
+      this.$router.push({ path: "/" });
+    }
+  },
+};
+</script>
 
 <style>
 .container {
