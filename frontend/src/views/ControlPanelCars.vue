@@ -24,7 +24,9 @@
         <div class="cars">
           <div class="cardHeader">
             <h2>Cars</h2>
-            <router-link to="/control-panel/cars/add" class="btn-add">Add Car</router-link>
+            <router-link to="/control-panel/cars/add" class="btn-add"
+              >Add Car</router-link
+            >
             <router-link to="" class="btn"> View All</router-link>
           </div>
           <table>
@@ -33,139 +35,26 @@
                 <td>Brand & Model</td>
                 <td>Year & Type & Engine Capacity</td>
                 <td>Status</td>
+                <td>Engine Capacity</td>
+                <td>Price per Minute</td>
                 <td>Actions</td>
               </tr>
             </thead>
             <tbody class="table-container">
-              <tr>
+              <tr v-for="car in cars" :key="car.id">
                 <td>
-                  Toyota
-                  <p>Avensis</p>
+                  {{ car.brand }}
+                  <p>{{ car.model }}</p>
                 </td>
 
-                <td>2007</td>
+                <td>{{ car.year }}</td>
                 <td class="available">Available</td>
                 <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
+                  {{ car.engineCapacity }}
                 </td>
-              </tr>
-              <tr>
                 <td>
-                  Subaru
-                  <p>Legacy</p>
+                  {{ car.pricePerMinute }}
                 </td>
-
-                <td>2007</td>
-                <td class="reserved">Reserved</td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Toyota
-                  <p>Corolla</p>
-                </td>
-                <td>2010</td>
-                <td class="available">Available</td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Honda
-                  <p>Civic</p>
-                </td>
-                <td>2012</td>
-                <td class="available">Available</td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Ford
-                  <p>Focus</p>
-                </td>
-                <td>2015</td>
-                <td class="reserved">Reserved</td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Chevrolet
-                  <p>Malibu</p>
-                </td>
-                <td>2014</td>
-                <td class="reserved">Reserved</td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Nissan
-                  <p>Altima</p>
-                </td>
-                <td>2013</td>
-                <td class="available">Available</td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Hyundai
-                  <p>Elantra</p>
-                </td>
-                <td>2016</td>
-                <td class="available">Available</td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  BMW
-                  <p>3 Series</p>
-                </td>
-                <td>2018</td>
-                <td class="available">Available</td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Audi
-                  <p>A4</p>
-                </td>
-                <td>2019</td>
-                <td class="reserved">Reserved</td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Mercedes-Benz
-                  <p>C-Class</p>
-                </td>
-                <td>2020</td>
-                <td class="available">Available</td>
                 <td>
                   <router-link to="" class="btn-edit">Edit</router-link>
                   <router-link to="" class="btn-delete">Delete</router-link>
@@ -187,10 +76,32 @@ export default {
     return {
       username: "",
       email: "",
+      cars: this.getCars(),
     };
   },
   components: {
     ControlPanelNavigation,
+  },
+  methods: {
+    async getCars() {
+      try {
+        const response = await fetch("http://localhost:3000/api/cars/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          this.cars = data; // Assuming your response data is an array of car objects
+          console.log(this.cars);
+        } else {
+          console.error("Failed to fetch cars");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   mounted() {
     document.addEventListener("DOMContentLoaded", function () {
@@ -233,11 +144,11 @@ export default {
   padding: 20px;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
-  min-height: 720px;
+  min-height: 450px;
 }
 
 .table-container {
-  max-height: 550px; /* Set the maximum height for the tbody */
+  max-height: 480px; /* Set the maximum height for the tbody */
   overflow-y: auto; /* Add vertical scrollbar when content overflows */
   display: block; /* Enable block-level container behavior for tbody */
 }
@@ -322,11 +233,11 @@ tr {
   font-weight: 600;
 }
 
-.details .cars table tr {
+.details .cars tbody tr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.details .cars table tr:last-child {
+.details .cars tbody tr:last-child {
   border-bottom: none;
 }
 
@@ -348,6 +259,14 @@ tr {
 
 .details .cars table tr td:nth-child(3) {
   text-align: center;
+}
+
+.details .cars table tr td:nth-child(4) {
+  text-align: center;
+}
+
+.details .cars table tr td:nth-child(5) {
+  text-align: end;
 }
 
 .details .cars table tr .pass {

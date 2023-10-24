@@ -101,27 +101,17 @@ export default {
       username: "",
       email: "",
       selectedType: "Select Type",
+      brand: "",
+      model: "",
+      year: "",
+      pricePerMinute: "",
+      engineCapacity: "",
       successMessage: "",
     };
   },
   watch: {
-    brand() {
-      this.clearSuccessMessage();
-    },
-    model() {
-      this.clearSuccessMessage();
-    },
-    year() {
-      this.clearSuccessMessage();
-    },
-    selectedType() {
-      this.clearSuccessMessage();
-    },
-    pricePerMinute() {
-      this.clearSuccessMessage();
-    },
-    engineCapacity() {
-      this.clearSuccessMessage();
+    successMessage() {
+      setTimeout(this.clearSuccessMessage, 3000);
     },
   },
   methods: {
@@ -146,7 +136,7 @@ export default {
 
         if (response.status === 201) {
           console.log(response.status); // Check the status code in the console
-          this.successMessage = "Car successfully added!";
+          this.clearInputField();
         }
       } catch (error) {
         console.error("Error during car addition:", error);
@@ -154,6 +144,15 @@ export default {
     },
     clearSuccessMessage() {
       this.successMessage = "";
+    },
+    clearInputField() {
+      this.successMessage = "Car successfully added!";
+      this.brand = "";
+      this.model = "";
+      this.year = "";
+      this.selectedType = "Select Type";
+      this.pricePerMinute = "";
+      this.engineCapacity = "";
     },
   },
   components: {
@@ -221,7 +220,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   max-width: 400px;
-  margin: 100px auto;
+  margin: 50px auto;
   text-align: center;
 }
 .car-form h2 {
