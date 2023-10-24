@@ -72,7 +72,7 @@ export default {
           // Handle successful login
           const user = await response.json();
           localStorage.setItem("user", JSON.stringify(user));
-          window.location.reload();
+          setTimeout(location.reload());
           this.$router.push({ path: "/profile" });
         } else if (response.status === 401) {
           const errorData = await response.json();

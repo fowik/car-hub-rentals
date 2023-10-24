@@ -110,6 +110,27 @@ app.post("/api/users/login", async (req, res) => {
   }
 });
 
-// app.post("/api/control-panel/users/edit", async (req, res) => {
-  
-// });
+app.post("/api/cars/add", async (req, res) => {
+  const { brand, model, year, type, pricePerMinute, engineCapacity } = req.body;
+
+  try {
+    const newCar = await prisma.cars.create({
+      data: {
+        brand: brand,
+        model: model,
+        year: year,
+        type: type,
+        pricePerMinute: pricePerMinute,
+        engineCapacity: engineCapacity,
+      },
+    });
+
+    console.log("Created new car:", newCar);
+    // Return the created car with a 201 status code
+    return res.status(201).json(newCar);
+  } catch (error) {
+    // Handle database errors or other issues
+    console.error("Error during adding car:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});

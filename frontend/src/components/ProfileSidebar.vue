@@ -29,7 +29,7 @@
         ><span class="icon"><ion-icon name="archive-outline"></ion-icon></span
         >Email Verification</router-link
       >
-      <router-link to="/profile/logout" @click="ReloadPage"
+      <router-link to="/profile/logout"
         ><span class="icon"> <ion-icon name="log-out-outline"></ion-icon> </span
         >Logout</router-link
       >

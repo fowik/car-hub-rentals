@@ -19,18 +19,19 @@
           <img src="" />
         </div>
       </div>
+      <!-- table -->
       <div class="details">
-        <div class="recentRents">
+        <div class="cars">
           <div class="cardHeader">
-            <h2>Customers</h2>
-            <router-link to="" class="btn-add">Add Car</router-link>
+            <h2>Cars</h2>
+            <router-link to="/control-panel/cars/add" class="btn-add">Add Car</router-link>
             <router-link to="" class="btn"> View All</router-link>
           </div>
           <table>
             <thead>
               <tr>
                 <td>Brand & Model</td>
-                <td>Year</td>
+                <td>Year & Type & Engine Capacity</td>
                 <td>Status</td>
                 <td>Actions</td>
               </tr>
@@ -224,7 +225,7 @@ export default {
   padding: 20px;
 }
 
-.details .recentRents {
+.details .cars {
   position: relative;
   display: grid;
   min-height: calc(100vh - 455px);
@@ -321,39 +322,39 @@ tr {
   font-weight: 600;
 }
 
-.details .recentRents table tr {
+.details .cars table tr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.details .recentRents table tr:last-child {
+.details .cars table tr:last-child {
   border-bottom: none;
 }
 
-.details .recentRents table tbody tr:hover {
+.details .cars table tbody tr:hover {
   background: var(--orange-dark);
 }
 
-.details .recentRents table tr td {
+.details .cars table tr td {
   padding: 10px;
 }
 
-.details .recentRents table tr td:last-child {
+.details .cars table tr td:last-child {
   text-align: end;
 }
 
-.details .recentRents table tr td:nth-child(2) {
+.details .cars table tr td:nth-child(2) {
   text-align: end;
 }
 
-.details .recentRents table tr td:nth-child(3) {
+.details .cars table tr td:nth-child(3) {
   text-align: center;
 }
 
-.details .recentRents table tr .pass {
+.details .cars table tr .pass {
   -webkit-text-security: disc;
 }
 
-.details .recentRents table tr .pass:hover {
+.details .cars table tr .pass:hover {
   -webkit-text-security: none;
 }
 
