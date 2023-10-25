@@ -35,184 +35,25 @@
               </tr>
             </thead>
             <tbody class="table-container">
-              <tr>
+              <tr v-for="user in users" :key="user.id">
                 <td>
-                  Michael Jordan
-                  <p>mihalicman</p>
-                  <p>misjao2005@gmail.com</p>
+                  <div v-if="user.fullName">{{ user.fullName }}</div>
+                  <div v-else>NULL</div>
+                  <p>{{ user.username }}</p>
+                  <p>{{ user.email }}</p>
                 </td>
-                <td class="admin-true">
+                <td class="admin-true" v-if="user.isAdmin === true">
                   <ion-icon name="checkmark-outline"></ion-icon>
                 </td>
-                <td><div class="pass">Azx11asd</div></td>
+                <td class="admin-false" v-else>
+                  <ion-icon name="close-outline"></ion-icon>
+                </td>
+                <td>
+                  <div class="pass">{{ user.password }}</div>
+                </td>
                 <td>
                   <router-link to="" class="btn-edit">Edit</router-link>
                   <router-link to="" class="btn-delete"> Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Ilya Rimsha
-                  <p>fowik</p>
-                  <p>ilarimsa937@gmail.com</p>
-                </td>
-                <td class="admin-false">
-                  <ion-icon name="close-outline"></ion-icon>
-                </td>
-                <td><div class="pass">Azx11asd</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete"> Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Sarah Johnson
-                  <p>sarahj</p>
-                  <p>sarah.j@example.com</p>
-                </td>
-                <td class="admin-true">
-                  <ion-icon name="checkmark-outline"></ion-icon>
-                </td>
-                <td><div class="pass">Pass123!</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Alex Smith
-                  <p>asmith</p>
-                  <p>alex.smith@example.com</p>
-                </td>
-                <td class="admin-false">
-                  <ion-icon name="close-outline"></ion-icon>
-                </td>
-                <td><div class="pass">SecurePwd789</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Emily White
-                  <p>emilyw</p>
-                  <p>emily.white@example.com</p>
-                </td>
-                <td class="admin-true">
-                  <ion-icon name="checkmark-outline"></ion-icon>
-                </td>
-                <td><div class="pass">StrongP@ss</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Daniel Brown
-                  <p>danb</p>
-                  <p>daniel.b@example.com</p>
-                </td>
-                <td class="admin-false">
-                  <ion-icon name="close-outline"></ion-icon>
-                </td>
-                <td><div class="pass">D@niel987</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Olivia Clark
-                  <p>oc123</p>
-                  <p>olivia.c@example.com</p>
-                </td>
-                <td class="admin-true">
-                  <ion-icon name="checkmark-outline"></ion-icon>
-                </td>
-                <td><div class="pass">OliviaPass!</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Emma Johnson
-                  <p>emmaj</p>
-                  <p>emma.j@example.com</p>
-                </td>
-                <td class="admin-false">
-                  <ion-icon name="close-outline"></ion-icon>
-                </td>
-                <td><div class="pass">EmmaPass123</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  William Turner
-                  <p>willt</p>
-                  <p>william.t@example.com</p>
-                </td>
-                <td class="admin-true">
-                  <ion-icon name="checkmark-outline"></ion-icon>
-                </td>
-                <td><div class="pass">P@ssWilliam</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Sophia Martinez
-                  <p>sophiam</p>
-                  <p>sophia.m@example.com</p>
-                </td>
-                <td class="admin-false">
-                  <ion-icon name="close-outline"></ion-icon>
-                </td>
-                <td><div class="pass">S0phiaM!123</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  James Lee
-                  <p>jamesl</p>
-                  <p>james.l@example.com</p>
-                </td>
-                <td class="admin-true">
-                  <ion-icon name="checkmark-outline"></ion-icon>
-                </td>
-                <td><div class="pass">LeePass2020</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Mia Adams
-                  <p>miaa</p>
-                  <p>mia.a@example.com</p>
-                </td>
-                <td class="admin-false">
-                  <ion-icon name="close-outline"></ion-icon>
-                </td>
-                <td><div class="pass">Mia1234!</div></td>
-                <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
                 </td>
               </tr>
             </tbody>
@@ -231,6 +72,7 @@ export default {
     return {
       username: "",
       email: "",
+      users: this.getUsers(),
     };
   },
   components: {
@@ -260,6 +102,27 @@ export default {
       list.forEach((item) => item.addEventListener("mouseover", activeLink));
     });
   },
+  methods: {
+    async getUsers() {
+      try {
+        const response = await fetch("http://localhost:3000/api/users/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          this.users = data; // Assuming your response data is an array of user objects
+          console.log(this.users);
+        } else {
+          console.error("Failed to fetch users");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
 };
 </script>
 
@@ -277,11 +140,11 @@ export default {
   padding: 20px;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
-  min-height: 720px;
+  min-height: 480px;
 }
 
 .table-container {
-  max-height: 550px; /* Set the maximum height for the tbody */
+  max-height: 480px; /* Set the maximum height for the tbody */
   overflow-y: auto; /* Add vertical scrollbar when content overflows */
   display: block; /* Enable block-level container behavior for tbody */
 }

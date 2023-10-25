@@ -146,3 +146,15 @@ app.get("/api/cars/get", async (req, res) => {
     await prisma.$disconnect(); // Disconnect the Prisma client after the operation
   }
 });
+
+app.get("/api/users/get", async (req, res) => {
+  try {
+    const users = await prisma.users.findMany();
+    return res.status(200).json(users);
+  } catch (error) {
+    console.log("Error during getting users:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect(); // Disconnect the Prisma client after the operation
+  }
+});

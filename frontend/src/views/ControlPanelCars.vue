@@ -35,7 +35,6 @@
                 <td>Brand & Model</td>
                 <td>Year & Type & Engine Capacity</td>
                 <td>Status</td>
-                <td>Engine Capacity</td>
                 <td>Price per Minute</td>
                 <td>Actions</td>
               </tr>
@@ -47,11 +46,13 @@
                   <p>{{ car.model }}</p>
                 </td>
 
-                <td>{{ car.year }}</td>
-                <td class="available">Available</td>
                 <td>
-                  {{ car.engineCapacity }}
+                  {{ car.year }} | {{ car.type }} | {{ car.engineCapacity }}
                 </td>
+                <td class="available" v-if="car.available === true">
+                  Available
+                </td>
+                <td class="reserved" v-else>Reserved</td>
                 <td>
                   {{ car.pricePerMinute }}
                 </td>
@@ -262,10 +263,10 @@ tr {
 }
 
 .details .cars table tr td:nth-child(4) {
-  text-align: center;
+  text-align: start;
 }
 
-.details .cars table tr td:nth-child(5) {
+.details .cars table tr td:last-child {
   text-align: end;
 }
 
@@ -280,12 +281,14 @@ tr {
 .cardHeader {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
 }
 
+
 .cardHeader h2 {
+  flex: 1;
   font-weight: 600;
   color: var(--white);
+  margin-right: 10px;
 }
 
 .cardHeader .btn {
@@ -298,6 +301,7 @@ tr {
   font-weight: 500;
   text-decoration: none;
   transition: 0.5s;
+  margin-left: 20px;
 }
 
 .cardHeader .btn:hover {
@@ -308,7 +312,6 @@ tr {
   position: relative;
   padding: 5px 15px;
   background: #00cc00;
-
   color: var(--white);
   border-radius: 5px;
   font-size: 14px;
