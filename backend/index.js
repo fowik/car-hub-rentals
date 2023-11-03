@@ -140,7 +140,6 @@ app.get("/api/cars/get", async (req, res) => {
     const cars = await prisma.cars.findMany();
     return res.status(200).json(cars);
   } catch (error) {
-    console.log("Error during getting cars:", error);
     return res.status(500).json({ error: "Internal server error" });
   } finally {
     await prisma.$disconnect(); // Disconnect the Prisma client after the operation
@@ -152,7 +151,71 @@ app.get("/api/users/get", async (req, res) => {
     const users = await prisma.users.findMany();
     return res.status(200).json(users);
   } catch (error) {
-    console.log("Error during getting users:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect(); // Disconnect the Prisma client after the operation
+  }
+});
+
+app.get("/api/cars/get/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const car = await prisma.cars.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (car) {
+      return res.status(200).json(car);
+    } else {
+      return res.status(404).json({ error: "Car not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect();
+  }
+});
+
+app.delete("/api/cars/delete/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedCar = await prisma.cars.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    return res.status(200).json(deletedCar);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect(); // Disconnect the Prisma client after the operation
+  }
+});
+
+app.put("/api/cars/update/:id", async (req, res) => {
+  const { id } = req.params;
+  const { brand, model, year, type, pricePerMinute, engineCapacity } = req.body;
+
+  try {
+    const updatedCar = await prisma.cars.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        brand: brand,
+        model: model,
+        year: year,
+        type: type,
+        pricePerMinute: pricePerMinute,
+        engineCapacity: engineCapacity,
+      },
+    });
+    return res.status(200).json(updatedCar);
+  } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   } finally {
     await prisma.$disconnect(); // Disconnect the Prisma client after the operation

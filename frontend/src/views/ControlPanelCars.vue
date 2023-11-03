@@ -1,6 +1,12 @@
 <template>
   <section>
     <ControlPanelNavigation />
+    <CarFormContainer
+      v-if="isCarFormVisible"
+      :carData="selectedCar"
+      @edit-car="handleEditCar"
+      @click="hideCarForm"
+    />
     <div class="main">
       <div class="topbar">
         <div class="toggle">
@@ -19,6 +25,7 @@
           <img src="" />
         </div>
       </div>
+
       <!-- table -->
       <div class="details">
         <div class="cars">
@@ -57,8 +64,18 @@
                   {{ car.pricePerMinute }}
                 </td>
                 <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete">Delete</router-link>
+                  <router-link
+                    to=""
+                    class="btn-edit"
+                    @click="showCarForm(car.id)"
+                    >Edit</router-link
+                  >
+                  <router-link
+                    to=""
+                    class="btn-delete"
+                    v-on:click="deleteCar(car.id)"
+                    >Delete</router-link
+                  >
                 </td>
               </tr>
             </tbody>
@@ -71,6 +88,7 @@
 
 <script>
 import ControlPanelNavigation from "@/components/ControlPanelNavigation.vue";
+import CarFormContainer from "@/components/CarFormContainer.vue";
 
 export default {
   data() {
@@ -78,12 +96,26 @@ export default {
       username: "",
       email: "",
       cars: this.getCars(),
+      isCarFormVisible: false,
+      selectedCar: null,
     };
   },
   components: {
     ControlPanelNavigation,
+    CarFormContainer,
   },
   methods: {
+    showCarForm(carId) {
+      this.$emit("edit-car", carId);
+      this.selectedCar = carId;
+      this.isCarFormVisible = true;
+    },
+    hideCarForm(event) {
+      const id = document.getElementById("car-form-container");
+      if (event.target === id) {
+        this.selectedCar = this.isCarFormVisible = false;
+      }
+    },
     async getCars() {
       try {
         const response = await fetch("http://localhost:3000/api/cars/get", {
@@ -92,6 +124,29 @@ export default {
             "Content-Type": "application/json",
           },
         });
+        if (response.status === 200) {
+          const data = await response.json();
+          this.cars = data; // Assuming your response data is an array of car objects
+          console.log(this.cars);
+        } else {
+          console.error("Failed to fetch cars1");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteCar(carId) {
+      try {
+        const id = carId;
+        const response = await fetch(
+          "http://localhost:3000/api/cars/delete/" + id + "",
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (response.status === 200) {
           const data = await response.json();
           this.cars = data; // Assuming your response data is an array of car objects
@@ -283,7 +338,6 @@ tr {
   justify-content: space-between;
 }
 
-
 .cardHeader h2 {
   flex: 1;
   font-weight: 600;
@@ -302,6 +356,7 @@ tr {
   text-decoration: none;
   transition: 0.5s;
   margin-left: 20px;
+  height: fit-content;
 }
 
 .cardHeader .btn:hover {
@@ -318,6 +373,7 @@ tr {
   font-weight: 500;
   text-decoration: none;
   transition: 0.5s;
+  height: fit-content;
 }
 
 .cardHeader .btn-add:hover {
