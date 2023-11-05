@@ -114,7 +114,6 @@ export default {
         if (response.status === 200) {
           const data = await response.json();
           this.users = data; // Assuming your response data is an array of user objects
-          console.log(this.users);
         } else {
           console.error("Failed to fetch users");
         }

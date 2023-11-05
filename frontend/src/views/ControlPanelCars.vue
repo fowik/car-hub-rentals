@@ -127,9 +127,8 @@ export default {
         if (response.status === 200) {
           const data = await response.json();
           this.cars = data; // Assuming your response data is an array of car objects
-          console.log(this.cars);
         } else {
-          console.error("Failed to fetch cars1");
+          console.error("Failed to fetch cars");
         }
       } catch (error) {
         console.log(error);
@@ -150,7 +149,6 @@ export default {
         if (response.status === 200) {
           const data = await response.json();
           this.cars = data; // Assuming your response data is an array of car objects
-          console.log(this.cars);
         } else {
           console.error("Failed to fetch cars");
         }
