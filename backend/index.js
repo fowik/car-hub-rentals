@@ -199,8 +199,42 @@ app.delete("/api/cars/delete/:id", async (req, res) => {
 app.put("/api/cars/update/:id", async (req, res) => {
   const { id } = req.params;
   const { brand, model, year, type, pricePerMinute, engineCapacity } = req.body;
-
   try {
+    const existingCar = await prisma.cars.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    const existingCarFields = {
+      brand: existingCar.brand,
+      model: existingCar.model,
+      year: existingCar.year,
+      type: existingCar.type,
+      pricePerMinute: existingCar.pricePerMinute,
+      engineCapacity: existingCar.engineCapacity,
+    };
+
+    const updatedCarFields = {
+      brand,
+      model,
+      year,
+      type,
+      pricePerMinute,
+      engineCapacity,
+    };
+
+    if (
+      existingCarFields.brand === updatedCarFields.brand &&
+      existingCarFields.model === updatedCarFields.model &&
+      existingCarFields.year === updatedCarFields.year &&
+      existingCarFields.type === updatedCarFields.type &&
+      existingCarFields.pricePerMinute === updatedCarFields.pricePerMinute &&
+      existingCarFields.engineCapacity === updatedCarFields.engineCapacity
+    ) {
+      return res.status(402).json(existingCar);
+    }
+
     const updatedCar = await prisma.cars.update({
       where: {
         id: parseInt(id),

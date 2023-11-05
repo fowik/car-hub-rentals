@@ -82,7 +82,6 @@ export default {
       this.getCar(id);
     },
     async getCar(id) {
-      console.log("Editing car with ID:", id);
       try {
         const response = await fetch(
           "http://localhost:3000/api/cars/get/" + id + "",
@@ -95,6 +94,7 @@ export default {
         );
         if (response.status === 200) {
           const data = await response.json();
+          this.id = data.id;
           this.brand = data.brand;
           this.model = data.model;
           this.year = data.year;
@@ -107,6 +107,43 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async editCar() {
+      try {
+        const id = this.id;
+        const carData = {
+          brand: this.brand,
+          model: this.model,
+          year: this.year,
+          type: this.type,
+          pricePerMinute: this.pricePerMinute,
+          engineCapacity: this.engineCapacity,
+        };
+        const response = await fetch(
+          "http://localhost:3000/api/cars/update/" + id + "",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(carData),
+          }
+        );
+        if (response.status === 200) {
+          this.successMessage = "Car edited successfully!";
+          this.$emit("car-edited");
+        } else if (response.status === 402) {
+          this.successMessage = "You need to edit at least one field";
+          this.$emit("car-edited");
+        } else {
+          this.successMessage = "Failed to edit car";
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    clearSuccessMessage() {
+      this.successMessage = "";
     },
   },
   mounted() {
