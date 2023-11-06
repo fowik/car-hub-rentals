@@ -157,6 +157,28 @@ app.get("/api/users/get", async (req, res) => {
   }
 });
 
+app.get("/api/users/get/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await prisma.users.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (user) {
+      return res.status(200).json(user);
+    } else {
+      return res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect();
+  }
+});
+
 app.get("/api/cars/get/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -189,6 +211,23 @@ app.delete("/api/cars/delete/:id", async (req, res) => {
       },
     });
     return res.status(200).json(deletedCar);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect(); // Disconnect the Prisma client after the operation
+  }
+});
+
+app.delete("/api/users/delete/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedUser = await prisma.users.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    return res.status(200).json(deletedUser);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   } finally {
@@ -235,6 +274,9 @@ app.put("/api/cars/update/:id", async (req, res) => {
       return res.status(402).json(existingCar);
     }
 
+    console.log("Existing Fields:", existingCarFields);
+    console.log("Updated Fields:", updatedCarFields);
+
     const updatedCar = await prisma.cars.update({
       where: {
         id: parseInt(id),
@@ -249,6 +291,64 @@ app.put("/api/cars/update/:id", async (req, res) => {
       },
     });
     return res.status(200).json(updatedCar);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect(); // Disconnect the Prisma client after the operation
+  }
+});
+
+app.put("/api/users/update/:id", async (req, res) => {
+  const { id } = req.params;
+  const { username, email, password, full_name, isAdmin } = req.body;
+  try {
+    const existingUser = await prisma.users.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    const existingUserFields = {
+      username: existingUser.username,
+      email: existingUser.email,
+      password: existingUser.password,
+      full_name: existingUser.fullName,
+      isAdmin: existingUser.isAdmin,
+    };
+
+    const updatedUserFields = {
+      username,
+      email,
+      password,
+      full_name,
+      isAdmin,
+    };
+
+    if (
+      existingUserFields.username === updatedUserFields.username &&
+      existingUserFields.email === updatedUserFields.email &&
+      existingUserFields.password === updatedUserFields.password &&
+      existingUserFields.full_name === updatedUserFields.full_name &&
+      existingUserFields.isAdmin === updatedUserFields.isAdmin
+    ) {
+      return res.status(402).json(existingUser);
+    }
+
+    console.log("Existing Fields:", existingUserFields);
+    console.log("Updated Fields:", updatedUserFields);
+    const updatedUser = await prisma.users.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        username: username,
+        email: email,
+        password: password,
+        fullName: full_name,
+        isAdmin: isAdmin,
+      },
+    });
+    return res.status(200).json(updatedUser);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   } finally {

@@ -59,6 +59,22 @@ export default {
   components: {
     ProfileSidebar,
   },
+  methods: {
+    async getUser() {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        console.log(user);
+        if (user && user.username) {
+          this.username = user.username;
+          this.email = user.email;
+        } else {
+          this.$router.push({ path: "/login" });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
 };
 </script>
 

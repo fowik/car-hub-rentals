@@ -45,6 +45,7 @@ export default {
   methods: {
     CheckUserSession() {
       const user = JSON.parse(localStorage.getItem("user"));
+      console.log(user);
       if (user && user.username) {
         this.username = user.username;
         this.email = user.email;

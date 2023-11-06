@@ -1,6 +1,12 @@
 <template>
   <section>
     <ControlPanelNavigation />
+    <UserFormContainer
+      v-if="isUserFormVisible"
+      :userData="selectedUser"
+      @edit-user="handleEditUser"
+      @click="hideUserForm"
+    />
     <div class="main">
       <div class="topbar">
         <div class="toggle">
@@ -21,7 +27,7 @@
       </div>
       <div class="details">
         <div class="recentRents">
-          <div class="cardHeader">
+          <div class="UserdHeader">
             <h2>Customers</h2>
             <a href="#" class="btn">View All</a>
           </div>
@@ -52,8 +58,18 @@
                   <div class="pass">{{ user.password }}</div>
                 </td>
                 <td>
-                  <router-link to="" class="btn-edit">Edit</router-link>
-                  <router-link to="" class="btn-delete"> Delete</router-link>
+                  <router-link
+                    to=""
+                    class="btn-edit"
+                    @click="showUserForm(user.id)"
+                    >Edit</router-link
+                  >
+                  <router-link
+                    to=""
+                    class="btn-delete"
+                    @click="deleteUser(user.id)"
+                    >Delete</router-link
+                  >
                 </td>
               </tr>
             </tbody>
@@ -66,6 +82,7 @@
 
 <script>
 import ControlPanelNavigation from "@/components/ControlPanelNavigation.vue";
+import UserFormContainer from "@/components/UserFormContainer.vue";
 
 export default {
   data() {
@@ -73,10 +90,13 @@ export default {
       username: "",
       email: "",
       users: this.getUsers(),
+      isUserFormVisible: false,
+      selectedUser: null,
     };
   },
   components: {
     ControlPanelNavigation,
+    UserFormContainer,
   },
   mounted() {
     document.addEventListener("DOMContentLoaded", function () {
@@ -103,6 +123,17 @@ export default {
     });
   },
   methods: {
+    showUserForm(UserId) {
+      this.$emit("edit-user", UserId);
+      this.selectedUser = UserId;
+      this.isUserFormVisible = true;
+    },
+    hideUserForm(event) {
+      const id = document.getElementById("user-form-container");
+      if (event.target === id) {
+        this.selectedUser = this.isUserFormVisible = false;
+      }
+    },
     async getUsers() {
       try {
         const response = await fetch("http://localhost:3000/api/users/get", {
@@ -116,6 +147,28 @@ export default {
           this.users = data; // Assuming your response data is an array of user objects
         } else {
           console.error("Failed to fetch users");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteUser(userId) {
+      // Send a request to delete the user based on the userId
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/users/delete/${userId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.status === 200) {
+          // User successfully deleted, update the users list
+          this.getUsers();
+        } else {
+          console.error("Failed to delete user");
         }
       } catch (error) {
         console.log(error);
@@ -265,18 +318,18 @@ tr {
   -webkit-text-security: none;
 }
 
-.cardHeader {
+.UserdHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-.cardHeader h2 {
+.UserdHeader h2 {
   font-weight: 600;
   color: var(--white);
 }
 
-.cardHeader .btn {
+.UserdHeader .btn {
   position: relative;
   padding: 5px 15px;
   background: var(--orange);
@@ -288,7 +341,7 @@ tr {
   transition: 0.5s;
 }
 
-.cardHeader .btn:hover {
+.UserdHeader .btn:hover {
   background: var(--orange-dark);
 }
 </style>
