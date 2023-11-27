@@ -5,8 +5,8 @@
       <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
       <form @submit.prevent="editCar">
         <input v-model="id" type="hidden" />
-        <select v-model="brand" required> 
-          <option :value="brand" >{{ brand }}</option>
+        <select v-model="brand" required>
+          <option :value="brand">{{ brand }}</option>
           <option
             v-for="carBrand in carBrands"
             :key="carBrand.id"
@@ -102,7 +102,6 @@ export default {
         );
         if (response.status === 200) {
           const data = await response.json();
-          console.log(data);
           this.id = data.id;
           this.brand = data.brandName;
           this.model = data.model;

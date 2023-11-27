@@ -67,7 +67,6 @@ export default {
       } else {
         this.isLoggedIn = false;
       }
-      console.log("isLoggedIn:", this.isLoggedIn);
     },
     checkWindowWidth() {
       if (window.innerWidth < 786) {

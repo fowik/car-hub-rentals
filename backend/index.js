@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { carTypesSeed } from "./prisma/seeds/carTypes.js";
 import { carBrandsSeed } from "./prisma/seeds/carBrands.js";
+import { cars } from "./prisma/seeds/cars.js";
 
 dotenv.config();
 
@@ -62,6 +63,11 @@ for (const type of carTypesSeed) {
   } else {
     // console.log(`Type ${type.typeName} already exists, skipping creation`);
   }
+}
+
+// Seed cars
+for (const car of cars) {
+  
 }
 
 app.post("/api/users/register", async (req, res) => {
