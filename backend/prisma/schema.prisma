@@ -13,6 +13,9 @@ model bookings {
   carId     Int
   startTime DateTime
   endTime   DateTime
+  duration  Int
+  status    String @default("pending")
+  bookedPrice Float @default(0)
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   cars      cars      @relation(fields: [carId], references: [id], map: "Bookings_carId_fkey")
@@ -22,19 +25,38 @@ model bookings {
   @@index([userId], map: "Bookings_userId_fkey")
 }
 
+model carTypes {
+  id        Int       @id @default(autoincrement())
+  typeName  String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  cars      cars[]    // A type can be associated with multiple cars
+}
+
+model carBrands {
+  id        Int       @id @default(autoincrement())
+  BrandName String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  cars      cars[]    // A brand can be associated with multiple cars
+}
+
 model cars {
   id           Int        @id @default(autoincrement())
-  brand        String
+  brandId      Int        
+  typeId       Int
   model        String
   year         Int
   registration String?     @unique(map: "Cars_registration_key")
-  type         String
   pricePerMinute Float
   engineCapacity Float
   available    Boolean    @default(true)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime?
   bookings     bookings[]
+
+  brand           carBrands  @relation(fields: [brandId], references: [id], map: "Cars_brandId_fkey")
+  type            carTypes   @relation(fields: [typeId], references: [id], map: "Cars_typeId_fkey")
 }
 
 model users {

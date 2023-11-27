@@ -2,6 +2,8 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { carTypesSeed } from "./prisma/seeds/carTypes.js";
+import { carBrandsSeed } from "./prisma/seeds/carBrands.js";
 
 dotenv.config();
 
@@ -15,6 +17,52 @@ app.use(express.json());
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+// Seed car brands
+for (const brand of carBrandsSeed) {
+  const existingBrand = await prisma.carBrands.findUnique({
+    where: { BrandName: brand.BrandName },
+  });
+
+  if (!existingBrand) {
+    try {
+      await prisma.carBrands.create({
+        data: {
+          BrandName: brand.BrandName,
+          // ... other fields if present
+        },
+      });
+      console.log(`Brand ${brand.BrandName} created`);
+    } catch (error) {
+      console.error(`Error creating brand ${brand.BrandName}:`, error);
+    }
+  } else {
+    // console.log(`Brand ${brand.BrandName} already exists, skipping creation`);
+  }
+}
+
+// Seed car types
+for (const type of carTypesSeed) {
+  const existingType = await prisma.carTypes.findUnique({
+    where: { typeName: type.typeName },
+  });
+
+  if (!existingType) {
+    try {
+      await prisma.carTypes.create({
+        data: {
+          typeName: type.typeName,
+          // ... other fields if present
+        },
+      });
+      console.log(`Type ${type.typeName} created`);
+    } catch (error) {
+      console.error(`Error creating type ${type.typeName}:`, error);
+    }
+  } else {
+    // console.log(`Type ${type.typeName} already exists, skipping creation`);
+  }
+}
 
 app.post("/api/users/register", async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
@@ -111,15 +159,16 @@ app.post("/api/users/login", async (req, res) => {
 });
 
 app.post("/api/cars/add", async (req, res) => {
-  const { brand, model, year, type, pricePerMinute, engineCapacity } = req.body;
+  const { brandId, model, year, typeId, pricePerMinute, engineCapacity } =
+    req.body;
 
   try {
     const newCar = await prisma.cars.create({
       data: {
-        brand: brand,
+        brandId: brandId, // Replace 'brand' with 'brandId'
         model: model,
         year: year,
-        type: type,
+        typeId: typeId, // Assuming 'type' is supposed to be 'typeId'
         pricePerMinute: pricePerMinute,
         engineCapacity: engineCapacity,
       },
@@ -143,6 +192,74 @@ app.get("/api/cars/get", async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   } finally {
     await prisma.$disconnect(); // Disconnect the Prisma client after the operation
+  }
+});
+
+app.get("/api/brands/get", async (req, res) => {
+  try {
+    const brands = await prisma.carBrands.findMany();
+    return res.status(200).json(brands);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect(); // Disconnect the Prisma client after the operation
+  }
+});
+
+app.get("/api/brands/get/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const brand = await prisma.carBrands.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (brand) {
+      console.log(brand );
+      return res.status(200).json(brand);
+    } else {
+      return res.status(404).json({ error: "Brand not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect();
+  }
+});
+
+app.get("/api/types/get", async (req, res) => {
+  try {
+    const types = await prisma.carTypes.findMany();
+    return res.status(200).json(types);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect(); // Disconnect the Prisma client after the operation
+  }
+});
+
+app.get("/api/types/get/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const type = await prisma.carTypes.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (type) {
+      console.log(type);
+      return res.status(200).json(type);
+    } else {
+      return res.status(404).json({ error: "Type not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  } finally {
+    await prisma.$disconnect();
   }
 });
 

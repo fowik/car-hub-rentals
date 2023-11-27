@@ -28,12 +28,16 @@
             {{ successMessage }}
           </p>
           <form @submit.prevent="addCar">
-            <input
-              type="text"
-              v-model="brand"
-              placeholder="Enter Brand"
-              required
-            />
+            <select v-model="selectedBrand" id="brandId" required>
+              <option disabled value="Select Brand">Select Brand</option>
+              <option
+                v-for="brandItem in brands"
+                :key="brandItem.id"
+                :value="brandItem.id"
+              >
+                {{ brandItem.name }}
+              </option>
+            </select>
             <input
               type="text"
               v-model="model"
@@ -51,16 +55,15 @@
               maxlength="4"
               id="year-input"
             />
-            <select v-model="selectedType" id="carType" required>
+            <select v-model="selectedType" id="typeId" required>
               <option disabled value="Select Type">Select Type</option>
-              <option value="Sedan">Sedan</option>
-              <option value="SUV">SUV</option>
-              <option value="Truck">Truck</option>
-              <option value="Van">Van</option>
-              <option value="Coupe">Coupe</option>
-              <option value="Convertible">Convertible</option>
-              <option value="Wagon">Wagon</option>
-              <option value="Crossover">Crossover</option>
+              <option
+                v-for="typeItem in types"
+                :key="typeItem.id"
+                :value="typeItem.id"
+              >
+                {{ typeItem.name }}
+              </option>
             </select>
             <input
               type="number"
@@ -101,12 +104,14 @@ export default {
       username: "",
       email: "",
       selectedType: "Select Type",
-      brand: "",
+      selectedBrand: "Select Brand",
       model: "",
       year: "",
       pricePerMinute: "",
       engineCapacity: "",
       successMessage: "",
+      brands: [],
+      types: [],
     };
   },
   watch: {
@@ -115,12 +120,55 @@ export default {
     },
   },
   methods: {
+    async getBrands() {
+      try {
+        const response = await fetch("http://localhost:3000/api/brands/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status === 200) {
+          const brandsData = await response.json(); // Retrieve data from the response
+
+          this.brands = brandsData.map((brand) => ({
+            id: brand.id,
+            name: brand.BrandName,
+            // Include other properties of the brand as needed
+          }));
+        }
+      } catch (error) {
+        console.error("Error during brands fetching:", error);
+      }
+    },
+    async getTypes() {
+      try {
+        const response = await fetch("http://localhost:3000/api/types/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status === 200) {
+          const typesData = await response.json(); // Retrieve data from the response
+
+          this.types = typesData.map((type) => ({
+            id: type.id,
+            name: type.typeName,
+          }));
+        }
+      } catch (error) {
+        console.error("Error during types fetching:", error);
+      }
+    },
     async addCar() {
       const carData = {
-        brand: this.brand,
+        brandId: this.selectedBrand,
         model: this.model,
         year: this.year,
-        type: this.selectedType,
+        typeId: this.selectedType,
         pricePerMinute: this.pricePerMinute,
         engineCapacity: this.engineCapacity,
       };
@@ -147,7 +195,7 @@ export default {
     },
     clearInputField() {
       this.successMessage = "Car successfully added!";
-      this.brand = "";
+      this.selectedBrand = "Select Brand";
       this.model = "";
       this.year = "";
       this.selectedType = "Select Type";
@@ -159,6 +207,9 @@ export default {
     ControlPanelNavigation,
   },
   mounted() {
+    this.getBrands();
+    this.getTypes();
+
     const priceInput = document.getElementById("price-input");
 
     priceInput.addEventListener("input", validateInput);
@@ -205,9 +256,9 @@ export default {
         this.classList.add("hovered");
       }
 
-      list.forEach((item) => item.addEventListener("mouseover", activeLink));
-      document.querySelector("input[type=date]").oninput = (e) =>
-        console.log(new Date(e.target.valueAsNumber, 0, 1));
+      // list.forEach((item) => item.addEventListener("mouseover", activeLink));
+      // document.querySelector("input[type=date]").oninput = (e) =>
+      //   console.log(new Date(e.target.valueAsNumber, 0, 1));
     });
   },
 };

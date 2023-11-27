@@ -49,12 +49,13 @@
             <tbody class="table-container">
               <tr v-for="car in cars" :key="car.id">
                 <td>
-                  {{ car.brand }}
+                  {{ car.brandName || "Loading..." }}
                   <p>{{ car.model }}</p>
                 </td>
 
                 <td>
-                  {{ car.year }} | {{ car.type }} | {{ car.engineCapacity }}
+                  {{ car.year }} | {{ car.typeName || "Loading..." }} |
+                  {{ car.engineCapacity }}
                 </td>
                 <td class="available" v-if="car.available === true">
                   Available
@@ -95,7 +96,7 @@ export default {
     return {
       username: "",
       email: "",
-      cars: this.getCars(),
+      cars: [],
       isCarFormVisible: false,
       selectedCar: null,
     };
@@ -116,7 +117,7 @@ export default {
         this.selectedCar = this.isCarFormVisible = false;
       }
     },
-    async getCars() {
+    async getCarsWithNames() {
       try {
         const response = await fetch("http://localhost:3000/api/cars/get", {
           method: "GET",
@@ -125,13 +126,48 @@ export default {
           },
         });
         if (response.status === 200) {
-          const data = await response.json();
-          this.cars = data; // Assuming your response data is an array of car objects
+          const cars = await response.json();
+
+          // Map each car to a promise for brand and type names
+          for (const car of cars) {
+            const brandName = await this.getNameFromId(car.brandId, "brands");
+            const typeName = await this.getNameFromId(car.typeId, "types");
+
+            car.brandName = brandName;
+            car.typeName = typeName;
+          }
+          this.cars = cars;
+          // console.log(this.cars);
         } else {
           console.error("Failed to fetch cars");
         }
       } catch (error) {
         console.log(error);
+      }
+    },
+
+    async getNameFromId(id, category) {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/${category}/get/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.status === 200) {
+          const data = await response.json();
+          // console.log(`Fetched ${category} name for ID ${id}:`, data);
+          return data.typeName || data.BrandName;
+        } else {
+          console.error(`Failed to fetch ${category} name for ID ${id}`);
+          return "Unknown";
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        return "Unknown";
       }
     },
     async deleteCar(carId) {
@@ -158,6 +194,8 @@ export default {
     },
   },
   mounted() {
+    this.getCarsWithNames();
+
     document.addEventListener("DOMContentLoaded", function () {
       // MenuToggle
       let toggle = document.querySelector(".toggle");

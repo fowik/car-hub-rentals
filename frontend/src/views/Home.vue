@@ -43,20 +43,30 @@
     <section id="cars">
       <h1>Our cars</h1>
       <div class="container">
-        <div class="card_box">
-          <span></span>
+        <div class="card">
+          <div class="image"><span class="text">This is a chair.</span></div>
+          <span class="title">Cool Chair</span>
+          <span class="price">$100</span>
         </div>
-        <div class="card_box">
-          <span></span>
+        <div class="card">
+          <div class="image"><span class="text">This is a chair.</span></div>
+          <span class="title">Cool Chair</span>
+          <span class="price">$100</span>
         </div>
-        <div class="card_box">
-          <span></span>
+        <div class="card">
+          <div class="image"><span class="text">This is a chair.</span></div>
+          <span class="title">Cool Chair</span>
+          <span class="price">$100</span>
         </div>
-        <div class="card_box">
-          <span></span>
+        <div class="card">
+          <div class="image"><span class="text">This is a chair.</span></div>
+          <span class="title">Cool Chair</span>
+          <span class="price">$100</span>
         </div>
-        <div class="card_box">
-          <span></span>
+        <div class="card">
+          <div class="image"><span class="text">This is a chair.</span></div>
+          <span class="title">Cool Chair</span>
+          <span class="price">$100</span>
         </div>
       </div>
     </section>
@@ -81,6 +91,37 @@
     </section>
   </section>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      cars: this.getCars(),
+    };
+  },
+  methods: {
+    async getCars() {
+      try {
+        const response = await fetch("http://localhost:3000/api/cars/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          this.cars = data; // Assuming your response data is an array of car objects
+          console.log(this.cars);
+        } else {
+          console.error("Failed to fetch cars");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+};
+</script>
 
 <style scoped>
 section {
@@ -215,74 +256,88 @@ section {
   flex-direction: row;
 }
 
-#cars .container .card_box {
-  width: 200px;
-  height: 250px;
-  border-radius: 20px;
-  background: linear-gradient(
-    170deg,
-    rgba(58, 56, 56, 0.623) 0%,
-    rgb(31, 31, 31) 100%
-  );
+#cars .card {
   position: relative;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55);
+  width: 11.875em;
+  height: 16.5em;
+  box-shadow: 0px 1px 13px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: all 0.3s;
-}
-
-#cars .container .card_box:hover {
-  transform: scale(0.9);
-}
-
-#cars .container .card_box span {
-  position: absolute;
-  overflow: hidden;
-  width: 150px;
-  height: 150px;
-  top: -10px;
-  left: -10px;
+  transition: all 120ms;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fff;
+  padding: 0.5em;
+  padding-bottom: 3.4em;
 }
 
-#cars .container .card_box span::before {
-  content: "Premium";
+#cars .card::after {
+  content: "Reserve";
+  padding-top: 1.25em;
+  padding-left: 1.25em;
   position: absolute;
-  width: 150%;
-  height: 40px;
-  background-image: linear-gradient(
-    45deg,
-    #ff6547 0%,
-    #ffb144 51%,
-    #ff7053 100%
-  );
-  transform: rotate(-45deg) translateY(-20px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.23);
-}
-
-#cars .container .card_box span::after {
-  content: "";
-  position: absolute;
-  width: 10px;
-  bottom: 0;
   left: 0;
-  height: 10px;
-  z-index: -1;
-  box-shadow: 140px -140px #cc3f47;
-  background-image: linear-gradient(
-    45deg,
-    #ff512f 0%,
-    #f09819 51%,
-    #ff512f 100%
-  );
+  bottom: -60px;
+  background: #00ac7c;
+  color: #fff;
+  height: 2.5em;
+  width: 90%;
+  transition: all 80ms;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0;
+}
+
+#cars .card .title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9em;
+  position: absolute;
+  left: 0.625em;
+  bottom: 1.875em;
+  font-weight: 400;
+  color: #000;
+}
+
+#cars .card .text {
+  font-size: 0.9em;
+  position: absolute;
+  font-weight: 400;
+  color: #000;
+}
+
+#cars .card .price {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 0.9em;
+  position: absolute;
+  left: 0.625em;
+  bottom: 0.625em;
+  color: #000;
+}
+
+#cars .card:hover::after {
+  bottom: 0;
+  opacity: 1;
+}
+
+#cars .card:active {
+  transform: scale(0.98);
+}
+
+#cars .card:active::after {
+  content: "Reserved!";
+  height: 3.125em;
+}
+
+#cars .text {
+  max-width: 55px;
+}
+
+#cars .image {
+  background: rgb(241, 241, 241);
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
 }
 
 #about {
