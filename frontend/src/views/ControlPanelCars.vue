@@ -7,6 +7,10 @@
       @edit-car="handleEditCar"
       @click="hideCarForm"
     />
+    <CarAdditionContainer
+      v-if="isAddCarPopupVisible"
+      @click="hideAddCarPopup($event)"
+    />
     <div class="main">
       <div class="topbar">
         <div class="toggle">
@@ -31,7 +35,7 @@
         <div class="cars">
           <div class="cardHeader">
             <h2>Cars</h2>
-            <router-link to="/control-panel/cars/add" class="btn-add"
+            <router-link to="" @click="showAddCarPopup()" class="btn-add"
               >Add Car</router-link
             >
             <router-link to="" class="btn"> View All</router-link>
@@ -49,12 +53,12 @@
             <tbody class="table-container">
               <tr v-for="car in cars" :key="car.id">
                 <td>
-                  {{ car.brandName || "Loading..." }}
+                  {{ car.brandName }}
                   <p>{{ car.model }}</p>
                 </td>
 
                 <td>
-                  {{ car.year }} | {{ car.typeName || "Loading..." }} |
+                  {{ car.year }} | {{ car.typeName }} |
                   {{ car.engineCapacity }}
                 </td>
                 <td class="available" v-if="car.available === true">
@@ -90,6 +94,7 @@
 <script>
 import ControlPanelNavigation from "@/components/ControlPanelNavigation.vue";
 import CarFormContainer from "@/components/CarFormContainer.vue";
+import CarAdditionContainer from "@/components/CarAdditionContainer.vue";
 
 export default {
   data() {
@@ -98,14 +103,25 @@ export default {
       email: "",
       cars: [],
       isCarFormVisible: false,
+      isAddCarPopupVisible: false,
       selectedCar: null,
     };
   },
   components: {
     ControlPanelNavigation,
     CarFormContainer,
+    CarAdditionContainer,
   },
   methods: {
+    showAddCarPopup() {
+      this.isAddCarPopupVisible = true;
+    },
+    hideAddCarPopup(event) {
+      const id = document.getElementById("car-form-container");
+      if (event.target === id) {
+        this.isAddCarPopupVisible = false;
+      }
+    },
     showCarForm(carId) {
       this.$emit("edit-car", carId);
       this.selectedCar = carId;
@@ -129,13 +145,6 @@ export default {
           const cars = await response.json();
 
           // Map each car to a promise for brand and type names
-          for (const car of cars) {
-            const brandName = await this.getNameFromId(car.brandId, "brands");
-            const typeName = await this.getNameFromId(car.typeId, "types");
-
-            car.brandName = brandName;
-            car.typeName = typeName;
-          }
           this.cars = cars;
           // console.log(this.cars);
         } else {
@@ -143,31 +152,6 @@ export default {
         }
       } catch (error) {
         console.log(error);
-      }
-    },
-
-    async getNameFromId(id, category) {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/api/${category}/get/${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (response.status === 200) {
-          const data = await response.json();
-          // console.log(`Fetched ${category} name for ID ${id}:`, data);
-          return data.typeName || data.BrandName;
-        } else {
-          console.error(`Failed to fetch ${category} name for ID ${id}`);
-          return "Unknown";
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        return "Unknown";
       }
     },
     async deleteCar(carId) {

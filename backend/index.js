@@ -186,8 +186,38 @@ app.post("/api/cars/add", async (req, res) => {
 
 app.get("/api/cars/get", async (req, res) => {
   try {
-    const cars = await prisma.cars.findMany();
-    return res.status(200).json(cars);
+    const cars = await prisma.cars.findMany({
+      include: {
+        brand: {
+          select: {
+            BrandName: true,
+          },
+        },
+        type: {
+          select: {
+            typeName: true,
+          },
+        },
+      },
+    });
+
+    // Extracting brandName and typeName
+    const formattedCars = cars.map((car) => ({
+      id: car.id,
+      brandName: car.brand.BrandName, // Getting brandName directly
+      typeName: car.type.typeName,
+      model: car.model,
+      year: car.year,
+      registration: car.registration,
+      pricePerMinute: car.pricePerMinute,
+      engineCapacity: car.engineCapacity,
+      available: car.available,
+      createdAt: car.createdAt,
+      updatedAt: car.updatedAt,
+      bookings: car.bookings,
+    }));
+
+    return res.status(200).json(formattedCars);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   } finally {
@@ -217,7 +247,7 @@ app.get("/api/brands/get/:id", async (req, res) => {
     });
 
     if (brand) {
-      console.log(brand );
+      console.log(brand);
       return res.status(200).json(brand);
     } else {
       return res.status(404).json({ error: "Brand not found" });
@@ -304,10 +334,36 @@ app.get("/api/cars/get/:id", async (req, res) => {
       where: {
         id: parseInt(id),
       },
+      include: {
+        brand: {
+          select: {
+            BrandName: true,
+          },
+        },
+        type: {
+          select: {
+            typeName: true,
+          },
+        },
+      },
     });
 
     if (car) {
-      return res.status(200).json(car);
+      const formattedCar = {
+        id: car.id,
+        brandName: car.brand.BrandName,
+        typeName: car.type.typeName,
+        model: car.model,
+        year: car.year,
+        registration: car.registration,
+        pricePerMinute: car.pricePerMinute,
+        engineCapacity: car.engineCapacity,
+        available: car.available,
+        createdAt: car.createdAt,
+        updatedAt: car.updatedAt,
+        bookings: car.bookings,
+      };
+      return res.status(200).json(formattedCar);
     } else {
       return res.status(404).json({ error: "Car not found" });
     }
@@ -354,59 +410,88 @@ app.delete("/api/users/delete/:id", async (req, res) => {
 
 app.put("/api/cars/update/:id", async (req, res) => {
   const { id } = req.params;
-  const { brand, model, year, type, pricePerMinute, engineCapacity } = req.body;
+  const {
+    brandName,
+    typeName,
+    model,
+    year,
+    registration,
+    pricePerMinute,
+    engineCapacity,
+  } = req.body;
+
   try {
+    // Find the IDs for the provided brand and type names
+    const brand = await prisma.carBrands.findUnique({
+      where: {
+        BrandName: brandName,
+      },
+    });
+
+    const type = await prisma.carTypes.findUnique({
+      where: {
+        typeName: typeName,
+      },
+    });
+
     const existingCar = await prisma.cars.findUnique({
       where: {
         id: parseInt(id),
       },
+      include: {
+        brand: true,
+        type: true,
+      },
     });
 
     const existingCarFields = {
-      brand: existingCar.brand,
+      brandId: existingCar.brand.id,
+      typeId: existingCar.type.id,
       model: existingCar.model,
       year: existingCar.year,
-      type: existingCar.type,
+      registration: existingCar.registration,
       pricePerMinute: existingCar.pricePerMinute,
       engineCapacity: existingCar.engineCapacity,
     };
 
     const updatedCarFields = {
-      brand,
+      brandId: brand ? brand.id : existingCarFields.brandId,
+      typeId: type ? type.id : existingCarFields.typeId,
       model,
       year,
-      type,
+      registration,
       pricePerMinute,
       engineCapacity,
     };
 
+    // console.log("Existing Fields:", existingCarFields);
+    // console.log("Updated Fields:", updatedCarFields);
+
     if (
-      existingCarFields.brand === updatedCarFields.brand &&
-      existingCarFields.model === updatedCarFields.model &&
-      existingCarFields.year === updatedCarFields.year &&
-      existingCarFields.type === updatedCarFields.type &&
-      existingCarFields.pricePerMinute === updatedCarFields.pricePerMinute &&
-      existingCarFields.engineCapacity === updatedCarFields.engineCapacity
+      JSON.stringify(existingCarFields) === JSON.stringify(updatedCarFields)
     ) {
       return res.status(402).json(existingCar);
     }
-
-    console.log("Existing Fields:", existingCarFields);
-    console.log("Updated Fields:", updatedCarFields);
 
     const updatedCar = await prisma.cars.update({
       where: {
         id: parseInt(id),
       },
       data: {
-        brand: brand,
-        model: model,
-        year: year,
-        type: type,
-        pricePerMinute: pricePerMinute,
-        engineCapacity: engineCapacity,
+        brandId: updatedCarFields.brandId,
+        typeId: updatedCarFields.typeId,
+        model,
+        year,
+        registration,
+        pricePerMinute,
+        engineCapacity,
+      },
+      include: {
+        brand: true,
+        type: true,
       },
     });
+
     return res.status(200).json(updatedCar);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });

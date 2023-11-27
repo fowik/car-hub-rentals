@@ -10,7 +10,6 @@ import ChangePassword from "../views/ChangePassword.vue";
 import ControlPanel from "../views/ControlPanel.vue";
 import ControlPanelUsers from "../views/ControlPanelUsers.vue";
 import ControlPanelCars from "../views/ControlPanelCars.vue";
-import ControlPanelCarsAdd from "../views/ControlPanelCarsAdd.vue";
 
 const routes = [
   {
@@ -67,11 +66,6 @@ const routes = [
     path: "/control-panel/cars/",
     name: "ControlPanelCars",
     component: ControlPanelCars,
-  },
-  {
-    path: "/control-panel/cars/add",
-    name: "ControlPanelCarsAdd",
-    component: ControlPanelCarsAdd,
   },
 ];
 

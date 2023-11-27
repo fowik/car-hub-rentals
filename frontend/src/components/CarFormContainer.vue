@@ -5,7 +5,16 @@
       <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
       <form @submit.prevent="editCar">
         <input v-model="id" type="hidden" />
-        <input v-model="brand" type="text" placeholder="Enter Brand" required />
+        <select v-model="brand" required> 
+          <option :value="brand" >{{ brand }}</option>
+          <option
+            v-for="carBrand in carBrands"
+            :key="carBrand.id"
+            :value="carBrand.BrandName"
+          >
+            {{ carBrand.BrandName }}
+          </option>
+        </select>
         <input v-model="model" type="text" placeholder="Enter Model" required />
         <input
           v-model.number="year"
@@ -17,14 +26,13 @@
         />
         <select v-model="type" required>
           <option :value="type">{{ type }}</option>
-          <option value="Sedan">Sedan</option>
-          <option value="SUV">SUV</option>
-          <option value="Truck">Truck</option>
-          <option value="Van">Van</option>
-          <option value="Coupe">Coupe</option>
-          <option value="Convertible">Convertible</option>
-          <option value="Wagon">Wagon</option>
-          <option value="Crossover">Crossover</option>
+          <option
+            v-for="carType in carTypes"
+            :key="carType.id"
+            :value="carType.typeName"
+          >
+            {{ carType.typeName }}
+          </option>
         </select>
         <input
           v-model.number="pricePerMinute"
@@ -94,11 +102,12 @@ export default {
         );
         if (response.status === 200) {
           const data = await response.json();
+          console.log(data);
           this.id = data.id;
-          this.brand = data.brand;
+          this.brand = data.brandName;
           this.model = data.model;
           this.year = data.year;
-          this.type = data.type;
+          this.type = data.typeName;
           this.pricePerMinute = data.pricePerMinute;
           this.engineCapacity = data.engineCapacity;
         } else {
@@ -112,10 +121,11 @@ export default {
       try {
         const id = this.id;
         const carData = {
-          brand: this.brand,
+          brandName: this.brand,
           model: this.model,
           year: this.year,
-          type: this.type,
+          typeName: this.type,
+          registration: null,
           pricePerMinute: this.pricePerMinute,
           engineCapacity: this.engineCapacity,
         };
@@ -142,12 +152,50 @@ export default {
         console.log(error);
       }
     },
+    async getCarBrands() {
+      try {
+        const response = await fetch("http://localhost:3000/api/brands/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          const carBrands = await response.json();
+          this.carBrands = carBrands; // Store fetched car brands in the component data
+        } else {
+          console.error("Failed to fetch car brands");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getCarTypes() {
+      try {
+        const response = await fetch("http://localhost:3000/api/types/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          const carTypes = await response.json();
+          this.carTypes = carTypes; // Store fetched car types in the component data
+        } else {
+          console.error("Failed to fetch car types");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     clearSuccessMessage() {
       this.successMessage = "";
     },
   },
   mounted() {
     this.handleEditCar(this.carData);
+    this.getCarBrands();
+    this.getCarTypes();
   },
 };
 </script>

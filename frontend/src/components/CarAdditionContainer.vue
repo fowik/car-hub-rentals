@@ -1,103 +1,81 @@
 <template>
   <section>
-    <ControlPanelNavigation />
-    <div class="main">
-      <div class="topbar">
-        <div class="toggle">
-          <ion-icon name="menu-outline"></ion-icon>
-        </div>
-        <!-- search -->
-        <div class="search">
-          <label>
-            <input type="text" placeholder="Search Here" />
-            <ion-icon name="search-outline"></ion-icon>
-          </label>
-        </div>
-
-        <!-- user image -->
-        <div class="user">
-          <img src="" />
-        </div>
-      </div>
-      <!-- Main -->
-      <div class="container">
-        <div class="car-form">
-          <!-- Login Form -->
-          <h2>Car addition</h2>
-          <p v-if="successMessage" class="success-message">
-            {{ successMessage }}
-          </p>
-          <form @submit.prevent="addCar">
-            <select v-model="selectedBrand" id="brandId" required>
-              <option disabled value="Select Brand">Select Brand</option>
-              <option
-                v-for="brandItem in brands"
-                :key="brandItem.id"
-                :value="brandItem.id"
-              >
-                {{ brandItem.name }}
-              </option>
-            </select>
-            <input
-              type="text"
-              v-model="model"
-              v-year="year"
-              placeholder="Enter Model"
-              required
-            />
-            <input
-              type="number"
-              v-model="year"
-              placeholder="Enter Year"
-              required
-              min="1940"
-              max="2024"
-              maxlength="4"
-              id="year-input"
-            />
-            <select v-model="selectedType" id="typeId" required>
-              <option disabled value="Select Type">Select Type</option>
-              <option
-                v-for="typeItem in types"
-                :key="typeItem.id"
-                :value="typeItem.id"
-              >
-                {{ typeItem.name }}
-              </option>
-            </select>
-            <input
-              type="number"
-              v-model="pricePerMinute"
-              placeholder="Enter Price per Minute"
-              required
-              id="price-input"
-              min="0.01"
-              max="10"
-              step="0.01"
-              @input="validateInput"
-            />
-            <input
-              type="number"
-              v-model="engineCapacity"
-              placeholder="Enter Engine Capacity"
-              required
-              min="1"
-              max="8.4"
-              step="0.1"
-            />
-            <div>
-              <button type="submit">Submit</button>
-            </div>
-          </form>
-        </div>
+    <!-- Main -->
+    <div id="car-form-container">
+      <div class="car-form">
+        <!-- Login Form -->
+        <h2>Car addition</h2>
+        <p v-if="successMessage" class="success-message">
+          {{ successMessage }}
+        </p>
+        <form @submit.prevent="addCar">
+          <select v-model="selectedBrand" id="brandId" required>
+            <option disabled value="Select Brand">Select Brand</option>
+            <option
+              v-for="brandItem in brands"
+              :key="brandItem.id"
+              :value="brandItem.id"
+            >
+              {{ brandItem.name }}
+            </option>
+          </select>
+          <input
+            type="text"
+            v-model="model"
+            v-year="year"
+            placeholder="Enter Model"
+            required
+          />
+          <input
+            type="number"
+            v-model="year"
+            placeholder="Enter Year"
+            required
+            min="1940"
+            max="2024"
+            maxlength="4"
+            id="year-input"
+          />
+          <select v-model="selectedType" id="typeId" required>
+            <option disabled value="Select Type">Select Type</option>
+            <option
+              v-for="typeItem in types"
+              :key="typeItem.id"
+              :value="typeItem.id"
+            >
+              {{ typeItem.name }}
+            </option>
+          </select>
+          <input
+            type="number"
+            v-model="pricePerMinute"
+            placeholder="Enter Price per Minute"
+            required
+            id="price-input"
+            min="0.01"
+            max="10"
+            step="0.01"
+            @input="validateInput"
+          />
+          <input
+            type="number"
+            v-model="engineCapacity"
+            placeholder="Enter Engine Capacity"
+            required
+            min="1"
+            max="8.4"
+            step="0.1"
+          />
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import ControlPanelNavigation from "@/components/ControlPanelNavigation.vue";
-
 export default {
   data() {
     return {
@@ -203,9 +181,6 @@ export default {
       this.engineCapacity = "";
     },
   },
-  components: {
-    ControlPanelNavigation,
-  },
   mounted() {
     this.getBrands();
     this.getTypes();
@@ -218,9 +193,7 @@ export default {
 
     yearInput.addEventListener("input", function (event) {
       const inputValue = event.target.value;
-      // Check if the input is "1232" and prevent it
       if (inputValue.length > 4) {
-        // If the input length exceeds 4 characters, truncate it
         event.target.value = inputValue.slice(0, 4);
       }
     });
@@ -230,8 +203,6 @@ export default {
       const decimalCount = (event.target.value.split(".")[1] || []).length;
 
       if (decimalCount > 2 || inputValue < 0.01 || inputValue >= 10) {
-        // Clear the input value if it has more than 2 decimal places,
-        // is less than 0.01, or is greater than or equal to 10
         event.target.value = "";
       }
     }
@@ -265,6 +236,18 @@ export default {
 </script>
 
 <style scoped>
+#car-form-container {
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  display: flex;
+  left: 50%;
+  transform: translate(-50%);
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 101%;
+}
 .car-form {
   background-color: #292929;
   padding: 20px;
