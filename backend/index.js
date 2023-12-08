@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { carTypesSeed } from "./prisma/seeds/carTypes.js";
 import { carBrandsSeed } from "./prisma/seeds/carBrands.js";
-// import { cars } from "./prisma/seeds/cars.js";
+import { carsSeed } from "./prisma/seeds/cars.js";
 
 dotenv.config();
 
@@ -65,7 +65,35 @@ for (const type of carTypesSeed) {
   }
 }
 
+// Seed cars
 
+for (const car of carsSeed) {
+  const existingCar = await prisma.cars.findUnique({
+    where: { registration: car.registration },
+  });
+
+  if (!existingCar) {
+    try {
+      await prisma.cars.create({
+        data: {
+          brandId: car.brandId,
+          model: car.model,
+          year: car.year,
+          registration: car.registration,
+          available: car.available,
+          createdAt: car.createdAt,
+          updatedAt: car.updatedAt,
+          engineCapacity: car.engineCapacity,
+          pricePerMinute: car.pricePerMinute,
+          typeId: car.typeId,
+        },
+      });
+      console.log(`Car ${car.registration} created`);
+    } catch (error) {
+      console.error(`Error creating car ${car.registration}:`, error);
+    }
+  }
+}
 
 app.post("/api/users/register", async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;

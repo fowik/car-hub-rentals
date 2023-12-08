@@ -43,6 +43,7 @@
           <table>
             <thead>
               <tr>
+                <td>Registration Number</td>
                 <td>Brand & Model</td>
                 <td>Year & Type & Engine Capacity</td>
                 <td>Status</td>
@@ -52,6 +53,9 @@
             </thead>
             <tbody class="table-container">
               <tr v-for="car in cars" :key="car.id">
+                <td>
+                  {{ car.registration }}
+                </td>
                 <td>
                   {{ car.brandName }}
                   <p>{{ car.model }}</p>
@@ -95,6 +99,7 @@
 import ControlPanelNavigation from "@/components/ControlPanelNavigation.vue";
 import CarFormContainer from "@/components/CarFormContainer.vue";
 import CarAdditionContainer from "@/components/CarAdditionContainer.vue";
+import axios from "axios";
 
 export default {
   data() {
@@ -135,25 +140,19 @@ export default {
     },
     async getCarsWithNames() {
       try {
-        const response = await fetch("http://localhost:3000/api/cars/get", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (response.status === 200) {
-          const cars = await response.json();
+        const response = await axios.get("http://localhost:3000/api/cars/get");
 
-          // Map each car to a promise for brand and type names
-          this.cars = cars;
-          // console.log(this.cars);
+        if (response.status === 200) {
+          this.cars = response.data;
+          await this.getCarsWithNames();
         } else {
-          console.error("Failed to fetch cars");
+          console.error("Failed to fetch cars - Status:", response.status);
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching cars:", error);
       }
     },
+
     async deleteCar(carId) {
       try {
         const id = carId;
@@ -325,12 +324,11 @@ tr {
   padding: 10px;
 }
 
-.details .cars table tr td:last-child {
-  text-align: end;
+.details .cars table tr td:first-child {
+  text-align: start;
 }
-
 .details .cars table tr td:nth-child(2) {
-  text-align: end;
+  text-align: start;
 }
 
 .details .cars table tr td:nth-child(3) {
@@ -338,7 +336,11 @@ tr {
 }
 
 .details .cars table tr td:nth-child(4) {
-  text-align: start;
+  text-align: end;
+}
+
+.details .cars table tr td:nth-child(5) {
+  text-align: end;
 }
 
 .details .cars table tr td:last-child {

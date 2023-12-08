@@ -126,6 +126,7 @@ export default {
   border-radius: 5px;
   justify-content: center;
   outline: none;
+  color: #292929;
 }
 
 .login-form button {

@@ -24,6 +24,12 @@
           min="1940"
           max="2024"
         />
+        <input
+          v-model="registration"
+          type="text"
+          placeholder="Enter Registration Number"
+          required
+        />
         <select v-model="type" required>
           <option :value="type">{{ type }}</option>
           <option
@@ -106,6 +112,7 @@ export default {
           this.brand = data.brandName;
           this.model = data.model;
           this.year = data.year;
+          this.registration = data.registration;
           this.type = data.typeName;
           this.pricePerMinute = data.pricePerMinute;
           this.engineCapacity = data.engineCapacity;
@@ -124,7 +131,7 @@ export default {
           model: this.model,
           year: this.year,
           typeName: this.type,
-          registration: null,
+          registration: this.registration,
           pricePerMinute: this.pricePerMinute,
           engineCapacity: this.engineCapacity,
         };
@@ -239,6 +246,7 @@ export default {
   border-radius: 5px;
   justify-content: center;
   outline: none;
+  color: #292929;
 }
 
 .car-form button {

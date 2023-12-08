@@ -16,9 +16,11 @@
         <li @click="scrollToCars">
           <router-link :to="{ path: '/' }">Cars</router-link>
         </li>
-        <li><router-link to="#">Pricing</router-link></li>
         <li @click="scrollToAbout">
           <router-link :to="{ path: '/' }">About</router-link>
+        </li>
+        <li>
+          <router-link :to="{ path: '/map' }">Map</router-link>
         </li>
         <li>
           <router-link v-if="isLoggedIn" to="/profile">Profile</router-link>

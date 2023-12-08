@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import About from "../views/About.vue";
 import Register from "../views/Register.vue";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
@@ -10,18 +9,13 @@ import ChangePassword from "../views/ChangePassword.vue";
 import ControlPanel from "../views/ControlPanel.vue";
 import ControlPanelUsers from "../views/ControlPanelUsers.vue";
 import ControlPanelCars from "../views/ControlPanelCars.vue";
-import Home2 from "../views/Home2.vue";
+import Map from "../views/Map.vue";
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: About,
   },
   {
     path: "/register",
@@ -69,9 +63,9 @@ const routes = [
     component: ControlPanelCars,
   },
   {
-    path: "/home2",
-    name: "Home2",
-    component: Home2,
+    path: "/map",
+    name: "Map",
+    component: Map,
   },
 ];
 

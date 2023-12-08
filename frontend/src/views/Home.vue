@@ -42,34 +42,22 @@
     </section>
     <section id="cars">
       <h1>Our cars</h1>
-      <div class="container">
-        <div class="card">
-          <div class="image"><span class="text">This is a chair.</span></div>
-          <span class="title">Cool Chair</span>
-          <span class="price">$100</span>
-        </div>
-        <div class="card">
-          <div class="image"><span class="text">This is a chair.</span></div>
-          <span class="title">Cool Chair</span>
-          <span class="price">$100</span>
-        </div>
-        <div class="card">
-          <div class="image"><span class="text">This is a chair.</span></div>
-          <span class="title">Cool Chair</span>
-          <span class="price">$100</span>
-        </div>
-        <div class="card">
-          <div class="image"><span class="text">This is a chair.</span></div>
-          <span class="title">Cool Chair</span>
-          <span class="price">$100</span>
-        </div>
-        <div class="card">
-          <div class="image"><span class="text">This is a chair.</span></div>
-          <span class="title">Cool Chair</span>
-          <span class="price">$100</span>
+      <div class="slider">
+        <div v-for="car in cars" :key="car.id" class="card-container">
+          <div class="card">
+            <div class="image">
+              <img src="../assets/img/hero-01.png" alt="" />
+            </div>
+            <div>
+              <span class="title">{{ car.brandName }} | {{ car.model }}</span>
+              <span class="price">{{ car.pricePerMinute }} €</span>
+            </div>
+            <button class="btn-reserve">Reserve</button>
+          </div>
         </div>
       </div>
     </section>
+
     <section id="about">
       <div class="about-section">
         <div class="inner-container">
@@ -86,6 +74,25 @@
             <span>Photoshop & Illustrator</span>
             <span>Coding</span>
           </div>
+
+          <!-- Additional content for the About section -->
+          <div class="team">
+            <h2>Our Team</h2>
+            <p>
+              Meet our talented team of professionals dedicated to providing the
+              best car services.
+            </p>
+            <!-- Add team member cards or other information here -->
+          </div>
+
+          <!-- Another section or content -->
+          <div class="mission">
+            <h2>Our Mission</h2>
+            <p>
+              Our mission is to redefine the car rental experience through
+              innovation and exceptional customer service.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -96,7 +103,7 @@
 export default {
   data() {
     return {
-      cars: this.getCars(),
+      cars: [],
     };
   },
   methods: {
@@ -110,8 +117,10 @@ export default {
         });
         if (response.status === 200) {
           const data = await response.json();
-          this.cars = data; // Assuming your response data is an array of car objects
-          console.log(this.cars);
+          const shuffledCars = data.sort(() => Math.random() - 0.5);
+          const limit = 5;
+
+          this.cars = shuffledCars.slice(0, limit);
         } else {
           console.error("Failed to fetch cars");
         }
@@ -120,10 +129,17 @@ export default {
       }
     },
   },
+  mounted() {
+    this.getCars();
+  },
 };
 </script>
 
 <style scoped>
+/* General styles */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+/* Main section styles */
 section {
   display: flex;
   flex-direction: column;
@@ -132,8 +148,7 @@ section {
   min-height: 60vh;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
-
+/* Home section styles */
 .home {
   width: 90%;
   min-height: 50vh;
@@ -206,7 +221,7 @@ section {
 }
 
 .btn .icon {
-  margin-right: 10px; /* Add margin to the icon for spacing */
+  margin-right: 10px;
 }
 
 .btn div {
@@ -229,117 +244,112 @@ section {
   color: var(--orange);
 }
 
-@media (max-width: 768px) {
-  .home {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-  }
-}
-
+/* Cars section styles */
 #cars {
-  min-height: 600px;
-  max-width: 80%;
-  display: flex;
+  width: 100%;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px 0;
 }
-
 #cars h1 {
   font-size: 3em;
   letter-spacing: 2px;
   margin-bottom: 100px;
 }
-
-#cars .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  flex-direction: row;
+.slider::-webkit-scrollbar {
+  width: 40px;
 }
 
-#cars .card {
-  position: relative;
-  width: 11.875em;
-  height: 16.5em;
-  box-shadow: 0px 1px 13px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 120ms;
+.slider::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slider::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px; /* Add rounded corners */
+}
+.slider {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  width: 75%;
+  height: 400px;
+}
+
+.slider .card {
+  width: 300px;
   background: #fff;
-  padding: 0.5em;
-  padding-bottom: 3.4em;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
 }
 
-#cars .card::after {
-  content: "Reserve";
-  padding-top: 1.25em;
-  padding-left: 1.25em;
-  position: absolute;
-  left: 0;
-  bottom: -60px;
-  background: #00ac7c;
-  color: #fff;
-  height: 2.5em;
-  width: 90%;
-  transition: all 80ms;
-  font-weight: 600;
-  text-transform: uppercase;
-  opacity: 0;
+.slider .card:hover {
+  transform: scale(1.05);
 }
 
-#cars .card .title {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.9em;
-  position: absolute;
-  left: 0.625em;
-  bottom: 1.875em;
-  font-weight: 400;
-  color: #000;
+.slider .card-container {
+  margin-right: 30px;
+  margin-left: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
-#cars .card .text {
-  font-size: 0.9em;
-  position: absolute;
-  font-weight: 400;
-  color: #000;
+.slider .card .image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #f1f1f1;
+  color: black;
 }
-
-#cars .card .price {
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: 0.9em;
-  position: absolute;
-  left: 0.625em;
-  bottom: 0.625em;
-  color: #000;
-}
-
-#cars .card:hover::after {
-  bottom: 0;
-  opacity: 1;
-}
-
-#cars .card:active {
-  transform: scale(0.98);
-}
-
-#cars .card:active::after {
-  content: "Reserved!";
-  height: 3.125em;
-}
-
-#cars .text {
-  max-width: 55px;
-}
-
-#cars .image {
-  background: rgb(241, 241, 241);
+.slider .card .image img {
   width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
+  height: auto;
+}
+.slider .card .title {
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  color: black;
+}
+.slider .card .price {
+  font-size: 1em;
+  color: black;
+  text-align: center;
+  padding-bottom: 10px;
+}
+.slider .card .btn-reserve {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 2px solid #333;
+  color: #333;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 10px;
+}
+.slider .card .btn-reserve:hover {
+  background-color: #333;
+  color: #fff;
 }
 
+/* About section styles */
 #about {
   min-height: 710px;
   max-width: 80%;
@@ -354,10 +364,115 @@ section {
   top: 0;
 }
 
+#about .inner-container {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 #about .about-section h1 {
   font-size: 3em;
   letter-spacing: 2px;
   margin-bottom: 100px;
   text-align: center;
+}
+
+.team {
+  margin-top: 40px;
+  width: 80%;
+  padding: 20px;
+  background-color: var(--black-light);
+  border-radius: 8px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.team h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.team p {
+  font-size: 1.1em;
+}
+
+/* Styling for individual team members or cards */
+.team-member {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+.team-member img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.team-member h3 {
+  font-size: 1.3em;
+  margin-bottom: 5px;
+}
+
+.team-member p {
+  font-size: 1em;
+}
+
+.mission {
+  margin-top: 40px;
+  width: 80%;
+  padding: 20px;
+  background-color: var(--black-light);
+  border-radius: 8px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
+}
+
+.mission h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.mission p {
+  font-size: 1.1em;
+}
+
+@media (max-width: 768px) {
+  .home {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .text h1 {
+    font-size: 2em;
+  }
+
+  .store img {
+    width: 150px;
+  }
+
+  .image img {
+    display: hidden;
+  }
+
+  #cars .container {
+    width: 80%;
+    display: flex;
+    overflow-x: hidden;
+    justify-content: center;
+  }
+  #cars .carousel__item {
+    margin-bottom: 0;
+  }
 }
 </style>

@@ -36,6 +36,12 @@
             maxlength="4"
             id="year-input"
           />
+          <input
+            type="text"
+            v-model="registration"
+            placeholder="Enter Registration Number"
+            required
+          />
           <select v-model="selectedType" id="typeId" required>
             <option disabled value="Select Type">Select Type</option>
             <option
@@ -85,6 +91,7 @@ export default {
       selectedBrand: "Select Brand",
       model: "",
       year: "",
+      registration: "",
       pricePerMinute: "",
       engineCapacity: "",
       successMessage: "",
@@ -176,6 +183,7 @@ export default {
       this.selectedBrand = "Select Brand";
       this.model = "";
       this.year = "";
+      this.registration = "";
       this.selectedType = "Select Type";
       this.pricePerMinute = "";
       this.engineCapacity = "";
@@ -274,6 +282,7 @@ export default {
   border-radius: 5px;
   justify-content: center;
   outline: none;
+  color: #292929;
 }
 
 .car-form button {
