@@ -66,7 +66,6 @@ for (const type of carTypesSeed) {
 }
 
 // Seed cars
-
 for (const car of carsSeed) {
   const existingCar = await prisma.cars.findUnique({
     where: { registration: car.registration },
@@ -534,6 +533,7 @@ app.put("/api/cars/update/:id", async (req, res) => {
 app.put("/api/users/update/:id", async (req, res) => {
   const { id } = req.params;
   const { username, email, password, full_name, isAdmin } = req.body;
+  const currentTime = new Date();
   try {
     const existingUser = await prisma.users.findUnique({
       where: {
@@ -579,6 +579,7 @@ app.put("/api/users/update/:id", async (req, res) => {
         password: password,
         fullName: full_name,
         isAdmin: isAdmin,
+        updatedAt: currentTime,
       },
     });
     return res.status(200).json(updatedUser);
@@ -586,5 +587,138 @@ app.put("/api/users/update/:id", async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   } finally {
     await prisma.$disconnect(); // Disconnect the Prisma client after the operation
+  }
+});
+
+app.post("/api/bookings/start/:carId/:userId", async (req, res) => {
+  const { userId, carId } = req.params;
+
+  const userIdInt = parseInt(userId, 10);
+  const carIdInt = parseInt(carId, 10);
+  const currentTime = new Date();
+
+  try {
+    const existingUserBookings = await prisma.bookings.findFirst({
+      where: {
+        userId: userIdInt,
+        status: "ACTIVE",
+      },
+    });
+
+    if (existingUserBookings !== null) {
+      return res
+        .status(201)
+        .json({ message: "User already has an active booking" });
+    }
+
+    const isCarAvailable = await prisma.cars.findUnique({
+      where: {
+        id: carIdInt,
+      },
+      select: {
+        available: true,
+      },
+    });
+
+    if (!isCarAvailable.available) {
+      return res.status(202).json({ message: "Car is already reserved" });
+    }
+
+    let newBooking;
+
+    await prisma.$transaction(async (prisma) => {
+      newBooking = await prisma.bookings.create({
+        data: {
+          userId: userIdInt,
+          carId: carIdInt,
+          startTime: currentTime,
+          endTime: currentTime, // Update endTime as needed
+          createdAt: currentTime,
+          updatedAt: currentTime,
+          bookedPrice: 0,
+          duration: 0,
+          status: "ACTIVE",
+        },
+      });
+
+      if (newBooking) {
+        const updatedCar = await prisma.cars.update({
+          where: {
+            id: carIdInt,
+          },
+          data: {
+            available: false,
+          },
+        });
+
+        console.log("Created new booking:", newBooking);
+      }
+    });
+
+    if (newBooking) {
+      return res.status(200).json(newBooking);
+    } else {
+      return res.status(500).json({ error: "Failed to create booking" });
+    }
+  } catch (error) {
+    console.error("Error during adding booking:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/api/bookings/get/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  const userIdInt = parseInt(userId, 10);
+  try {
+    const activeBooking = await prisma.bookings.findFirst({
+      where: {
+        userId: userIdInt,
+        status: "ACTIVE",
+      },
+    });
+
+    if (activeBooking) {
+      return res.status(200).json(activeBooking);
+    } else if (activeBooking === null) {
+      return;
+    } else {
+      return res.status(404).json({ message: "No active bookings found" });
+    }
+  } catch (error) {
+    console.error("Error getting active bookings:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.put("/api/bookings/end/:bookingId", async (req, res) => {
+  const { bookingId } = req.params;
+
+  const bookingIdInt = parseInt(bookingId, 10);
+  try {
+    const booking = await prisma.bookings.update({
+      where: {
+        id: bookingIdInt,
+      },
+      data: {
+        endTime: new Date(), // Update endTime to current time
+        status: "COMPLETED", // Update status to indicate completion
+      },
+    });
+
+    if (booking) {
+      const updatedCar = await prisma.cars.update({
+        where: {
+          id: booking.carId,
+        },
+        data: {
+          available: true,
+        },
+      });
+    }
+    res.status(200).json(booking);
+  } catch (error) {
+    console.error("Error ending reservation:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });

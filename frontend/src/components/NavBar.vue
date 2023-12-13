@@ -20,6 +20,9 @@
           <router-link :to="{ path: '/' }">About</router-link>
         </li>
         <li>
+          <router-link :to="{ path: '/reservation' }">Reservation</router-link>
+        </li>
+        <li>
           <router-link :to="{ path: '/map' }">Map</router-link>
         </li>
         <li>
@@ -153,6 +156,7 @@ export default {
   }
 
   .nav-links {
+    z-index: 100;
     display: none;
     flex-direction: column;
     position: absolute;

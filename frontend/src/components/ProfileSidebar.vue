@@ -5,29 +5,20 @@
         src="https://marketplace.canva.com/EAFXS8-cvyQ/1/0/400w/canva-brown-and-light-brown%2C-circle-framed-instagram-profile-picture-SsX0UeCGP8g.jpg"
         alt="profile_picture"
       />
-      <h3>{{ username }}</h3>
+      <h3>{{ user.username }}</h3>
     </div>
     <div class="side-bar-links">
       <router-link to="/profile"
         ><span class="icon"><ion-icon name="person-outline"></ion-icon></span
         >Profile</router-link
       >
-      <router-link to="/profile/change-password"
-        ><span class="icon"><ion-icon name="lock-open-outline"></ion-icon></span
-        >Password</router-link
-      >
       <router-link to="/profile/history"
         ><span class="icon"><ion-icon name="bookmarks-outline"></ion-icon></span
         >History</router-link
       >
-      <router-link to="/profile/age-verification"
-        ><span class="icon"
-          ><ion-icon name="ellipsis-vertical-outline"></ion-icon></span
-        >Age Verification</router-link
-      >
-      <router-link to="/profile/email-verification"
-        ><span class="icon"><ion-icon name="archive-outline"></ion-icon></span
-        >Email Verification</router-link
+      <router-link to="/profile/settings"
+        ><span class="icon"><ion-icon name="settings-outline"></ion-icon></span
+        >Settings</router-link
       >
       <router-link to="/profile/logout"
         ><span class="icon"> <ion-icon name="log-out-outline"></ion-icon> </span
@@ -39,9 +30,12 @@
 
 <script>
 export default {
-  created() {
-    this.CheckUserSession();
+  data() {
+    return {
+      user: JSON.parse(localStorage.getItem("user")),
+    };
   },
+  created() {},
   methods: {
     CheckUserSession() {
       const user = JSON.parse(localStorage.getItem("user"));

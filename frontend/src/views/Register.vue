@@ -20,7 +20,7 @@
           </span>
           <div>
             <input
-              type="text"
+              type="email"
               v-model="state.email"
               placeholder="Enter your e-mail"
             />
@@ -191,6 +191,7 @@ export default {
 }
 
 .registration-form input[type="text"],
+.registration-form input[type="email"],
 .registration-form input[type="password"] {
   width: 90%;
   padding: 10px;
@@ -200,6 +201,7 @@ export default {
   border-radius: 5px;
   justify-content: center;
   outline: none;
+  color: #292929;
 }
 
 span {

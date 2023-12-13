@@ -5,39 +5,26 @@
       <div class="main-bar-content">
         <div class="menu">
           <h2>Profile</h2>
-          <p>Last updated: 2023/02/15 15:18:14</p>
+          <p>Last updated: {{ user.updatedAt }}</p>
         </div>
-        <div class="content-to-save">
-          <div class="input-row">
-            <div class="input-group">
-              <label>Full name</label>
-              <input type="text" placeholder="Enter your full name" />
-            </div>
-            <div class="input-group">
-              <label>Username</label>
-              <input
-                type="text"
-                placeholder="Enter your username"
-                :value="username"
-              />
-            </div>
+        <div class="main-content">
+          <h2>Active reservation:</h2>
+          <div v-if="activeReservation">
+            <p>Car: {{ activeReservation.carBrand }}</p>
+            <p>Start: {{ activeReservation.startTime }}</p>
+            <button @click="endReservation()" class="btn-end">
+              End Reservation
+            </button>
           </div>
-          <div class="input-row">
-            <div class="input-group">
-              <label>Email</label>
-              <input
-                type="text"
-                placeholder="Enter your email"
-                :value="email"
-              />
-            </div>
-            <div class="input-group">
-              <label>Smth else</label>
-              <input type="text" placeholder="Enter your Smth else" />
-            </div>
-          </div>
-          <div class="save-btn">
-            <button>Save</button>
+          <div v-else>
+            <p>
+              You have no active reservation! Watch your
+              <router-link to="/profile/history">history</router-link>.
+            </p>
+            <p>
+              Want to
+              <router-link to="/reservation">reserve</router-link> a car?
+            </p>
           </div>
         </div>
       </div>
@@ -46,34 +33,58 @@
 </template>
 
 <script>
-import router from "@/router";
+import axios from "axios";
 import ProfileSidebar from "@/components/ProfileSidebar.vue";
 
 export default {
   data() {
     return {
-      username: "",
-      email: "",
+      user: JSON.parse(localStorage.getItem("user")),
+      activeReservation: null,
     };
+  },
+  mounted() {
+    this.getActiveReservation();
+  },
+  methods: {
+    async getActiveReservation() {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/bookings/get/${this.user.id}`
+        );
+
+        if (response.status === 200) {
+          this.activeReservation = response.data;
+        } else {
+          console.error(
+            "Failed to fetch active reservation - Status:",
+            response.status
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching active reservation:", error);
+      }
+    },
+    async endReservation() {
+      try {
+        const response = await axios.put(
+          `http://localhost:3000/api/bookings/end/${this.activeReservation.id}`
+        );
+
+        if (response.status === 200) {
+          this.activeReservation = null;
+          // Assuming you want to fetch the updated active reservation after ending it
+          this.getActiveReservation();
+        } else {
+          console.error("Failed to end reservation - Status:", response.status);
+        }
+      } catch (error) {
+        console.error("Error ending reservation:", error);
+      }
+    },
   },
   components: {
     ProfileSidebar,
-  },
-  methods: {
-    async getUser() {
-      try {
-        const user = JSON.parse(localStorage.getItem("user"));
-        console.log(user);
-        if (user && user.username) {
-          this.username = user.username;
-          this.email = user.email;
-        } else {
-          this.$router.push({ path: "/login" });
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
   },
 };
 </script>
@@ -88,7 +99,6 @@ export default {
   color: #ffffff;
   border-radius: 15px;
   margin-left: 3%;
-  margin-top: -106px;
 }
 
 .main-bar-content {
@@ -119,60 +129,29 @@ export default {
   font-size: small;
 }
 
-.main-bar-content .content-to-save {
+.main-bar-content .main-content {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-40%);
+  margin: 0 auto;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  align-items: flex-start;
 }
 
-.main-bar-content .content-to-save label {
-  width: 100%;
-  text-align: left;
-  font-weight: 500;
-  font-size: small;
-  margin-top: 10px;
+.main-content h2 {
+  margin-bottom: 10px;
+  font-weight: bolder;
+  color: #ffa31a; /* Added text color for h2 */
 }
 
-.main-bar-content .content-to-save input {
-  /* width: calc(100%); */
-  background: none;
-  padding: 10px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  border: 2px solid #666666;
-  color: #ffffff;
+.main-content p {
+  margin-bottom: 10px;
 }
 
-.input-row {
+.main-content .btn-end {
   display: flex;
-  flex-direction: row;
-  margin-bottom: 20px;
-  justify-content: space-between;
-}
-
-.input-group {
-  width: 400px;
-}
-
-.input-group label {
-  display: block;
-  padding-left: auto;
-  margin-bottom: 5px;
-}
-
-.input-group input {
-  width: 80%;
-  border: none;
-  border-radius: 5px;
-  justify-content: center;
-  outline: none;
-}
-
-.save-btn button {
-  display: flex;
-  margin: auto 0px 30px auto;
   background-color: #ffa31a;
   color: #fff;
   border: none;
@@ -181,9 +160,18 @@ export default {
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
+  align-self: flex-end;
 }
 
-.save-btn button:hover {
+.main-content .btn-end:hover {
   background-color: #f49200;
+}
+
+.main-content a {
+  color: #ffa31a;
+}
+
+.main-content a:hover {
+  text-decoration: underline;
 }
 </style>

@@ -8,8 +8,15 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
+
 export default {
-  name: "MapComponent",
   data() {
     return {
       map: null,
@@ -60,5 +67,13 @@ export default {
   height: 800px; /* Adjust the height as needed */
   width: 80%;
   margin: 0 auto;
+  z-index: 0;
+}
+
+@media (max-width: 768px) {
+  .leaflet-map {
+    width: 100%;
+    height: 500px;
+  }
 }
 </style>

@@ -52,7 +52,9 @@
               <span class="title">{{ car.brandName }} | {{ car.model }}</span>
               <span class="price">{{ car.pricePerMinute }} €</span>
             </div>
-            <button class="btn-reserve">Reserve</button>
+            <button class="btn-reserve" onclick="location.href='/reservation'">
+              Reserve
+            </button>
           </div>
         </div>
       </div>

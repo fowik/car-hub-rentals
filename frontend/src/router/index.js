@@ -5,11 +5,11 @@ import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
 import Profile from "../views/Profile.vue";
 import Logout from "../views/Logout.vue";
-import ChangePassword from "../views/ChangePassword.vue";
 import ControlPanel from "../views/ControlPanel.vue";
 import ControlPanelUsers from "../views/ControlPanelUsers.vue";
 import ControlPanelCars from "../views/ControlPanelCars.vue";
 import Map from "../views/Map.vue";
+import Reservation from "../views/Reservation.vue";
 
 const routes = [
   {
@@ -38,11 +38,6 @@ const routes = [
     component: Logout,
   },
   {
-    path: "/profile/change-password",
-    name: "ChangePassword",
-    component: ChangePassword,
-  },
-  {
     path: "/control-panel",
     name: "ControlPanel",
     component: ControlPanel,
@@ -66,6 +61,11 @@ const routes = [
     path: "/map",
     name: "Map",
     component: Map,
+  },
+  {
+    path: "/reservation",
+    name: "Reservation",
+    component: Reservation,
   },
 ];
 
