@@ -4,6 +4,8 @@ import Register from "../views/Register.vue";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
 import Profile from "../views/Profile.vue";
+import History from "../views/ProfileHistory.vue";
+import Settings from "../views/ProfileSettings.vue";
 import Logout from "../views/Logout.vue";
 import ControlPanel from "../views/ControlPanel.vue";
 import ControlPanelUsers from "../views/ControlPanelUsers.vue";
@@ -31,6 +33,16 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: Profile,
+  },
+  {
+    path: "/profile/history",
+    name: "History",
+    component: History,
+  },
+  {
+    path: "/profile/settings",
+    name: "Settings",
+    component: Settings,
   },
   {
     path: "/profile/logout",

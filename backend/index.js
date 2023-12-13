@@ -590,6 +590,44 @@ app.put("/api/users/update/:id", async (req, res) => {
   }
 });
 
+app.get("/api/bookings/get/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  const userIdInt = parseInt(userId, 10);
+  try {
+    const bookings = await prisma.bookings.findMany({
+      where: {
+        userId: userIdInt,
+      },
+      include: {
+        cars: {
+          include: {
+            brand: {
+              select: {
+                BrandName: true,
+              },
+            },
+            type: {
+              select: {
+                typeName: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (bookings) {
+      return res.status(200).json(bookings);
+    } else {
+      return res.status(404).json({ message: "No bookings found" });
+    }
+  } catch (error) {
+    console.error("Error getting bookings:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post("/api/bookings/start/:carId/:userId", async (req, res) => {
   const { userId, carId } = req.params;
 
@@ -666,7 +704,7 @@ app.post("/api/bookings/start/:carId/:userId", async (req, res) => {
   }
 });
 
-app.get("/api/bookings/get/:userId", async (req, res) => {
+app.get("/api/bookings/get/active/:userId", async (req, res) => {
   const { userId } = req.params;
 
   const userIdInt = parseInt(userId, 10);

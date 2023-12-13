@@ -50,7 +50,7 @@ export default {
     async getActiveReservation() {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/bookings/get/${this.user.id}`
+          `http://localhost:3000/api/bookings/get/active/${this.user.id}`
         );
 
         if (response.status === 200) {
