@@ -10,8 +10,16 @@
         <div class="main-content">
           <h2>Active reservation:</h2>
           <div v-if="activeReservation">
-            <p>Car: {{ activeReservation.carBrand }}</p>
+            <p>
+              Car: {{ activeReservation.cars.brand.BrandName }}
+              {{ activeReservation.cars.model }}
+            </p>
             <p>Start: {{ activeReservation.startTime }}</p>
+            <p>Time: {{ activeReservation.duration }}</p>
+            <p>
+              Price:
+              {{ activeReservation.bookedPrice }} €
+            </p>
             <button @click="endReservation()" class="btn-end">
               End Reservation
             </button>
@@ -55,6 +63,7 @@ export default {
 
         if (response.status === 200) {
           this.activeReservation = response.data;
+          return new Promise(resolve => setTimeout(() => this.getActiveReservation(), 1000));
         } else {
           console.error(
             "Failed to fetch active reservation - Status:",
@@ -73,7 +82,6 @@ export default {
 
         if (response.status === 200) {
           this.activeReservation = null;
-          // Assuming you want to fetch the updated active reservation after ending it
           this.getActiveReservation();
         } else {
           console.error("Failed to end reservation - Status:", response.status);

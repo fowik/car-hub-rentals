@@ -20,9 +20,10 @@
             </thead>
             <tbody class="table-container">
               <tr v-for="booking in bookings" :key="booking.id">
-                <td>{{ booking.cars.brand.BrandName }}</td>
+                <td>{{ booking.cars.brand.BrandName }} {{booking.cars.model}}</td>
                 <td>{{ booking.startTime }}</td>
-                <td>{{ booking.endTime }}</td>
+                <td v-if="booking.startTime === booking.endTime">Active!</td>
+                <td v-else>{{ booking.endTime }}</td>
                 <td>{{ booking.duration }}</td>
                 <td>{{ booking.bookedPrice }}$</td>
               </tr>
@@ -58,7 +59,9 @@ export default {
 
         if (response.status === 200) {
           this.bookings = response.data;
-          console.log(this.bookings);
+          return new Promise((resolve) =>
+            setTimeout(() => this.getBookings(), 1000)
+          );
         } else {
           console.error("Failed to fetch bookings - Status:", response.status);
         }
@@ -140,43 +143,43 @@ table tbody {
 }
 
 table thead th:nth-child(1) {
-    text-align: start;
+  text-align: start;
 }
 
 table thead th:nth-child(2) {
-    text-align: center;
+  text-align: center;
 }
 
 table thead th:nth-child(3) {
-    text-align: center;
+  text-align: center;
 }
 
 table thead th:nth-child(4) {
-    text-align: center;
+  text-align: center;
 }
 
 table thead th:nth-child(5) {
-    text-align: center;
+  text-align: center;
 }
 
 table tbody td:nth-child(1) {
-    text-align: start;
+  text-align: start;
 }
 
 table tbody td:nth-child(2) {
-    text-align: center;
-}   
+  text-align: center;
+}
 
 table tbody td:nth-child(3) {
-    text-align: center;
+  text-align: center;
 }
 
 table tbody td:nth-child(4) {
-    text-align: center;
+  text-align: center;
 }
 
 table tbody td:nth-child(5) {
-    text-align: center;
+  text-align: center;
 }
 
 table tbody::-webkit-scrollbar {

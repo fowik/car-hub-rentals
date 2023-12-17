@@ -13,7 +13,7 @@ model bookings {
   carId     Int
   startTime DateTime
   endTime   DateTime
-  duration  Int
+  duration  String   @default("0")
   status    String @default("pending")
   bookedPrice Float @default(0)
   createdAt DateTime  @default(now())

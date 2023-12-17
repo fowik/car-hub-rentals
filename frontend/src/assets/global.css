@@ -53,3 +53,12 @@ section {
   align-items: center;
   min-height: 60vh;
 }
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"] {
+  color: #000000;
+}

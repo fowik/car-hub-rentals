@@ -96,29 +96,24 @@ for (const car of carsSeed) {
 
 app.post("/api/users/register", async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
-
-  // Check if there are any existing users in the database
+  const updatedAt = new Date();
   const existingUsers = await prisma.users.findMany();
 
   if (existingUsers.length === 0) {
-    // If there are no existing users, create the first user as an admin
     const newUser = await prisma.users.create({
       data: {
         username: username,
         email: email,
         password: password,
-        // Assuming there is a field named full_name in your user schema
         full_name: req.body.full_name,
-        // Set the isAdmin field to true for the first user
         isAdmin: true,
+        updatedAt: updatedAt,
       },
     });
 
     console.log("Created new admin user:", newUser);
-    // Return the created admin user with a 201 status code
     return res.status(201).json(newUser);
   } else {
-    // Check if a user with the same email or username already exists
     const existingUser = await prisma.users.findFirst({
       where: {
         OR: [
@@ -133,7 +128,6 @@ app.post("/api/users/register", async (req, res) => {
     });
 
     if (existingUser) {
-      // If a user with the same email or username already exists, return a 409 status code
       const error =
         "Registration failed: user with this username or email already exists";
       return res.status(409).json(error);
@@ -144,8 +138,8 @@ app.post("/api/users/register", async (req, res) => {
           username: username,
           email: email,
           password: password,
-          // Assuming there is a field named full_name in your user schema
           full_name: req.body.full_name,
+          updatedAt: updatedAt,
         },
       });
 
@@ -174,7 +168,10 @@ app.post("/api/users/login", async (req, res) => {
     });
 
     if (user && user.password === password) {
-      // Passwords match, send a success response
+      const date = user.updatedAt.toISOString().split("T")[0];
+      const time = user.updatedAt.toTimeString().split(" ")[0];
+
+      user.updatedAt = `${date} ${time}`; // Update the updatedAt field with a formatted string
       res.status(200).json(user);
     } else {
       // User not found or password doesn't match, send an error response
@@ -617,8 +614,36 @@ app.get("/api/bookings/get/:userId", async (req, res) => {
       },
     });
 
-    if (bookings) {
-      return res.status(200).json(bookings);
+    if (bookings && bookings.length > 0) {
+      const formattedBookings = bookings.map((booking) => {
+        const { startTime, endTime, duration } = booking;
+
+        const startTimeFormatted = `${startTime.toISOString().split("T")[0]} ${
+          startTime.toTimeString().split(" ")[0]
+        }`;
+        const endTimeFormatted = `${endTime.toISOString().split("T")[0]} ${
+          endTime.toTimeString().split(" ")[0]
+        }`;
+
+        const hours = Math.floor(duration / 3600);
+        const minutes = Math.floor((duration % 3600) / 60);
+        const seconds = Math.floor((duration % 3600) % 60);
+
+        const formattedDuration = `${hours
+          .toString()
+          .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+
+        return {
+          ...booking,
+          startTime: startTimeFormatted,
+          endTime: endTimeFormatted,
+          duration: formattedDuration,
+        };
+      });
+
+      return res.status(200).json(formattedBookings);
     } else {
       return res.status(404).json({ message: "No bookings found" });
     }
@@ -706,6 +731,7 @@ app.post("/api/bookings/start/:carId/:userId", async (req, res) => {
 
 app.get("/api/bookings/get/active/:userId", async (req, res) => {
   const { userId } = req.params;
+  const currentTime = new Date();
 
   const userIdInt = parseInt(userId, 10);
   try {
@@ -714,10 +740,67 @@ app.get("/api/bookings/get/active/:userId", async (req, res) => {
         userId: userIdInt,
         status: "ACTIVE",
       },
+      include: {
+        cars: {
+          include: {
+            brand: {
+              select: {
+                BrandName: true,
+              },
+            },
+            type: {
+              select: {
+                typeName: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (activeBooking) {
-      return res.status(200).json(activeBooking);
+      if (activeBooking) {
+        const startTime = activeBooking.startTime;
+        const durationInMilliseconds = currentTime - startTime;
+        const durationInSeconds = durationInMilliseconds / 1000;
+
+        const hours = Math.floor(durationInSeconds / 3600);
+        const minutes = Math.floor((durationInSeconds % 3600) / 60);
+        const seconds = Math.floor((durationInSeconds % 3600) % 60);
+
+        // Add the duration to the activeBooking object
+        const formattedDuration = `${hours
+          .toString()
+          .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+        activeBooking.duration = formattedDuration;
+
+        // Calculate the price for the active booking
+
+        const pricePerMinute = activeBooking.cars.pricePerMinute;
+        const pricePerSecond = pricePerMinute / 60;
+        const price = pricePerSecond * durationInSeconds;
+        activeBooking.bookedPrice = price.toFixed(2);
+
+        const date = startTime.toISOString().split("T")[0];
+        const time = startTime.toTimeString().split(" ")[0];
+
+        activeBooking.startTime = `${date} ${time}`;
+        // Update the active booking with the calculated duration and price
+
+        const updatedBooking = await prisma.bookings.update({
+          where: {
+            id: activeBooking.id,
+          },
+          data: {
+            duration: durationInSeconds,
+            bookedPrice: parseFloat(price.toFixed(2)),
+          },
+        });
+
+        return res.status(200).json(activeBooking);
+      }
     } else if (activeBooking === null) {
       return;
     } else {
@@ -732,19 +815,54 @@ app.get("/api/bookings/get/active/:userId", async (req, res) => {
 app.put("/api/bookings/end/:bookingId", async (req, res) => {
   const { bookingId } = req.params;
 
-  const bookingIdInt = parseInt(bookingId, 10);
   try {
-    const booking = await prisma.bookings.update({
+    const bookingIdInt = parseInt(bookingId, 10);
+    const booking = await prisma.bookings.findUnique({
+      where: {
+        id: bookingIdInt,
+      },
+      include: {
+        cars: {
+          include: {
+            brand: {
+              select: {
+                BrandName: true,
+              },
+            },
+            type: {
+              select: {
+                typeName: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const startTime = booking.startTime;
+    const endTime = new Date();
+    const durationInMilliseconds = endTime - startTime;
+    const durationInSeconds = durationInMilliseconds / 1000;
+
+    // Calculate the price for the active booking
+
+    const pricePerMinute = booking.cars.pricePerMinute;
+    const pricePerSecond = pricePerMinute / 60;
+    const price = pricePerSecond * durationInSeconds;
+
+    const bookingEnd = await prisma.bookings.update({
       where: {
         id: bookingIdInt,
       },
       data: {
-        endTime: new Date(), // Update endTime to current time
-        status: "COMPLETED", // Update status to indicate completion
+        endTime: endTime,
+        status: "COMPLETED",
+        duration: durationInSeconds,
+        bookedPrice: parseFloat(price.toFixed(2)),
       },
     });
 
-    if (booking) {
+    if (bookingEnd) {
       const updatedCar = await prisma.cars.update({
         where: {
           id: booking.carId,
