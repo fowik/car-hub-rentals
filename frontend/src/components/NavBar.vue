@@ -151,6 +151,9 @@ export default {
 }
 
 @media (max-width: 786px) {
+  .nav-bar {
+    display: sticky;
+  }
   .burger {
     display: block;
   }

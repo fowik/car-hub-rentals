@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <div class="navigation">
+    <div
+      class="navigation bg-black-light transition-all duration-500 border-l-10 border-black-light fixed top-16 h-screen w-80"
+    >
       <ul>
         <li>
           <a href="#">
@@ -81,7 +83,6 @@ export default {
     return {};
   },
   mounted() {
-    // Retrieve the user object from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
     // Check if the user object is present and has a username property
     if (user) {
@@ -93,6 +94,37 @@ export default {
       // Handle the case when the user is not logged in or user data is not available in localStorage
       this.$router.push({ path: "/" });
     }
+
+    this.setupMenuToggle();
+  },
+  methods: {
+    setupMenuToggle() {
+      let toggle = document.querySelector(".toggle");
+      let navigation = document.querySelector(".navigation");
+      let main = document.querySelector(".main");
+      let list = document.querySelectorAll(".navigation li");
+
+      toggle.onclick = () => {
+        toggle.classList.toggle("active");
+        navigation.classList.toggle("active");
+        main.classList.toggle("active");
+      };
+
+      function activeLink() {
+        list.forEach((item) => item.classList.remove("hovered"));
+        this.classList.add("hovered");
+      }
+
+      list.forEach((item) => item.addEventListener("mouseover", activeLink));
+    },
+    beforeDestroy() {
+      // Cleanup logic when component is destroyed
+      // Remove event listeners or any other cleanup if necessary
+      let list = document.querySelectorAll(".navigation li");
+      list.forEach((item) =>
+        item.removeEventListener("mouseover", this.activeLink)
+      );
+    },
   },
 };
 </script>
@@ -335,5 +367,47 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .main,
+  .topbar,
+  .cardBox,
+  .details {
+    width: calc(100% - 80px);
+    margin-left: -120px;
+  }
+
+  .cardBox {
+    overflow: auto;
+    width: calc(100% - 40px) !important;
+    margin-left: -100px !important;
+    margin-right: auto !important;
+  }
+
+  .cardBox::-webkit-scrollbar {
+    width: 3px;
+    background: var(--black);
+    border-radius: 10px;
+  }
+
+  .cardBox::-webkit-scrollbar-thumb {
+    background: var(--orange);
+    border-radius: 10px;
+  }
+
+  .navigation {
+    width: 80px !important;
+  }
+
+  .navigation ul li a .title {
+    display: none;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+  }
 }
 </style>

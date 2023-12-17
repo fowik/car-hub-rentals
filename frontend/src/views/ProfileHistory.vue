@@ -20,7 +20,9 @@
             </thead>
             <tbody class="table-container">
               <tr v-for="booking in bookings" :key="booking.id">
-                <td>{{ booking.cars.brand.BrandName }} {{booking.cars.model}}</td>
+                <td>
+                  {{ booking.cars.brand.BrandName }} {{ booking.cars.model }}
+                </td>
                 <td>{{ booking.startTime }}</td>
                 <td v-if="booking.startTime === booking.endTime">Active!</td>
                 <td v-else>{{ booking.endTime }}</td>
@@ -206,5 +208,29 @@ tbody tr:hover {
 
 td {
   color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .main-bar {
+    width: 80%;
+    min-height: auto;
+  }
+  .side-bar-left {
+    width: 15%;
+    min-height: auto;
+    margin-bottom: 20px;
+  }
+
+  .side-bar-links p.text {
+    display: none !important;
+    width: 0 !important;
+  }
+  .side-bar-username img {
+    display: none;
+  }
+
+  .side-bar-username h3 {
+    margin-top: 20px;
+  }
 }
 </style>

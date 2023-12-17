@@ -7,8 +7,8 @@
       @edit-user="handleEditUser"
       @click="hideUserForm"
     />
-    <div class="main">
-      <div class="topbar">
+    <div class="main transition-all duration-500 ml-80">
+      <div class="topbar w-full h-16 flex justify-between items-center px-4">
         <div class="toggle">
           <ion-icon name="menu-outline"></ion-icon>
         </div>
@@ -99,28 +99,7 @@ export default {
     UserFormContainer,
   },
   mounted() {
-    document.addEventListener("DOMContentLoaded", function () {
-      // MenuToggle
-      let toggle = document.querySelector(".toggle");
-      let navigation = document.querySelector(".navigation");
-      let main = document.querySelector(".main");
-
-      toggle.onclick = function () {
-        toggle.classList.toggle("active");
-        navigation.classList.toggle("active");
-        main.classList.toggle("active");
-      };
-
-      // Select all list items with class "navigation"
-      let list = document.querySelectorAll(".navigation li");
-
-      function activeLink() {
-        list.forEach((item) => item.classList.remove("hovered"));
-        this.classList.add("hovered");
-      }
-
-      list.forEach((item) => item.addEventListener("mouseover", activeLink));
-    });
+    this.getUsers();
   },
   methods: {
     showUserForm(UserId) {
@@ -179,6 +158,8 @@ export default {
 </script>
 
 <style scoped>
+.main {
+}
 .details {
   width: 100%;
   padding: 20px;

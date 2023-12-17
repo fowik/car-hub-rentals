@@ -63,7 +63,9 @@ export default {
 
         if (response.status === 200) {
           this.activeReservation = response.data;
-          return new Promise(resolve => setTimeout(() => this.getActiveReservation(), 1000));
+          return new Promise((resolve) =>
+            setTimeout(() => this.getActiveReservation(), 1000)
+          );
         } else {
           console.error(
             "Failed to fetch active reservation - Status:",
@@ -181,5 +183,28 @@ export default {
 
 .main-content a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .main-bar {
+    width: 80%;
+  }
+  .side-bar-left {
+    width: 15%;
+    min-height: auto;
+    margin-bottom: 20px;
+  }
+
+  .side-bar-links p.text {
+    display: none !important;
+    width: 0 !important;
+  }
+  .side-bar-username img {
+    display: none;
+  }
+
+  .side-bar-username h3 {
+    margin-top: 20px;
+  }
 }
 </style>

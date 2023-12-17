@@ -2,8 +2,8 @@
   <section>
     <ContorlPanelNavigation />
     <!-- main content -->
-    <div class="main">
-      <div class="topbar">
+    <div class="main transition-all duration-500 ml-80">
+      <div class="topbar w-full h-16 flex justify-between items-center px-4">
         <div class="toggle">
           <ion-icon name="menu-outline"></ion-icon>
         </div>
@@ -232,30 +232,7 @@ export default {
   components: {
     ContorlPanelNavigation,
   },
-  mounted() {
-    document.addEventListener("DOMContentLoaded", function () {
-      // MenuToggle
-      let toggle = document.querySelector(".toggle");
-      let navigation = document.querySelector(".navigation");
-      let main = document.querySelector(".main");
-
-      toggle.onclick = function () {
-        toggle.classList.toggle("active");
-        navigation.classList.toggle("active");
-        main.classList.toggle("active");
-      };
-
-      // Select all list items with class "navigation"
-      let list = document.querySelectorAll(".navigation li");
-
-      function activeLink() {
-        list.forEach((item) => item.classList.remove("hovered"));
-        this.classList.add("hovered");
-      }
-
-      list.forEach((item) => item.addEventListener("mouseover", activeLink));
-    });
-  },
+  mounted() {},
 };
 </script>
 
@@ -498,28 +475,14 @@ tr {
   color: #8c8c8c;
 }
 
-@media (max-width: 991px) {
-  .navigation {
-    left: -300px;
-  }
-  .navigation.active {
-    left: 0;
-  }
-  .main {
-    width: 100%;
-    left: 0;
-  }
-  .main.active {
-    left: 300px;
-  }
-  .cardBox {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 768px) {
   .details {
     grid-template-columns: repeat(1, 1fr);
+  }
+
+  .details .recentRents,
+  .details .recentCustomers {
+    min-height: auto;
   }
   .recentRents {
     overflow-x: auto;
@@ -527,40 +490,6 @@ tr {
 
   .status.inprogress {
     white-space: nowrap;
-  }
-}
-
-@media (max-width: 480px) {
-  .cardBox {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .cardHeader h2 {
-    font-size: 20px;
-  }
-
-  .user {
-    min-width: 40px;
-  }
-
-  .navigation {
-    width: 100%;
-    left: -100%;
-    z-index: 1000;
-  }
-
-  .navigation.active {
-    width: 100%;
-    left: 0;
-  }
-
-  .toggle {
-    z-index: 10001;
-  }
-
-  main.active .toggle {
-    position: fixed;
-    right: 0;
-    left: initial;
   }
 }
 </style>

@@ -9,20 +9,22 @@
     </div>
     <div class="side-bar-links">
       <router-link to="/profile"
-        ><span class="icon"><ion-icon name="person-outline"></ion-icon></span
-        >Profile</router-link
+        ><span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+        <p class="text">Profile</p></router-link
       >
       <router-link to="/profile/history"
-        ><span class="icon"><ion-icon name="bookmarks-outline"></ion-icon></span
-        >History</router-link
+        ><span class="icon"
+          ><ion-icon name="bookmarks-outline"></ion-icon
+        ></span>
+        <p class="text">History</p></router-link
       >
       <router-link to="/profile/settings"
-        ><span class="icon"><ion-icon name="settings-outline"></ion-icon></span
-        >Settings</router-link
+        ><span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
+        <p class="text">Settings</p></router-link
       >
       <router-link to="/profile/logout"
-        ><span class="icon"> <ion-icon name="log-out-outline"></ion-icon> </span
-        >Logout</router-link
+        ><span class="icon"><ion-icon name="log-out-outline"></ion-icon> </span>
+        <p class="text">Logout</p></router-link
       >
     </div>
   </div>
@@ -51,37 +53,19 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+body {
+  width: 90%;
+}
+
 .side-bar-left {
   display: flex;
   flex-direction: column;
   max-height: 56vh;
-  width: 15%;
+  width: 10%;
   background-color: #292929;
   color: #ffffff;
   border-radius: 15px;
-}
-
-@media (max-width: 768px) {
-  .side-bar-left {
-    width: 100%;
-    min-height: auto;
-    margin-bottom: 20px;
-  }
-
-  .main-bar {
-    width: 100%;
-    min-height: auto;
-  }
-
-  .input-group {
-    width: 100%;
-  }
-
-  .save-btn button {
-    width: 100%;
-    margin: 10px 0;
-  }
 }
 
 .side-bar-username {
@@ -152,5 +136,32 @@ export default {
 
 .side-bar-links a .icon ion-icon {
   font-size: 1.2em;
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    width: 80px;
+  }
+  .main-bar {
+    width: 90%;
+    min-height: auto;
+  }
+  .side-bar-left {
+    width: 15%;
+    min-height: auto;
+    margin-bottom: 20px;
+  }
+
+  .side-bar-links p.text {
+    display: none !important;
+    width: 0 !important;
+  }
+  .side-bar-username img {
+    display: none;
+  }
+
+  .side-bar-username h3 {
+    margin-top: 20px;
+  }
 }
 </style>
