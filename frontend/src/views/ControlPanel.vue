@@ -2,8 +2,8 @@
   <section>
     <ContorlPanelNavigation />
     <!-- main content -->
-    <div class="main transition-all duration-500 ml-80">
-      <div class="topbar w-full h-16 flex justify-between items-center px-4">
+    <div class="main transition-all duration-500">
+      <div class="topbar h-16 flex justify-between items-center px-4">
         <div class="toggle">
           <ion-icon name="menu-outline"></ion-icon>
         </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="card">
           <div>
-            <div class="numbers">80</div>
+            <div class="numbers">{{ bookingCount }}</div>
             <div class="cardName">Rents</div>
           </div>
           <div class="iconBx">
@@ -52,7 +52,7 @@
         </div>
         <div class="card">
           <div>
-            <div class="numbers">$7,842</div>
+            <div class="numbers">${{ bookingEarning }}</div>
             <div class="cardName">Earning</div>
           </div>
           <div class="iconBx">
@@ -77,68 +77,33 @@
               </tr>
             </thead>
             <tbody class="table-container">
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
+              <tr v-for="booking in bookings" :key="booking.id">
+                <td>{{ booking.cars.brand.BrandName }}</td>
+                <td>
+                  {{
+                    booking.bookedPrice ? booking.bookedPrice : "In Progress"
+                  }}$
+                </td>
                 <td>Paid</td>
                 <td>
-                  <span class="status delivered">Delivered</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Ford GT</td>
-                <td>$1500</td>
-                <td>Paid</td>
-                <td>
-                  <span class="status return">Return</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Shelby Cobra</td>
-                <td>$1100</td>
-                <td>Due</td>
-                <td>
-                  <span class="status inprogress">In Progress</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Chevrolet Camaro</td>
-                <td>$1300</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Mustang</td>
-                <td>$1200</td>
-                <td>Paid</td>
-                <td>
-                  <span class="status delivered">Delivered</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Ford GT</td>
-                <td>$1500</td>
-                <td>Paid</td>
-                <td>
-                  <span class="status return">Return</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Shelby Cobra</td>
-                <td>$1100</td>
-                <td>Due</td>
-                <td>
-                  <span class="status inprogress">In Progress</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Chevrolet Camaro</td>
-                <td>$1300</td>
-                <td>Due</td>
-                <td>
-                  <span class="status pending">Pending</span>
+                  <span
+                    v-if="booking.status === 'Delivered'"
+                    class="status delivered"
+                    >Delivered</span
+                  >
+                  <span
+                    v-if="booking.status === 'In Progress'"
+                    class="status inprogress"
+                    >In Progress</span
+                  >
+                  <span
+                    v-if="booking.status === 'Pending'"
+                    class="status pending"
+                    >Pending</span
+                  >
+                  <span v-if="booking.status === 'Return'" class="status Return"
+                    >Return</span
+                  >
                 </td>
               </tr>
             </tbody>
@@ -147,68 +112,27 @@
         <!-- New Customers -->
         <div class="recentCustomers">
           <div class="cardHeader">
-            <h2>Recent Customers</h2>
+            <h2>New Customers</h2>
           </div>
           <table>
             <tbody class="table-container">
-              <tr>
+              <tr v-for="customer in customers" :key="customer.id">
                 <td width="60px">
                   <div class="imgBx">
-                    <img src="customer1.jpg" alt="Customer 1" />
+                    <img
+                      src="../assets/img/profile-background.jpg"
+                      alt="Customer 1"
+                    />
                   </div>
                 </td>
                 <td>
-                  <h4>Michael<br /><span>United States</span></h4>
-                </td>
-              </tr>
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img src="customer2.jpg" alt="Customer 2" />
-                  </div>
-                </td>
-                <td>
-                  <h4>Linda<br /><span>Canada</span></h4>
-                </td>
-              </tr>
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img src="customer3.jpg" alt="Customer 3" />
-                  </div>
-                </td>
-                <td>
-                  <h4>Alex<br /><span>Australia</span></h4>
-                </td>
-              </tr>
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img src="customer4.jpg" alt="Customer 4" />
-                  </div>
-                </td>
-                <td>
-                  <h4>Emily<br /><span>United Kingdom</span></h4>
-                </td>
-              </tr>
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img src="customer5.jpg" alt="Customer 5" />
-                  </div>
-                </td>
-                <td>
-                  <h4>David<br /><span>Germany</span></h4>
-                </td>
-              </tr>
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img src="customer6.jpg" alt="Customer 6" />
-                  </div>
-                </td>
-                <td>
-                  <h4>Sophia<br /><span>France</span></h4>
+                  <h4>
+                    {{
+                      customer.fullName
+                        ? customer.fullName
+                        : "Name not available"
+                    }}<br /><span>Latvia</span>
+                  </h4>
                 </td>
               </tr>
             </tbody>
@@ -225,14 +149,69 @@ import ContorlPanelNavigation from "@/components/ControlPanelNavigation.vue";
 export default {
   data() {
     return {
-      username: "",
-      email: "",
+      bookings: [],
+      bookingCount: 0,
+      bookingEarning: 0,
+      customers: [],
     };
   },
   components: {
     ContorlPanelNavigation,
   },
-  mounted() {},
+  mounted() {
+    this.getLastBookings();
+    this.getNewCustomers();
+  },
+  methods: {
+    async getLastBookings() {
+      try {
+        const response = await fetch("http://localhost:3000/api/bookings/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status === 200) {
+          let data = await response.json();
+          // Sort the bookings by createdAt property
+          data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          this.bookings = data;
+          this.bookingCount = data.length;
+          this.bookingEarning = data.reduce(
+            (acc, booking) => acc + booking.bookedPrice,
+            0
+          );
+          console.log(this.bookings);
+        } else {
+          console.error("Failed to fetch bookings - Status:", response.status);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getNewCustomers() {
+      try {
+        const response = await fetch("http://localhost:3000/api/users/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          let data = await response.json();
+          // Sort the customers by createdAt property
+          data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          this.customers = data;
+          console.log(this.customers);
+        } else {
+          console.error("Failed to fetch new customers");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
 };
 </script>
 
@@ -473,23 +452,5 @@ tr {
 .recentCustomers table tr td h4 span {
   font-size: 14px;
   color: #8c8c8c;
-}
-
-@media (max-width: 768px) {
-  .details {
-    grid-template-columns: repeat(1, 1fr);
-  }
-
-  .details .recentRents,
-  .details .recentCustomers {
-    min-height: auto;
-  }
-  .recentRents {
-    overflow-x: auto;
-  }
-
-  .status.inprogress {
-    white-space: nowrap;
-  }
 }
 </style>

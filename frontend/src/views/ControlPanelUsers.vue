@@ -7,7 +7,7 @@
       @edit-user="handleEditUser"
       @click="hideUserForm"
     />
-    <div class="main transition-all duration-500 ml-80">
+    <div class="main transition-all duration-500">
       <div class="topbar w-full h-16 flex justify-between items-center px-4">
         <div class="toggle">
           <ion-icon name="menu-outline"></ion-icon>

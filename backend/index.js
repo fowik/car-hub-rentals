@@ -664,7 +664,7 @@ app.post("/api/bookings/start/:carId/:userId", async (req, res) => {
     const existingUserBookings = await prisma.bookings.findFirst({
       where: {
         userId: userIdInt,
-        status: "ACTIVE",
+        status: "In Progress",
       },
     });
 
@@ -700,7 +700,7 @@ app.post("/api/bookings/start/:carId/:userId", async (req, res) => {
           updatedAt: currentTime,
           bookedPrice: 0,
           duration: 0,
-          status: "ACTIVE",
+          status: "In Progress",
         },
       });
 
@@ -729,6 +729,46 @@ app.post("/api/bookings/start/:carId/:userId", async (req, res) => {
   }
 });
 
+app.get("/api/bookings/get", async (req, res) => {
+  try {
+    const bookings = await prisma.bookings.findMany({
+      include: {
+        cars: {
+          include: {
+            brand: {
+              select: {
+                BrandName: true,
+              },
+            },
+            type: {
+              select: {
+                typeName: true,
+              },
+            },
+          },
+        },
+        users: {
+          select: {
+            username: true,
+            email: true,
+            fullName: true,
+            isAdmin: true,
+          },
+        },
+      },
+    });
+
+    if (bookings && bookings.length > 0) {
+      return res.status(200).json(bookings); // Send the bookings data in the response
+    } else {
+      return res.status(404).json({ message: "No bookings found" });
+    }
+  } catch (error) {
+    console.error("Error getting bookings:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.get("/api/bookings/get/active/:userId", async (req, res) => {
   const { userId } = req.params;
   const currentTime = new Date();
@@ -738,7 +778,7 @@ app.get("/api/bookings/get/active/:userId", async (req, res) => {
     const activeBooking = await prisma.bookings.findFirst({
       where: {
         userId: userIdInt,
-        status: "ACTIVE",
+        status: "In Progress",
       },
       include: {
         cars: {
@@ -856,7 +896,7 @@ app.put("/api/bookings/end/:bookingId", async (req, res) => {
       },
       data: {
         endTime: endTime,
-        status: "COMPLETED",
+        status: "Delivered",
         duration: durationInSeconds,
         bookedPrice: parseFloat(price.toFixed(2)),
       },

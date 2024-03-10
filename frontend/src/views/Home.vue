@@ -1,6 +1,6 @@
 <template>
   <section>
-    <section class="home">
+    <section id="home">
       <div class="text">
         <h1>Looking for a car</h1>
         <p>
@@ -65,35 +65,62 @@
         <div class="inner-container">
           <h1>About us</h1>
           <p class="text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptatum, voluptate, quibusdam, quia voluptas quod quos
-            voluptatibus quae doloribus quidem voluptatem. Quisquam voluptatum,
-            voluptate, quibusdam, quia voluptas quod quos voluptatibus quae
-            doloribus quidem voluptatem.
+            Welcome to CarHub, your premier destination for hassle-free and
+            reliable car rental services. Established with a commitment to
+            providing top-notch vehicles and exceptional customer service, we
+            take pride in being your trusted partner for all your transportation
+            needs. At CarHub, we understand that every journey is unique, and we
+            strive to make your experience memorable and convenient. Whether
+            you're a business traveler, a tourist exploring new destinations, or
+            simply in need of a temporary vehicle, we have a diverse fleet of
+            well-maintained cars to suit your preferences and requirements.
           </p>
-          <div class="skills">
-            <span>Web Design</span>
-            <span>Photoshop & Illustrator</span>
-            <span>Coding</span>
-          </div>
 
           <!-- Additional content for the About section -->
           <div class="team">
             <h2>Our Team</h2>
             <p>
-              Meet our talented team of professionals dedicated to providing the
-              best car services.
+              Our team is comprised of dedicated professionals who are
+              passionate about delivering excellence. From the moment you choose
+              CarHub, expect a seamless rental process, transparent pricing, and
+              unparalleled support. We prioritize your safety and comfort,
+              ensuring that each vehicle undergoes rigorous inspections and
+              maintenance checks before reaching your hands.
             </p>
             <!-- Add team member cards or other information here -->
           </div>
 
           <!-- Another section or content -->
           <div class="mission">
-            <h2>Our Mission</h2>
-            <p>
-              Our mission is to redefine the car rental experience through
-              innovation and exceptional customer service.
-            </p>
+            <h2>Why choose CarHub for your car rental needs?</h2>
+            <ol>
+              <li>
+                Wide Range of Vehicles: Select from our extensive fleet of cars,
+                including sedans, SUVs, and luxury vehicles, ensuring you find
+                the perfect match for your journey.
+              </li>
+              <li>
+                Affordable Pricing: We believe in providing value for your
+                money. Our transparent pricing and competitive rates make
+                renting a car with us a cost-effective choice.
+              </li>
+              <li>
+                Customer Satisfaction: Your satisfaction is our priority. Our
+                friendly and knowledgeable customer service team is ready to
+                assist you at every step, making sure your experience with us is
+                smooth and enjoyable.
+              </li>
+              <li>
+                Convenience: Enjoy the convenience of online reservations,
+                flexible rental periods, and multiple pickup/drop-off locations.
+                We aim to make your journey as stress-free as possible. Safety
+              </li>
+              <li>
+                First: Your safety is paramount to us. Our vehicles undergo
+                regular maintenance, and we implement stringent cleaning
+                protocols to ensure a hygienic and safe environment.
+              </li>
+            </ol>
           </div>
         </div>
       </div>
@@ -148,12 +175,15 @@ section {
   align-items: center;
   justify-content: center;
   min-height: 60vh;
+  height: 100%;
 }
 
 /* Home section styles */
-.home {
+#home {
+  /* background-image: url("@/assets/img/pexels-henry-&-co-1171480.jpg");
+  background-size: cover; */
   width: 90%;
-  min-height: 50vh;
+  min-height: calc(100vh);
   position: relative;
   display: grid;
   align-items: center;
@@ -167,6 +197,8 @@ section {
 
 .text p {
   margin: 0.5rem 0 1rem;
+  font-size: 1.2em;
+  align-items: justify;
 }
 
 .store {
@@ -211,7 +243,7 @@ section {
   font-size: 14px;
   width: 260px;
   color: #fff;
-  background-color: #0066cc00;
+  background-color: #21252a;
   padding: 10px 30px;
   border: solid #ffffff 2px;
   box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
@@ -240,19 +272,21 @@ section {
 }
 
 .btn:hover {
-  background-color: var(--black-light);
-  border-color: var(--orange);
+  background-color: #292929;
+  border-color: #ffa31a;
   transition: 274ms;
-  color: var(--orange);
+  color: #ffa31a;
 }
 
 /* Cars section styles */
 #cars {
   width: 100%;
+  min-height: 100vh;
   justify-content: center;
   overflow: hidden;
   padding: 20px 0;
 }
+
 #cars h1 {
   font-size: 3em;
   letter-spacing: 2px;
@@ -267,7 +301,7 @@ section {
 }
 
 .slider::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: gray;
   border-radius: 10px; /* Add rounded corners */
 }
 .slider {
@@ -353,7 +387,7 @@ section {
 
 /* About section styles */
 #about {
-  min-height: 710px;
+  min-height: 100vh;
   max-width: 80%;
   display: flex;
   flex-direction: column;
@@ -379,15 +413,20 @@ section {
 #about .about-section h1 {
   font-size: 3em;
   letter-spacing: 2px;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
+#about .about-section .text {
+  font-size: 1.2em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 .team {
-  margin-top: 40px;
   width: 80%;
   padding: 20px;
-  background-color: var(--black-light);
+  background-color: #292929;
   border-radius: 8px;
   text-align: center;
   margin-left: auto;
@@ -429,10 +468,10 @@ section {
 }
 
 .mission {
-  margin-top: 40px;
+  margin-top: 20px;
   width: 80%;
   padding: 20px;
-  background-color: var(--black-light);
+  background-color: #292929;
   border-radius: 8px;
   text-align: center;
   margin-left: auto;
@@ -449,6 +488,16 @@ section {
   font-size: 1.1em;
 }
 
+.mission ol {
+  text-align: left;
+  font-size: 1.1em;
+  margin-left: 20px;
+}
+
+.mission li {
+  margin-bottom: 10px;
+  list-style: decimal;
+}
 @media (max-width: 768px) {
   .home {
     grid-template-columns: 1fr;

@@ -12,7 +12,7 @@
         <div class="bar"></div>
       </div>
       <ul class="nav-links" :class="{ active: isNavbarActive }">
-        <li><router-link to="/">Home</router-link></li>
+        <li @click="scrollToHome"><router-link to="/">Home</router-link></li>
         <li @click="scrollToCars">
           <router-link :to="{ path: '/' }">Cars</router-link>
         </li>
@@ -47,6 +47,15 @@ export default {
     window.addEventListener("resize", this.checkWindowWidth);
   },
   methods: {
+    scrollToHome() {
+      const targetElement = document.getElementById("home"); // Assuming "home" is the ID of the target element
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    },
     scrollToCars() {
       const targetElement = document.getElementById("cars"); // Assuming "cars" is the ID of the target element
       if (targetElement) {

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div
-      class="navigation bg-black-light transition-all duration-500 border-l-10 border-black-light fixed top-16 h-screen w-80"
+      class="navigation bg-black-light transition-all duration-500 border-l-10 border-black-light fixed top-16 h-screen w-20"
     >
       <ul>
         <li>
@@ -94,38 +94,8 @@ export default {
       // Handle the case when the user is not logged in or user data is not available in localStorage
       this.$router.push({ path: "/" });
     }
-
-    this.setupMenuToggle();
   },
-  methods: {
-    setupMenuToggle() {
-      let toggle = document.querySelector(".toggle");
-      let navigation = document.querySelector(".navigation");
-      let main = document.querySelector(".main");
-      let list = document.querySelectorAll(".navigation li");
-
-      toggle.onclick = () => {
-        toggle.classList.toggle("active");
-        navigation.classList.toggle("active");
-        main.classList.toggle("active");
-      };
-
-      function activeLink() {
-        list.forEach((item) => item.classList.remove("hovered"));
-        this.classList.add("hovered");
-      }
-
-      list.forEach((item) => item.addEventListener("mouseover", activeLink));
-    },
-    beforeDestroy() {
-      // Cleanup logic when component is destroyed
-      // Remove event listeners or any other cleanup if necessary
-      let list = document.querySelectorAll(".navigation li");
-      list.forEach((item) =>
-        item.removeEventListener("mouseover", this.activeLink)
-      );
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -165,13 +135,7 @@ export default {
   border-bottom-left-radius: 30px;
 }
 
-.navigation ul li:hover,
-.navigation ul li.hovered {
-  background: var(--orange-dark);
-}
-
 .navigation ul li a.router-link-active {
-  border-left: 5px solid #ffa31a;
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
   background: var(--orange-dark);
@@ -223,8 +187,7 @@ export default {
   color: var(--white);
 }
 
-.navigation ul li:hover a,
-.navigation ul li.hovered a {
+.navigation ul li:hover a {
   color: var(--orange);
 }
 
@@ -251,44 +214,12 @@ export default {
   white-space: nowrap;
   font-size: 15px;
 }
-
-/* curve outside */
-
-.navigation ul li:hover a::before,
-.navigation ul li.hovered a::before {
-  content: "";
-  position: absolute;
-  top: -50px;
-  right: 0;
-  width: 50px;
-  height: 50px;
-  background: transparent;
-  border-radius: 50%;
-  box-shadow: 35px 35px 0 10px var(--orange-dark);
-  pointer-events: none;
-}
-
-.navigation ul li:hover a::after,
-.navigation ul li.hovered a::after {
-  content: "";
-  position: absolute;
-  bottom: -50px;
-  right: 0;
-  width: 50px;
-  height: 50px;
-  background: transparent;
-  border-radius: 50%;
-  box-shadow: 35px -35px 0 10px var(--orange-dark);
-  pointer-events: none;
-}
-
 /* main content */
 
 .main {
   position: absolute;
-  top: 82px;
-  width: calc(100% - 300px);
-  margin-left: 300px;
+  width: calc(100% - 80px);
+  margin-left: 80px;
   min-height: calc(100vh - 163px);
   transition: 0.5s;
 }
@@ -367,47 +298,5 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-@media (max-width: 768px) {
-  .main,
-  .topbar,
-  .cardBox,
-  .details {
-    width: calc(100% - 80px);
-    margin-left: -120px;
-  }
-
-  .cardBox {
-    overflow: auto;
-    width: calc(100% - 40px) !important;
-    margin-left: -100px !important;
-    margin-right: auto !important;
-  }
-
-  .cardBox::-webkit-scrollbar {
-    width: 3px;
-    background: var(--black);
-    border-radius: 10px;
-  }
-
-  .cardBox::-webkit-scrollbar-thumb {
-    background: var(--orange);
-    border-radius: 10px;
-  }
-
-  .navigation {
-    width: 80px !important;
-  }
-
-  .navigation ul li a .title {
-    display: none;
-    visibility: hidden;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-  }
 }
 </style>
