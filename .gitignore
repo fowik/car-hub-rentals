@@ -1,0 +1,11 @@
+# Ignore service account credentials
+backend/src/admin/serviceAccount.json
+
+# Ignore node_modules
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore other sensitive files
+.env
