@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div>
     <HomeComponent />
     <CarsComponent />
     <AboutComponent />
@@ -42,7 +42,23 @@ export default {
 </script>
 
 <style scoped>
-/* section {
-  height: calc(90vh - 256px);
-} */
+section:first-of-type {
+  height: calc(100vh - 74.34px - 176px);
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+section:nth-of-type(3) {
+  height: calc(100vh - 74.34px - 176px);
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+section:nth-of-type(even) {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+section {
+  height: calc(100vh);
+}
 </style>

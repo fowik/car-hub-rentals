@@ -7,12 +7,8 @@
       </button>
     </div>
     <div v-if="data">
-      <p>Name: {{ data.name }}</p>
-      <p>Surname: {{ data.surname }}</p>
-      <p>License No: {{ data.licenseNo }}</p>
-      <p>Date of Birth: {{ data.dob }}</p>
-      <!-- <p>Start Date: {{ data.start }}</p> -->
-      <p>Expiry Date: {{ data.expiry }}</p>
+      Driving License uploaded!
+      <ModalViewLicense :data="data" />
     </div>
   </div>
 </template>
@@ -26,6 +22,8 @@ import { showErrorToast, showSuccessToast } from "@/firebase/Toasts";
 import { db } from "@/firebase/firebase";
 import { ref, get } from "firebase/database";
 
+import ModalViewLicense from "./ModalViewLicense.vue";
+
 export default {
   data() {
     return {
@@ -33,6 +31,9 @@ export default {
       data: null,
       uploaded: false,
     };
+  },
+  components: {
+    ModalViewLicense,
   },
   methods: {
     onFileChange(event) {
@@ -87,9 +88,13 @@ export default {
       console.log("Updating database with:", data);
 
       try {
-        await axios.post("http://localhost:8000/verify-license", {
-          data: data,
-        });
+        await axios.post(
+          "https://us-central1-car-hub-130b6.cloudfunctions.net/api/verify-license",
+          // "http://localhost:8000/verify-license",
+          {
+            data: data,
+          }
+        );
 
         showSuccessToast("License verified successfully!");
         this.uploaded = true; // Set uploaded to true after successful verification

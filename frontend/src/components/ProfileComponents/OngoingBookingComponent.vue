@@ -13,7 +13,7 @@
       <div><strong>Payment Information:</strong></div>
       <div>
         Total Price:
-        {{ totalPrice }}€
+        {{ totalPrice }} €
       </div>
       <div>Payment Method: Credit Card</div>
       <hr />

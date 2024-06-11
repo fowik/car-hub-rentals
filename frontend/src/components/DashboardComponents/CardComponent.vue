@@ -47,7 +47,7 @@
           <div class="card-header text-start">Earnings</div>
           <div class="card-body text-start d-flex">
             <fa icon="credit-card" class="fs-1" />
-            <h2 class="ps-3">{{ earnings }}€</h2>
+            <h2 class="ps-3">{{ earnings }} €</h2>
           </div>
         </div>
       </div>
@@ -82,8 +82,12 @@ export default {
         const data = snapshot.val();
         let total = 0;
         for (const key in data) {
-          total += data[key].totalPrice;
+          if (data[key].status === "Paid") {
+            total += data[key].totalPrice;
+            total = parseFloat(total.toFixed(2));
+          }
         }
+
         this.earnings = total;
       });
     },

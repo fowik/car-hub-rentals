@@ -78,15 +78,17 @@
               />
               <fa v-else icon="caret-up" class="ms-2" />
             </th>
-            <th scope="col" v-on:click="sort('date')">
+            <th scope="col" v-on:click="sort('startTime')">
               Date
               <fa
-                v-if="sortKey === 'date' && sortOrders['date'] === 1"
+                v-if="sortKey === 'startTime' && sortOrders['startTime'] === 1"
                 icon="caret-up"
                 class="ms-2"
               />
               <fa
-                v-else-if="sortKey === 'date' && sortOrders['date'] === -1"
+                v-else-if="
+                  sortKey === 'startTime' && sortOrders['startTime'] === -1
+                "
                 icon="caret-down"
                 class="ms-2"
               />
@@ -113,7 +115,7 @@
             <td class="p-3 text-start">{{ rent.carModel }}</td>
             <td class="p-3">{{ rent.licensePlate }}</td>
             <td class="p-3">{{ rent.rentalDuration }}</td>
-            <td class="p-3">{{ rent.totalPrice }}€</td>
+            <td class="p-3">{{ rent.totalPrice }} €</td>
             <td class="p-3">{{ rent.startTime }}</td>
             <td class="p-3">{{ rent.status }}</td>
           </tr>
@@ -214,7 +216,18 @@ export default {
 
       this.recentRents.sort((a, b) => {
         const modifier = this.sortOrders[key];
-        if (key === "rentalCost" || key === "rentalDuration") {
+        console.log(
+          `a[${key}]: ${a[key]}, b[${key}]: ${b[key]}, modifier: ${modifier}`
+        );
+
+        if (a[key] === undefined || b[key] === undefined) {
+          return 0;
+        }
+        if (
+          key === "rentalCost" ||
+          key === "rentalDuration" ||
+          key === "totalPrice"
+        ) {
           return modifier * (parseFloat(a[key]) - parseFloat(b[key]));
         } else {
           return modifier * a[key].localeCompare(b[key]);

@@ -73,6 +73,23 @@
               </div>
             </div>
             <div class="mb-3 text-start">
+              <label for="email" class="col-form-label">Balance</label>
+              <div class="input-group">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="floatingBalance"
+                    placeholder="Phone Number"
+                    v-model="balance"
+                  />
+                  <label for="floatingBalance">Balance</label>
+                </div>
+                <span class="input-group-text">€</span>
+              </div>
+            </div>
+
+            <div class="mb-3 text-start">
               <label for="password" class="col-form-label">Password</label>
               <div class="form-floating">
                 <input
@@ -119,7 +136,11 @@
 
 <script>
 import axios from "axios";
-import { showSuccessToast } from "@/firebase/Toasts";
+import {
+  showSuccessToast,
+  showErrorToast,
+  showInfoToast,
+} from "@/firebase/Toasts";
 import $ from "jquery";
 
 export default {
@@ -138,6 +159,7 @@ export default {
       phoneNumber: "",
       email: "",
       password: "",
+      balance: 0,
       isAdmin: false,
     };
   },
@@ -153,19 +175,26 @@ export default {
           this.email = newVal.email || "";
           this.password = newVal.password || "";
           this.isAdmin = newVal.isAdmin || false;
+          this.balance = newVal.balance || 0;
         }
       },
     },
   },
   methods: {
     async saveChanges() {
-      if (!this.firstName || !this.lastName || !this.email) {
-        this.showToast("Please fill in all required fields!", "error");
+      if (
+        !this.firstName ||
+        !this.lastName ||
+        !this.email ||
+        !this.phoneNumber ||
+        !this.balance
+      ) {
+        showErrorToast("Please fill in all required fields!");
         return;
       }
 
       if (!this.isValidEmail(this.email)) {
-        this.showToast("Please enter a valid email address!", "error");
+        showErrorToast("Please enter a valid email address!");
         return;
       }
 
@@ -178,6 +207,7 @@ export default {
           displayName: `${firstName} ${lastName}`,
           isAdmin: isAdmin,
           phoneNumber,
+          balance: this.balance,
         };
 
         try {
@@ -187,16 +217,15 @@ export default {
             userData
           );
 
-          this.clearForm();
           $("#EditModalToggle").hide();
           $(".modal-backdrop").remove();
           showSuccessToast("Customer updated successfully!");
         } catch (error) {
           console.error("Error updating customer:", error);
-          this.showToast("An error occurred while updating customer!", "error");
+          showInfoToast("An error occurred while updating customer!");
         }
       } else {
-        this.showToast("No changes detected!", "info");
+        showInfoToast("No changes detected!");
       }
     },
     isValidEmail(email) {

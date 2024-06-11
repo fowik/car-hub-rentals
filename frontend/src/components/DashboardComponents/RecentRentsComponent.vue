@@ -104,7 +104,7 @@
             <td class="p-3">{{ rent.carModel }}</td>
             <td class="p-3">{{ rent.registration }}</td>
             <td class="p-3">{{ rent.duration }}</td>
-            <td class="p-3">{{ rent.totalPrice }} $</td>
+            <td class="p-3">{{ rent.totalPrice }} €</td>
           </tr>
         </tbody>
       </table>

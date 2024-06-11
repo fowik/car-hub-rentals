@@ -40,6 +40,7 @@
             data-bs-toggle="modal"
             data-bs-target="#numberChangeModal"
             @click="toggleNumberChangeModal"
+            disabled
           >
             Change Phone number
           </button>

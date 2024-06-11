@@ -68,6 +68,8 @@
             Save changes
           </button>
         </div>
+        <div id="recaptcha-container"></div>
+        <SpinnerComponent :isLoading="isLoading" />
       </div>
     </div>
   </div>
@@ -76,8 +78,8 @@
 <script>
 import { updateUserPhoneNumber } from "@/firebase/Authentication/Profile/index.js";
 import { showErrorToast, showSuccessToast } from "@/firebase/Toasts";
-
 import $ from "jquery";
+import SpinnerComponent from "../Spinner/SpinnerComponent.vue";
 
 export default {
   name: "PhoneNumberModal",
@@ -89,13 +91,18 @@ export default {
     return {
       newPhone: "",
       password: "",
+      isLoading: false,
     };
+  },
+  components: {
+    SpinnerComponent,
   },
   methods: {
     async handleUpdatePhoneNumber() {
-      // Check if the email is available
+      this.isLoading = true;
       if (!this.email) {
         showErrorToast("User email is missing. Unable to update phone number.");
+        this.isLoading = false;
         return;
       }
 
@@ -127,14 +134,16 @@ export default {
               console.error(error);
               break;
           }
+          this.isLoading = false;
         } else {
           $("#numberChangeModal").hide();
           $(".modal-backdrop").remove();
-
+          this.isLoading = false;
           showSuccessToast("Phone number updated successfully!");
           this.clearInputs();
         }
       } catch (error) {
+        this.isLoading = false;
         showErrorToast("An unexpected error occurred.");
         console.error(error);
       }

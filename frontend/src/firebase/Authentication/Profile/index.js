@@ -3,9 +3,12 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
-  updatePhoneNumber,
   updateEmail,
   sendEmailVerification,
+  PhoneAuthProvider,
+  signInWithPhoneNumber,
+  updatePhoneNumber,
+  RecaptchaVerifier,
 } from "firebase/auth";
 import { ref, update } from "firebase/database";
 import { showErrorToast, showSuccessToast } from "@/firebase/Toasts";
@@ -107,6 +110,7 @@ export async function updateUserPhoneNumber(
 ) {
   try {
     const user = auth.currentUser;
+
     if (!user) {
       showErrorToast("No user is currently signed in.");
       return;
@@ -114,18 +118,48 @@ export async function updateUserPhoneNumber(
 
     // Reauthenticate the user
     const credential = EmailAuthProvider.credential(email, password);
-
     await reauthenticateWithCredential(user, credential);
 
-    // Update the phone number
-    await updatePhoneNumber(user, newPhone);
+    // Set up reCAPTCHA
+    const recaptchaVerifier = new RecaptchaVerifier(
+      "recaptcha-container",
+      {
+        size: "invisible",
+      },
+      auth
+    );
+
+    // Send verification code
+    const confirmationResult = await signInWithPhoneNumber(
+      auth,
+      newPhone,
+      recaptchaVerifier
+    );
+
+    // This would be part of the verification step
+    const verificationCode = prompt(
+      "Please enter the verification code that was sent to your phone"
+    );
+
+    if (!verificationCode) {
+      showErrorToast("Verification code is required to update phone number.");
+      return;
+    }
+
+    const phoneCredential = PhoneAuthProvider.credential(
+      confirmationResult.verificationId,
+      verificationCode
+    );
+    await updatePhoneNumber(user, phoneCredential);
 
     // Update the phone number in the database
     const userRef = ref(db, `users/${user.uid}`);
     await update(userRef, { phoneNumber: newPhone });
 
     clearInputs();
+    showSuccessToast("Phone number updated successfully!");
   } catch (error) {
-    return error;
+    showErrorToast("An error occurred while updating the phone number.");
+    console.error(error);
   }
 }

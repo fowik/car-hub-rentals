@@ -164,7 +164,7 @@
                   >
                     {{ car.status }}
                   </td>
-                  <td class="p-3">{{ car.pricePerMinute }}</td>
+                  <td class="p-3">{{ car.pricePerMinute }} €</td>
                   <td class="text-end">
                     <button
                       :disabled="car.status === 'Reserved'"

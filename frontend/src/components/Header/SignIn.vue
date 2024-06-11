@@ -20,7 +20,7 @@
       </li>
       <li class="nav-item" v-if="isVerified && userDataLoaded">
         <router-link to="" class="nav-link" disabled
-          >Balance: {{ this.balance }}€</router-link
+          >Balance: {{ this.balance }} €</router-link
         >
       </li>
       <li class="nav-item" v-if="isVerified && userDataLoaded">

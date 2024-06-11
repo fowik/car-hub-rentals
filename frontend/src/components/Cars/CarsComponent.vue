@@ -25,7 +25,7 @@
             />
             <div class="card-body">
               <h5 class="card-title">{{ car.model }}</h5>
-              <p class="card-text">{{ car.pricePerMinute }}€</p>
+              <p class="card-text">{{ car.pricePerMinute }} €</p>
               <button class="btn btn-primary">Reserve</button>
             </div>
           </div>

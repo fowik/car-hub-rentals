@@ -11,7 +11,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">message</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Message</h1>
         </div>
         <div class="modal-body">
           <div class="form-floating mb-3">
@@ -21,7 +21,7 @@
               id="floatingTextareaDisabled"
               v-model="message"
             ></textarea>
-            <label for="floatingTextareaDisabled">messages</label>
+            <label for="floatingTextareaDisabled">Your message</label>
           </div>
         </div>
         <div class="modal-footer">
@@ -37,6 +37,7 @@
             Add message
           </button>
         </div>
+        <SpinnerComponent :isLoading="isLoading" />
       </div>
     </div>
   </div>
@@ -47,6 +48,7 @@ import axios from "axios";
 import $ from "jquery";
 
 import { showSuccessToast } from "@/firebase/Toasts";
+import SpinnerComponent from "../Spinner/SpinnerComponent.vue";
 
 export default {
   name: "messageAboutCarComponent",
@@ -63,12 +65,17 @@ export default {
   data() {
     return {
       message: "",
+      isLoading: false,
     };
+  },
+  components: {
+    SpinnerComponent,
   },
   methods: {
     async addMessage() {
       console.log(this.carId, this.uId);
 
+      this.isLoading = true;
       try {
         const message = {
           message: this.message,
@@ -77,18 +84,21 @@ export default {
         };
 
         await axios.post(
-          "https://us-central1-car-hub-130b6.cloudfunctions.net/api/export-xlsx",
+          "https://us-central1-car-hub-130b6.cloudfunctions.net/api/messages/create",
           // "http://localhost:8000/messages/create",
           message
         );
 
         $("#addComment").hide();
         $(".modal-backdrop").remove();
-
+        $(".modal-open").css("padding-right", "0px");
+        $("body").css("overflow", "auto");
+        this.isLoading = false;
         if (this.message !== "") {
           showSuccessToast("Thank you for providing feedback! <3");
         }
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
       }
     },

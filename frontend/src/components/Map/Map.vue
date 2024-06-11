@@ -18,16 +18,34 @@
 
         <div class="col-md-4 mb-3">
           <input
-            type="number"
+            type="range"
+            v-model.number="selectedMaxPrice"
+            @input="filterCars"
+            class="form-range"
+            id="priceRange"
+            :min="minPrice"
+            :max="maxPrice"
             step="0.01"
-            v-model.number="maxPrice"
-            @change="filterCars"
-            class="form-control"
-            placeholder="Enter max price"
           />
+          <b class="mt-2">Select Price: </b>
+          <label for="priceRange" class="form-label">
+            <div class="input-group">
+              <input
+                type="number"
+                v-model.number="selectedMaxPrice"
+                @input="filterCars"
+                class="form-control"
+                :placeholder="maxPrice"
+                :min="minPrice"
+                :max="maxPrice"
+                step="0.01"
+              />
+              <span class="input-group-text">€</span>
+            </div>
+          </label>
         </div>
 
-        <div class="col-md-4 d-flex align-items-end mb-3">
+        <div class="col-md-4 mb-3">
           <button @click="resetFilters" class="btn btn-secondary w-100">
             Reset Filters
           </button>
@@ -62,7 +80,7 @@
               <img :src="car.imageUrl" alt="" class="popup-image" />
               <div class="popup-text">
                 <h3>{{ car.brand }} {{ car.model }}</h3>
-                <p>Price per minute: {{ car.pricePerMinute }}€</p>
+                <p>Price per minute: {{ car.pricePerMinute }} €</p>
 
                 <button
                   class="btn btn-primary mt-3 mb-3"
@@ -104,11 +122,13 @@ export default {
   data() {
     return {
       position: null,
-      center: [56.96, 23.15], // Default center coordinates
+      center: [56.947222, 24.122222], // Default center coordinates
       cars: [],
       carId: null,
       selectedBrand: "",
-      maxPrice: null,
+      minPrice: 0,
+      maxPrice: 10, // Will be updated dynamically
+      selectedMaxPrice: 10, // Will be used for filtering
       filteredCars: [],
       uniqueBrands: [],
       icon: icon({
@@ -205,6 +225,14 @@ export default {
             ...new Set(availableCars.map((car) => car.brand)),
           ];
           this.filteredCars = availableCars;
+
+          // Set max price dynamically
+          if (availableCars.length > 0) {
+            this.maxPrice = Math.max(
+              ...availableCars.map((car) => car.pricePerMinute)
+            );
+            this.selectedMaxPrice = this.maxPrice;
+          }
         });
       } catch (error) {
         console.error("Request failed:", error);
@@ -221,15 +249,16 @@ export default {
         const matchesBrand = this.selectedBrand
           ? car.brand === this.selectedBrand
           : true;
-        const matchesPrice = this.maxPrice
-          ? car.pricePerMinute <= this.maxPrice
-          : true;
+        const matchesPrice =
+          this.selectedMaxPrice !== null
+            ? car.pricePerMinute <= this.selectedMaxPrice
+            : true;
         return matchesBrand && matchesPrice;
       });
     },
     resetFilters() {
       this.selectedBrand = "";
-      this.maxPrice = null;
+      this.selectedMaxPrice = this.maxPrice; // Reset to max price
       this.filteredCars = this.cars;
     },
   },

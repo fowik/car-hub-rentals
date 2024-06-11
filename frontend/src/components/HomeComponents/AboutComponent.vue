@@ -1,5 +1,5 @@
 <template>
-  <section id="about" class="py-5">
+  <section id="about" class="py-5 overflow-auto">
     <div class="container">
       <h2 class="text-center mb-4 display-4">Reserve Your Ride with Ease</h2>
       <p class="text-center mb-4 lead">

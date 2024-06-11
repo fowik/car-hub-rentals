@@ -62,4 +62,4 @@ const getCurrentUser = () => {
   });
 };
 
-export { app, functions, auth, db, storage, getCurrentUser, analytics};
+export { app, functions, auth, db, storage, getCurrentUser, analytics };

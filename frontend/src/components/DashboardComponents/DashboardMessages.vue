@@ -359,7 +359,7 @@ export default {
           ]);
 
           // Update messages with user display names and car models+brands
-          this.messages = Object.keys(data).map((key) => {
+          let messages = Object.keys(data).map((key) => {
             const message = data[key];
             const user = userData ? userData[message.uid] : null;
             const car = carData ? carData[message.carId] : null;
@@ -372,9 +372,20 @@ export default {
               carModelBrand: car
                 ? `${car.brand} ${car.model} | ${car.registration}`
                 : "",
-              date: date.toLocaleString(),
+              date: date, // Keep date as Date object for now
             };
           });
+
+          // Сортировка массива сообщений по дате в обратном порядке
+          messages = messages.sort((a, b) => b.date - a.date);
+
+          // Convert date to string after sorting
+          messages = messages.map((message) => ({
+            ...message,
+            date: message.date.toLocaleString(),
+          }));
+
+          this.messages = messages;
         }
       });
     },

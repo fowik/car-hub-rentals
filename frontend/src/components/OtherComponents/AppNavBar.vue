@@ -50,8 +50,18 @@
               Others
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link to="/" class="dropdown-item">Cars</router-link>
-              <router-link to="/" class="dropdown-item">About Us</router-link>
+              <router-link
+                to="/#cars"
+                @click="scrollToSection('cars')"
+                class="dropdown-item"
+                >Cars</router-link
+              >
+              <router-link
+                to="/#about"
+                @click="scrollToSection('about')"
+                class="dropdown-item"
+                >About Us</router-link
+              >
             </div>
           </li>
         </ul>
@@ -76,6 +86,14 @@ export default {
   name: "NavBar",
   components: {
     SignIn,
+  },
+  methods: {
+    scrollToSection(sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    },
   },
 };
 </script>

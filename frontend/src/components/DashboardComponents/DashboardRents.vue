@@ -179,9 +179,9 @@
                         <li>
                           <button
                             class="dropdown-item"
-                            v-on:click="changeStatus(rental, 'Active')"
+                            v-on:click="changeStatus(rental, 'Paid')"
                           >
-                            Active
+                            Paid
                           </button>
                         </li>
                         <li>
@@ -331,8 +331,8 @@ export default {
       rental.status = newStatus;
 
       await axios.put(
-        `https://us-central1-car-hub-130b6.cloudfunctions.net/api/rentals/update/status`,
-        // `http://localhost:8000/rentals/update/status`,
+        `https://us-central1-car-hub-130b6.cloudfunctions.net/api/reservations/update/status`,
+        // `http://localhost:8000/reservations/update/status`,
         {
           rentalId: rental.id,
           status: newStatus,
@@ -364,7 +364,7 @@ export default {
           ]);
 
           // Update rentals with user display names and car models+brands
-          this.rentals = Object.keys(data).map((key) => {
+          let rentals = Object.keys(data).map((key) => {
             const rental = data[key];
             const user = userData ? userData[rental.uid] : null;
             const car = carData ? carData[rental.carId] : null;
@@ -398,7 +398,7 @@ export default {
             const rentalDetails =
               rental.status === "Ongoing"
                 ? "Ongoing"
-                : `Total price: ${rental.totalPrice}€ | Time: ${hours}h ${minutes}m ${seconds}s`;
+                : `Total price: ${rental.totalPrice} € | Time: ${hours}h ${minutes}m ${seconds}s`;
 
             return {
               ...rental,
@@ -408,9 +408,20 @@ export default {
               carModelBrand: car
                 ? `${car.brand} ${car.model} | ${car.registration}`
                 : "",
-              date: startTime.toLocaleString(), // Using startTime for the date
+              date: startTime, // Keep date as Date object for now
             };
           });
+
+          // Сортировка массива резерваций по дате в обратном порядке
+          rentals = rentals.sort((a, b) => b.date - a.date);
+
+          // Convert date to string after sorting
+          rentals = rentals.map((rental) => ({
+            ...rental,
+            date: rental.date.toLocaleString(),
+          }));
+
+          this.rentals = rentals;
         }
       });
     },

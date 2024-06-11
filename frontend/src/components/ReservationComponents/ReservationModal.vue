@@ -23,7 +23,7 @@
           <div class="row">
             <div class="col-6 text-start">
               <h3>{{ car.brand }} {{ car.model }}</h3>
-              <p>Price: {{ car.pricePerMinute }}€</p>
+              <p>Price: {{ car.pricePerMinute }} €</p>
               <p>License plate: {{ car.registration }}</p>
             </div>
             <div class="col-6 d-flex align-items-center justify-content-center">
@@ -45,9 +45,10 @@
             Close
           </button>
           <button type="submit" class="btn btn-primary" @click="reserveCar">
-            Reserve car for {{ car.pricePerMinute }}$ per minute.
+            Reserve car for {{ car.pricePerMinute }} € per minute.
           </button>
         </div>
+        <SpinnerComponent :isLoading="isLoading" />
       </div>
     </div>
   </div>
@@ -61,12 +62,18 @@ import { getCurrentUser, db } from "@/firebase/firebase";
 import { ref, get } from "firebase/database";
 import { showErrorToast } from "@/firebase/Toasts";
 
+import SpinnerComponent from "../Spinner/SpinnerComponent.vue";
+
 export default {
   name: "ReservationModal",
   data() {
     return {
       car: [],
+      isLoading: false,
     };
+  },
+  components: {
+    SpinnerComponent,
   },
   props: {
     carId: String,
@@ -82,6 +89,7 @@ export default {
 
   methods: {
     async reserveCar() {
+      this.isLoading = true;
       const currentUser = await getCurrentUser();
 
       this.checkLicense();
@@ -109,15 +117,21 @@ export default {
 
         $("#ReserveModalToggle").hide();
         $(".modal-backdrop").remove();
+        $(".modal-open").css("padding-right", "0px");
+        $("body").css("overflow", "auto");
+
+        this.isLoading = false;
 
         router.push("/profile");
       } catch (error) {
         if (error.response && error.response.data) {
           // Show error message from server
           showErrorToast(error.response.data.error);
+          this.isLoading = false;
         } else {
           // Show generic error message
           showErrorToast("An error occurred while reserving the car");
+          this.isLoading = false;
         }
         console.error(error);
       }
@@ -147,6 +161,7 @@ export default {
       }
     },
     async getCarById() {
+      this.isLoading = true;
       if (!this.carId) {
         return;
       }
@@ -159,6 +174,7 @@ export default {
       } catch (error) {
         console.error(error);
       }
+      this.isLoading = false;
     },
   },
 };

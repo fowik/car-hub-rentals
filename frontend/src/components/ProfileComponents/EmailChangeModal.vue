@@ -68,6 +68,7 @@
             Save changes
           </button>
         </div>
+        <SpinnerComponent :isLoading="isLoading" />
       </div>
     </div>
   </div>

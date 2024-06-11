@@ -57,6 +57,7 @@
             Save changes
           </button>
         </div>
+        <SpinnerComponent :isLoading="isLoading" />
       </div>
     </div>
   </div>
@@ -65,6 +66,8 @@
 <script>
 import { updateUserPassword } from "@/firebase/Authentication/Profile/index.js";
 
+import SpinnerComponent from "../Spinner/SpinnerComponent.vue";
+
 export default {
   name: "PasswordChangeModal",
   data() {
@@ -72,7 +75,11 @@ export default {
       currentPassword: "",
       newPassword: "",
       isModalOpen: true,
+      isLoading: false,
     };
+  },
+  components: {
+    SpinnerComponent,
   },
   methods: {
     clearInputs() {
@@ -81,12 +88,16 @@ export default {
     },
     async handlePasswordUpdate() {
       try {
+        this.isLoading = true;
+
         await updateUserPassword(
           this.currentPassword,
           this.newPassword,
           this.clearInputs
         );
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.error(error);
       }
     },

@@ -1,7 +1,7 @@
 <template>
   <section
     id="cars"
-    class="d-flex align-items-center align-middle justify-content-center flex-column mt-5"
+    class="d-flex align-items-center align-middle justify-content-center flex-column mt-5 p-4"
   >
     <div>
       <h1 class="pb-5">Our Cars</h1>
@@ -17,7 +17,7 @@
         </div>
         <div class="card-body">
           <h4 class="card-title">{{ car.brand }}</h4>
-          <p class="card-text">{{ car.price }}€</p>
+          <p class="card-text">{{ car.price }} €</p>
           <a href="/reservation" class="btn btn-primary">Reserve</a>
         </div>
       </div>
@@ -68,6 +68,7 @@ export default {
   white-space: nowrap;
   overflow-x: auto;
 }
+
 .card {
   max-width: 300px;
   min-height: 300px;
