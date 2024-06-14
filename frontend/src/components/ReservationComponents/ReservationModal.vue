@@ -101,6 +101,7 @@ export default {
 
       if (userData.balance < 0.01) {
         showErrorToast("You don't have enough funds to reserve this car");
+        this.isLoading = false;
         return;
       }
 

@@ -47,6 +47,7 @@ router.post("/create", async (req, res) => {
       carLongitude,
       imageUrl: "",
       status: "Maintenance",
+      isDeleted: false,
     });
 
     const carId = newCarRef.key;
@@ -127,41 +128,45 @@ router.put("/update/:id", async (req, res) => {
   }
 });
 
-router.delete("/delete", async (req, res) => {
-  const { key, imageUrl } = req.body;
+router.put("/delete", async (req, res) => {
+  const {
+    data: { key },
+  } = req.body; // Extract key from the data object
 
   console.log(req.body); // Log the request body
 
   try {
-    const db = admin.database();
-    const ref = db.ref("cars/" + key);
-    await ref.remove();
-  } catch (error) {
-    console.error("Error removing from database:", error);
-    return res
-      .status(500)
-      .json({ error: "Error removing from database: " + error.toString() });
-  }
+    // Update the isDeleted field to true
+    await carsRef.child(key).update({
+      isDeleted: true,
+    });
 
-  try {
-    // delete image
-    if (imageUrl) {
-      console.log(imageUrl);
-      const filename = imageUrl
-        .split("https://storage.googleapis.com/car-hub-130b6.appspot.com/")[1]
-        .split("?")[0];
-      const file = bucket.file(filename);
-      await file.delete();
-    } else {
-      console.error("imageUrl is undefined");
-    }
+    // try {
+    //   // delete image
+    //   if (imageUrl) {
+    //     console.log(imageUrl);
+    //     const filename = imageUrl
+    //       .split("https://storage.googleapis.com/car-hub-130b6.appspot.com/")[1]
+    //       .split("?")[0];
+    //     const file = bucket.file(filename);
+    //     await file.delete();
+    //   } else {
+    //     console.error("imageUrl is undefined");
+    //   }
+    // } catch (error) {
+    //   console.error("Error deleting image:", error);
+    //   return res
+    //     .status(500)
+    //     .json({ error: "Error deleting image: " + error.toString() });
+    // }
+
+    res.json({ message: "Car deleted successfully." });
   } catch (error) {
-    console.error("Error deleting image:", error);
+    console.error("Error deleting car:", error);
     return res
       .status(500)
-      .json({ error: "Error deleting image: " + error.toString() });
+      .json({ error: "Error deleting car: " + error.toString() });
   }
-  res.json({ message: "Car deleted" });
 });
 
 module.exports = router;

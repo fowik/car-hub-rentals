@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div v-if="!uploaded">
+    <div v-if="!uploaded" class="d-flex justify-content-end m-2">
       <input type="file" @change="onFileChange" />
       <button @click="processImage" class="btn btn-primary">
         Process Image
       </button>
     </div>
-    <div v-if="data">
-      Driving License uploaded!
+    <div v-if="data" class="d-flex justify-content-between">
+      <p class="p-2 m-2 text-truncate">Driving License uploaded!</p>
       <ModalViewLicense :data="data" />
     </div>
   </div>
@@ -48,41 +48,54 @@ export default {
         });
 
         const parsedData = this.parseText(result.data.text);
-        this.data = parsedData;
-        this.updateDatabase(parsedData);
+        if (parsedData) {
+          this.data = parsedData;
+          this.updateDatabase(parsedData);
+        } else {
+          showErrorToast(
+            "Error parsing license data. Please ensure the image is clear."
+          );
+        }
       } catch (error) {
         console.error("Error processing image:", error);
       }
     },
     parseText(text) {
-      const surname = text.match(/1.\s*([^\n]*)/)?.[1].trim() || "";
-      const name = text.match(/2.\s*([^\n]*)/)?.[1].trim() || "";
-      const dob = text.match(/3.\s*([\d/.]+)/)?.[1] || "";
-      const expiry = this.formatDate(text.match(/4b.\s*([\d/.]+)/)?.[1]) || "";
-      const licenseNo = text.match(/5.\s*(\w+)/)?.[1] || "";
+      const surname = text.match(/1.\s*([^\n]*)/)?.[1].trim() || null;
+      const name = text.match(/2.\s*([^\n]*)/)?.[1].trim() || null;
+      const dob = text.match(/3.\s*([\d/.]+)/)?.[1] || null;
+      const expiry =
+        this.formatDate(text.match(/4b.\s*([\d/.]+)/)?.[1]) || null;
+      const licenseNo = text.match(/5.\s*(\w+)/)?.[1] || null;
+
+      if (!surname || !name || !dob || !expiry || !licenseNo) {
+        console.error("Error: Missing required fields in parsed data", {
+          surname,
+          name,
+          dob,
+          expiry,
+          licenseNo,
+        });
+        return null;
+      }
 
       return { surname, name, dob, expiry, licenseNo };
     },
     formatDate(dateStr) {
-      // Assuming the date format is either `YYYYMMDD` or `YYYY.MM.DD`
       if (!dateStr) return "";
       const matches = dateStr.match(/(\d{4})[./]?(\d{2})[./]?(\d{2})/);
       if (matches) {
         const [, year, month, day] = matches;
         return `${day}.${month}.${year}`;
       }
-      return dateStr; // Return the original string if it doesn't match the expected pattern
+      return dateStr;
     },
     async updateDatabase(data) {
-      data = data || this.data;
-
       const user = await getCurrentUser();
-      // Check if data exists before setting uid
-
       if (data) {
         data.uid = user.id;
       } else {
-        console.error("data is null or undefined");
+        console.error("Data is null or undefined");
       }
 
       console.log("Updating database with:", data);
@@ -90,14 +103,13 @@ export default {
       try {
         await axios.post(
           "https://us-central1-car-hub-130b6.cloudfunctions.net/api/verify-license",
-          // "http://localhost:8000/verify-license",
           {
             data: data,
           }
         );
 
         showSuccessToast("License verified successfully!");
-        this.uploaded = true; // Set uploaded to true after successful verification
+        this.uploaded = true;
       } catch (error) {
         showErrorToast("Error verifying license. Please try again.");
       }
@@ -108,14 +120,12 @@ export default {
       const licenseSnapshot = await get(licenseRef);
       const licenseData = licenseSnapshot.val();
 
-      console.log("License data:", licenseData);
-      // Check if there is any license with the uid matching the current user's ID
       let userHasLicense = false;
       if (licenseData) {
         for (const licenseId in licenseData) {
           if (licenseData[licenseId].uid === user.id) {
             userHasLicense = true;
-            this.data = licenseData[licenseId]; // Set the data to display the license information
+            this.data = licenseData[licenseId];
             break;
           }
         }
@@ -129,7 +139,6 @@ export default {
     },
   },
   mounted() {
-    // check if user has uploaded a license
     this.checkLicense();
   },
 };

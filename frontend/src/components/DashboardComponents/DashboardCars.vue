@@ -274,13 +274,14 @@ export default {
       if (!this.searchQuery) {
         return this.cars;
       }
+
+      const escapedQuery = this.searchQuery
+        .trim()
+        .replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const query = new RegExp(escapedQuery, "i");
+
       return this.cars.filter((car) =>
-        Object.values(car).some((value) =>
-          value
-            .toString()
-            .toLowerCase()
-            .includes(this.searchQuery.toLowerCase())
-        )
+        Object.values(car).some((value) => query.test(value.toString()))
       );
     },
     displayedCars() {
@@ -311,7 +312,10 @@ export default {
             car.id = Object.keys(carsObject)[index];
           });
 
-          this.cars = carsArray;
+          // Filter out the deleted cars
+          const filteredCars = carsArray.filter((car) => !car.isDeleted);
+
+          this.cars = filteredCars;
         });
       } catch (error) {
         console.error("Request failed:", error);
@@ -322,10 +326,11 @@ export default {
     },
     async deleteCar(car) {
       try {
-        await axios.delete(
+        await axios.put(
           `https://us-central1-car-hub-130b6.cloudfunctions.net/api/cars/delete`,
+          // "http://localhost:8000/cars/delete",
           {
-            data: { key: car.id, imageUrl: car.imageUrl },
+            data: { key: car.id },
           }
         );
         showSuccessToast("Car deleted successfully!");

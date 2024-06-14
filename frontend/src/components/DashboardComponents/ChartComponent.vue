@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-center mt-4 pb-4 border rounded bg-dark">
     <div class="w-99">
-      <h2 class="text-start p-2">Customers data</h2>
+      <h2 class="text-start p-2">Most Rented Car Brands</h2>
       <div class="bar-chart-container">
         <Bar
           class="m-0"

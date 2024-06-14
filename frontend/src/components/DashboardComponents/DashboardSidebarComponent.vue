@@ -56,8 +56,14 @@
           >
             <router-link
               to="/dashboard/messages"
-              class="nav-link align-middle px-0 link-primary"
+              class="nav-link align-middle px-0 link-primary position-relative"
             >
+              <span
+                class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+                style="font-size: 0.75rem"
+              >
+                {{ comments }}
+              </span>
               <fa icon="message" />
             </router-link>
           </span>
@@ -123,12 +129,21 @@
 </template>
 
 <script>
+import { db } from "@/firebase/firebase";
+import { ref, onValue } from "firebase/database";
+
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js";
 
 export default {
   name: "DashboardSidebarComponent",
+  data() {
+    return {
+      comments: "",
+    };
+  },
   mounted() {
     this.initPopovers();
+    this.fetchComments();
   },
   methods: {
     initPopovers() {
@@ -137,6 +152,25 @@ export default {
       );
       popoverTriggerList.forEach((popoverTriggerEl) => {
         new bootstrap.Popover(popoverTriggerEl);
+      });
+    },
+    async fetchComments() {
+      // fetch comments that are Active
+      const commentsRef = ref(db, "messages");
+      onValue(commentsRef, (snapshot) => {
+        const data = snapshot.val();
+        let total = 0;
+        for (const key in data) {
+          if (data[key].status === "Active") {
+            total++;
+          }
+        }
+
+        if (total > 99) {
+          this.comments = "99+";
+        } else {
+          this.comments = total.toString();
+        }
       });
     },
   },

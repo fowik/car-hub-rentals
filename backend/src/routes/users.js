@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 router.put("/update", async (req, res) => {
-  const { uid, email, displayName, isAdmin, phoneNumber } = req.body;
+  const { uid, email, displayName, isAdmin, phoneNumber, balance } = req.body;
 
   try {
     let userByEmail;
@@ -40,7 +40,9 @@ router.put("/update", async (req, res) => {
 
     console.log("isAdmin", isAdmin);
 
-    await admin.auth().setCustomUserClaims(uid, { admin: isAdmin });
+    await admin
+      .auth()
+      .setCustomUserClaims(uid, { admin: isAdmin, balance: balance });
 
     const db = admin.database();
     const ref = db.ref("users/" + uid);
@@ -49,6 +51,7 @@ router.put("/update", async (req, res) => {
       displayName,
       phoneNumber,
       isAdmin,
+      balance,
     });
 
     res.status(200).json({ message: "User data updated successfully" });

@@ -142,7 +142,12 @@
                   <td class="p-3 text-start">
                     {{ rental.renterName }}
                   </td>
-                  <td class="p-3">{{ rental.carModelBrand }}</td>
+                  <td class="p-3" v-if="!rental.isDeleted">
+                    {{ rental.carModelBrand }}
+                  </td>
+                  <td class="p-3 text-danger fw-bold" v-else>
+                    {{ rental.carModelBrand }} (Deleted)
+                  </td>
                   <td class="pt-3">
                     <div class="rental-details-wrapper">
                       <div
@@ -277,7 +282,11 @@ export default {
     displayedRentals() {
       let filteredRentals = this.rentals;
       if (this.searchQuery) {
-        const regex = new RegExp(this.searchQuery, "i");
+        const escapedQuery = this.searchQuery.replace(
+          /[-\\^$*+?.()|[\]{}]/g,
+          "\\$&"
+        );
+        const regex = new RegExp(escapedQuery, "i");
         filteredRentals = filteredRentals.filter(
           (rental) =>
             regex.test(rental.renterName) ||
@@ -405,6 +414,7 @@ export default {
               id: key,
               renterName: user ? user.displayName : "",
               rentalDetails,
+              isDeleted: car ? car.isDeleted : false,
               carModelBrand: car
                 ? `${car.brand} ${car.model} | ${car.registration}`
                 : "",

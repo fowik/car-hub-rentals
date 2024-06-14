@@ -1,4 +1,11 @@
 <template>
+  <button
+    class="btn btn-primary m-2"
+    data-bs-target="#AddModalToggle"
+    data-bs-toggle="modal"
+  >
+    View Data
+  </button>
   <div
     class="modal fade"
     id="AddModalToggle"
@@ -38,13 +45,6 @@
       </div>
     </div>
   </div>
-  <button
-    class="btn btn-primary"
-    data-bs-target="#AddModalToggle"
-    data-bs-toggle="modal"
-  >
-    View Data
-  </button>
 </template>
 
 <script>

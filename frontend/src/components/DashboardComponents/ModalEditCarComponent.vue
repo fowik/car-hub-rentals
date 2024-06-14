@@ -209,6 +209,7 @@
             Save changes
           </button>
         </div>
+        <SpinnerComponent :isLoading="isLoading" />
       </div>
     </div>
   </div>
@@ -228,6 +229,7 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
+import SpinnerComponent from "../Spinner/SpinnerComponent.vue";
 
 export default {
   name: "ModalEditCarComponent",
@@ -252,10 +254,12 @@ export default {
       brands: [],
       statuses: [],
       selectedImageFile: null,
+      isLoading: false,
     };
   },
   components: {
     CarMapEdit,
+    SpinnerComponent,
   },
   watch: {
     selectedCar: {
@@ -289,7 +293,6 @@ export default {
         showErrorToast("Car information update failed!");
       }
     },
-
     getCarData(registration) {
       return {
         registration,
@@ -304,7 +307,6 @@ export default {
         carLongitude: this.carLongitude,
       };
     },
-
     async checkDuplicateRegistration(registration) {
       const carRef = ref(db, `cars`);
       const snapshot = await get(carRef);
@@ -350,6 +352,8 @@ export default {
     clearFormAndCloseModal() {
       $("#EditModalToggle").hide();
       $(".modal-backdrop").remove();
+      $("body").css("padding-right", "0px");
+      $("body").css("overflow", "auto");
     },
     async handleLocationUpdated(location) {
       this.carLatitude = location.latitude;
@@ -360,6 +364,8 @@ export default {
     },
     async getCar(id) {
       try {
+        this.isLoading = true;
+
         await axios
           .get(
             `https://us-central1-car-hub-130b6.cloudfunctions.net/api/cars/${id}`
@@ -387,6 +393,7 @@ export default {
       } catch (error) {
         console.error(error);
       }
+      this.isLoading = false;
     },
     // get types and sort them to be displayed in the select, types that is selected by the car will be displayed first and shoud be displayed twice
     async getOptions(selectedCar) {

@@ -272,7 +272,11 @@ export default {
     displayedMessages() {
       let filteredMessages = this.messages;
       if (this.searchQuery) {
-        const regex = new RegExp(this.searchQuery, "i");
+        const escapedQuery = this.searchQuery.replace(
+          /[-\\^$*+?.()|[\]{}]/g,
+          "\\$&"
+        );
+        const regex = new RegExp(escapedQuery, "i");
         filteredMessages = filteredMessages.filter(
           (message) =>
             regex.test(message.displayName) ||

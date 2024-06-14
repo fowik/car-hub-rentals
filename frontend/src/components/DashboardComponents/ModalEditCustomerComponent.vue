@@ -129,6 +129,7 @@
             </div>
           </form>
         </div>
+        <SpinnerComponent :isLoading="isLoading" />
       </div>
     </div>
   </div>
@@ -142,6 +143,8 @@ import {
   showInfoToast,
 } from "@/firebase/Toasts";
 import $ from "jquery";
+
+import SpinnerComponent from "../Spinner/SpinnerComponent.vue";
 
 export default {
   name: "ModalEditCustomerComponent",
@@ -161,6 +164,7 @@ export default {
       password: "",
       balance: 0,
       isAdmin: false,
+      isLoading: false,
     };
   },
   watch: {
@@ -180,8 +184,12 @@ export default {
       },
     },
   },
+  components: {
+    SpinnerComponent,
+  },
   methods: {
     async saveChanges() {
+      this.isLoading = true;
       if (
         !this.firstName ||
         !this.lastName ||
@@ -219,6 +227,8 @@ export default {
 
           $("#EditModalToggle").hide();
           $(".modal-backdrop").remove();
+          $("body").css("padding-right", "0px");
+          $("body").css("overflow", "auto");
           showSuccessToast("Customer updated successfully!");
         } catch (error) {
           console.error("Error updating customer:", error);
@@ -227,6 +237,7 @@ export default {
       } else {
         showInfoToast("No changes detected!");
       }
+      this.isLoading = false;
     },
     isValidEmail(email) {
       const re = /\S+@\S+\.\S+/;
@@ -237,7 +248,9 @@ export default {
         this.firstName !== this.customer.firstName ||
         this.lastName !== this.customer.lastName ||
         this.email !== this.customer.email ||
-        this.isAdmin !== this.customer.isAdmin
+        this.isAdmin !== this.customer.isAdmin ||
+        this.phoneNumber !== this.customer.phoneNumber ||
+        this.balance !== this.customer.balance
       );
     },
   },

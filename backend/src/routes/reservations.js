@@ -140,4 +140,19 @@ router.put("/end/:id", async (req, res) => {
   res.status(200).send("Reservation ended successfully");
 });
 
+router.put("/update/status", async (req, res) => {
+  const { rentalId, status } = req.body;
+
+  try {
+    const reservationRef = db.ref("reservations/" + rentalId);
+    await reservationRef.update({ status });
+
+    res.json({ message: "Reservation status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.toString() });
+  }
+});
+
+module.exports = router;
+
 module.exports = router;

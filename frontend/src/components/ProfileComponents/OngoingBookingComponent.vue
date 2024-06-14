@@ -40,7 +40,7 @@
     <div v-if="balance < 0">
       <PaymentComponent />
     </div>
-    <div v-else-if="balance === 0">
+    <div v-else-if="balance == 0">
       <AddFundsComponent />
     </div>
     <div v-else>

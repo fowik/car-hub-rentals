@@ -100,7 +100,7 @@ export default {
       const amount = this.$route.query.amount;
       const moneyAdded = this.$route.query.moneyAdded;
       console.log(amount, moneyAdded);
-      showSuccessToast(`Payment successful!! Amount: ${amount}$`);
+      showSuccessToast(`Payment successful!! Amount: ${amount}€`);
       this.updateUserBalance(amount, moneyAdded);
       setTimeout(() => {
         this.$router.push({ path: this.$route.path, query: {} });
@@ -137,7 +137,7 @@ export default {
 
         if (response.status === 200) {
           showSuccessToast(
-            "User balance updated successfully! Amount: " + amount + "$"
+            `User balance updated successfully! Amount: ${amount}€`
           );
         } else {
           showErrorToast("Error updating user balance");

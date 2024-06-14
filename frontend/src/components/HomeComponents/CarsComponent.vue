@@ -1,7 +1,7 @@
 <template>
   <section
     id="cars"
-    class="d-flex align-items-center align-middle justify-content-center flex-column mt-5 p-4"
+    class="d-flex align-items-center align-middle justify-content-center flex-column p-4"
   >
     <div>
       <h1 class="pb-5">Our Cars</h1>

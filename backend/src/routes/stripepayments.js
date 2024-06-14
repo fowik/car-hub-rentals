@@ -13,7 +13,7 @@ router.post("/create-checkout-session", async (req, res) => {
   const line_items = [
     {
       price_data: {
-        currency: "usd",
+        currency: "eur",
         product_data: {
           name: "Add funds to balance",
         },
@@ -65,6 +65,8 @@ router.put("/update-balance", async (req, res) => {
   } else {
     updatedBalance = oldBalance + newBalance - newMoneyAdded;
   }
+
+  updatedBalance = parseFloat(updatedBalance.toFixed(2));
 
   try {
     // Update the user's balance in the custom claims

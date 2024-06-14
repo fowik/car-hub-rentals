@@ -101,7 +101,10 @@
         <tbody>
           <tr v-for="(rent, index) in displayedRents" :key="index">
             <td class="p-3 text-start">{{ rent.displayName }}</td>
-            <td class="p-3">{{ rent.carModel }}</td>
+            <td class="p-3" v-if="!rent.isDeleted">{{ rent.carModel }}</td>
+            <td class="p-3 text-danger fw-bold" v-else>
+              {{ rent.carModel }} (Deleted)
+            </td>
             <td class="p-3">{{ rent.registration }}</td>
             <td class="p-3">{{ rent.duration }}</td>
             <td class="p-3">{{ rent.totalPrice }} €</td>
@@ -173,6 +176,7 @@ export default {
                 if (carSnapshot.exists()) {
                   const car = carSnapshot.val();
                   rent.carModel = car.brand + " " + car.model;
+                  rent.isDeleted = car.isDeleted;
                   rent.registration = car.registration;
                   resolve(); // Разрешаем промис, если данные найдены
                 } else {
@@ -198,11 +202,11 @@ export default {
                   rent.displayName = user.displayName;
                   resolve();
                 } else {
-                  reject(new Error("User data not found")); 
+                  reject(new Error("User data not found"));
                 }
               },
               (error) => {
-                reject(error); 
+                reject(error);
               }
             );
           });

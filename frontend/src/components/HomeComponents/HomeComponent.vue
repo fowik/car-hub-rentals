@@ -1,11 +1,18 @@
 <template>
-  <section id="home" class="container d-flex align-middle">
+  <section id="home" class="container d-flex align-middle mt-5">
     <div class="row">
       <div class="col-xs-4 col-md-4 col-lg-4 col-xl-4 text-start">
         <div class="d-flex align-items-center h-100">
           <div class="row">
             <div class="mb-3">
               <h1>Discover the Freedom with CarHub Car Rental</h1>
+            </div>
+
+            <div>
+              <p class="fs-5">
+                <router-link to="/reservation">Rent a car</router-link> and
+                explore the world with CarHub.
+              </p>
             </div>
             <div class="col-xs-12 col-md-12">
               <button
@@ -14,7 +21,7 @@
                 data-mdb-ripple-color="#000000"
                 @click="installApp"
               >
-                <fa class="text-white me-2 fs-1" :icon="['fab', 'app-store']" />
+                <fa class="text me-2 fs-1" :icon="['fab', 'app-store']" />
                 Download app
               </button>
               <button
@@ -23,10 +30,7 @@
                 data-mdb-ripple-color="#000000"
                 @click="installApp"
               >
-                <fa
-                  class="text-white me-2 fs-1"
-                  :icon="['fab', 'google-play']"
-                />
+                <fa class="text me-2 fs-1" :icon="['fab', 'google-play']" />
                 Download app
               </button>
             </div>
@@ -50,3 +54,5 @@ export default {
   },
 };
 </script>
+
+<style scoped></style>

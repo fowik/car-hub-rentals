@@ -217,7 +217,7 @@ export default {
             car.id = Object.keys(carsObject)[index];
           });
           const availableCars = carsArray.filter(
-            (car) => car.status === "Available"
+            (car) => car.isDeleted === false && car.status === "Available"
           );
 
           this.cars = availableCars;

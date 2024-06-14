@@ -159,6 +159,7 @@
             Add car
           </button>
         </div>
+        <SpinnerComponent :isLoading="isLoading" />
       </div>
     </div>
   </div>
@@ -189,6 +190,7 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
+import SpinnerComponent from "../Spinner/SpinnerComponent.vue";
 
 export default {
   name: "ModalAddCarComponent",
@@ -207,10 +209,12 @@ export default {
       image: null,
       types: [],
       brands: [],
+      isLoading: false,
     };
   },
   components: {
     CarMap,
+    SpinnerComponent,
   },
   created() {
     this.getTypes();
@@ -218,7 +222,11 @@ export default {
   },
   methods: {
     async addCar() {
-      if (!this.checkInputs()) return;
+      this.isLoading = true;
+      if (!this.checkInputs()) {
+        this.isLoading = false;
+        return;
+      }
 
       const registration = `${this.registrationLetters}-${this.registrationNumbers}`;
 
@@ -278,11 +286,13 @@ export default {
           this.clearForm();
           $("#AddModalToggle").hide();
           $(".modal-backdrop").remove();
+          this.isLoading = false;
           showSuccessToast("Car added successfully.");
         }
       } catch (error) {
         console.error("Error:", error);
         showErrorToast("Error adding car.");
+        this.isLoading = false;
       }
     },
     async getTypes() {
